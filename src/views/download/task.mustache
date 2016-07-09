@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h4>{{getName}}</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6">
+        <div class="bs-component">
+            <span class="label label-success">{{getType}}</span>
+            <span class="label label-default">{{getStatus}}</span>
+        </div>
+        <div class="bs-component">
+            <div class="progress">
+                <div class="progress-bar progress-bar-info" style="width: {{getRxPct}}%">{{getRxPct}}%</div>
+            </div>
+            <div class="progress">
+                <div class="progress-bar progress-bar-success" style="width: {{getTxPct}}%">{{getTxPct}}%</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        Taille : {{getSizeHr}}<br/>
+        Recu : {{getDlHr}}<br />
+        Envoyé : {{getUlHr}}
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        Eta : {{getEta}}<br />
+        Dl : {{getTxRate}} o/s<br />
+        Ul : {{getRxRate}} o/s
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <div class="btn-group">
+            <a href="#" class="btn btn-default">Actions</a>
+            <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">Enlever</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Mettre en pause</a></li>
+                <li><a href="#">Relancer</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

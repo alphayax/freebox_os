@@ -1,0 +1,51 @@
+{{< toto }}
+{{$ header }}
+<h1>Téléchargements</h1>
+<p class="lead">Liste des téléchargements !</p>
+{{/ header }}
+
+{{$ contenu}}
+<ul class="nav nav-tabs">
+    <li class="active">
+        <a href="#home" data-toggle="tab">Tous</a>
+    </li>
+    <li>
+        <a href="#seed" data-toggle="tab">En partage</a>
+    </li>
+    <li>
+        <a href="#download" data-toggle="tab">En cours</a>
+    </li>
+    <li>
+        <a href="#done" data-toggle="tab">Terminés</a>
+    </li>
+</ul>
+
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade active in" id="home">
+        <p>Tous les téléchargements</p>
+        {{# getAll}}
+            {{> download/task }}
+        {{/ getAll}}
+    </div>
+    <div class="tab-pane fade" id="seed">
+        <p>Téléchargements terminés en cours de partage</p>
+        {{# getSeeding}}
+            {{> download/task }}
+        {{/ getSeeding}}
+    </div>
+    <div class="tab-pane fade" id="download">
+        <p>Téléchargements en cours</p>
+        {{# getInProgress}}
+            {{> download/task }}
+        {{/ getInProgress}}
+    </div>
+    <div class="tab-pane fade" id="done">
+        <p>Téléchargements Terminés</p>
+        {{# getDone}}
+            {{> download/task }}
+        {{/ getDone}}
+    </div>
+</div>
+
+{{/ contenu}}
+{{/ toto }}
