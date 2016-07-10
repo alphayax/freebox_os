@@ -1,0 +1,63 @@
+{{< toto }}
+{{$ header }}
+<h1>Téléchargements</h1>
+<p class="lead">Analyses de flux RSS a la recherche d'un élément particluier</p>
+{{/ header }}
+
+{{$ contenu}}
+    <script>
+
+        function sendData( id){
+            console.log( id);
+            $.ajax({
+                type: "POST",
+                url: "api.php?service=download_dlrss",
+                data: "id=" + id,
+                success : function(toto){
+                    var dip = '';
+                    for (var i = 0; i < toto.length; i++) {
+                        dip += toto[i] + '<br />';
+                    }
+                    console.log( dip);
+                    $('#youpi').html(dip);
+                    $('#rss_results').modal();
+                }
+            });
+        }
+    </script>
+    {{# getConfigs }}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Panel heading</div>
+            <div class="panel-body">
+                <div class="col-lg-10 col-md-10 col-sm-10">
+                    - {{ rss }}<br/>
+                    - {{ pattern }}<br/>
+                    - {{ last_date }}<br/>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <a href="#" onclick="sendData('{{id}}')" class="btn btn-default">Verifier...</a>
+                </div>
+            </div>
+        </div>
+    {{/ getConfigs }}
+
+    <div class="modal" id="rss_results">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Téléchargements ajoutés</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="youpi"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{{/ contenu}}
+{{/ toto }}
