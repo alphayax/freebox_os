@@ -5,6 +5,23 @@
 {{/ header }}
 
 {{$ contenu}}
+<script>
+
+    function sendData(){
+        $.ajax({
+            type: "POST",
+            url: "api.php?service=download_clear_done",
+            data: "",
+            success : function(toto){
+                var dip = '';
+                for (var i = 0; i < toto.length; i++) {
+                    dip += toto[i] + '<br />';
+                }
+                location.href = '?service=download#done';
+            }
+        });
+    }
+</script>
 <ul class="nav nav-tabs">
     <li class="active">
         <a href="#home" data-toggle="tab">Tous</a>
@@ -41,6 +58,7 @@
     </div>
     <div class="tab-pane fade" id="done">
         <p>Téléchargements Terminés</p>
+        <a href="#" onclick="sendData()" class="btn btn-default">Retirer les téléchargements terminées</a>
         {{# getDone}}
             {{> download/task }}
         {{/ getDone}}

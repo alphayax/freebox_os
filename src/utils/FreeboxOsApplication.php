@@ -76,6 +76,20 @@ class FreeboxOsApplication {
                 $dlRss      = new freebox\os\services\DlRssService( $dlService);
                 $data = $dlRss->check();
                 break;
+
+            case 'download_clear_done':
+                $dlService  = new freebox\api\v3\services\download\Download( $this->application);
+                $ok = true;
+                $downloadTasks = $dlService->getAll();
+                foreach( $downloadTasks as $downloadTask){
+                    switch( $downloadTask->getStatus()){
+                        case freebox\api\v3\symbols\Download\Task\Status::DONE :
+                            $ok = $dlService->deleteFromId( $downloadTask->getId()) && $ok;
+                            // TODO : Return status ok
+                            break;
+                    }
+                }
+                break;
         }
 
         return $data;
