@@ -7,7 +7,7 @@
 {{$ contenu}}
     <script>
 
-        function sendData( id){
+        function checkRss( id){
             console.log( id);
             $.ajax({
                 type: "POST",
@@ -36,7 +36,7 @@
                     - {{ last_date }}<br/>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2">
-                    <a href="#" onclick="sendData('{{id}}')" class="btn btn-default">Verifier...</a>
+                    <a href="#" onclick="checkRss('{{id}}')" class="btn btn-default">Verifier...</a>
                 </div>
             </div>
         </div>

@@ -34,9 +34,7 @@ class FreeboxOsApplication {
         switch( $service){
 
             case 'download' :
-                $dlService    = new freebox\api\v3\services\download\Download( $this->application);
-                $downloadTask = new freebox\os\services\DownloadService( $dlService);
-                $data = $downloadTask;
+                $data = freebox\os\services\DownloadService::getRender( $this->application);
                 $template = 'download/list';
                 break;
 
