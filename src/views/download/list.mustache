@@ -7,20 +7,34 @@
 {{$ contenu}}
 <script>
 
-    function sendData(){
+    function clearDoneDownloads(){
         $.ajax({
             type: "POST",
-            url: "api.php?service=download_clear_done",
+            url: "api.php?service=download&action=clear_done",
             data: "",
             success : function(toto){
                 var dip = '';
                 for (var i = 0; i < toto.length; i++) {
                     dip += toto[i] + '<br />';
                 }
+                console.log('Status : ', toto);
                 location.href = '?service=download#done';
             }
         });
     }
+
+    function clearDownload( id){
+        $.ajax({
+            type: "POST",
+            url: "api.php?service=download&action=clear_id&id="+id,
+            data: '',
+            success : function(toto){
+                console.log('Download cleared '+ id);
+                console.log('Status : ', toto);
+            }
+        });
+    }
+
 </script>
 <ul class="nav nav-tabs">
     <li class="active">
@@ -58,7 +72,7 @@
     </div>
     <div class="tab-pane fade" id="done">
         <p>Téléchargements Terminés</p>
-        <a href="#" onclick="sendData()" class="btn btn-default">Retirer les téléchargements terminées</a>
+        <a href="#" onclick="clearDoneDownloads()" class="btn btn-default">Retirer les téléchargements terminées</a>
         {{# getDone}}
             {{> download/task }}
         {{/ getDone}}

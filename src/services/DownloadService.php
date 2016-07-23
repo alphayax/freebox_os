@@ -2,6 +2,8 @@
 namespace alphayax\freebox\os\services;
 use alphayax\freebox\api\v3\symbols\Download\Task\Status;
 use alphayax\freebox\os\models\DownloadTask;
+use alphayax\freebox;
+
 
 class DownloadService {
 
@@ -45,5 +47,35 @@ class DownloadService {
         return $this->downloadTasks[Status::SEEDING];
     }
 
+    /**
+     * @param $application
+     * @return mixed
+     */
+    public static function getAction( $application) {
+
+        $action = $_GET['action'];
+        switch ( $action){
+
+            case 'clear_done':
+                $dlService  = new freebox\api\v3\services\download\Download( $application);
+                $ok = true;
+                $downloadTasks = $dlService->getAll();
+                foreach( $downloadTasks as $downloadTask){
+                    switch( $downloadTask->getStatus()){
+                        case freebox\api\v3\symbols\Download\Task\Status::DONE :
+                            $ok = $dlService->deleteFromId( $downloadTask->getId()) && $ok;
+                            // TODO : Return status ok
+                            break;
+                    }
+                }
+                return $ok;
+
+            case 'clear_id':
+                $dlService  = new freebox\api\v3\services\download\Download( $application);
+                $downloadTask = $dlService->getFromId( $_GET['id']);
+                $ok = $dlService->deleteFromId( $downloadTask->getId());
+                return $ok;
+        }
+    }
 
 }

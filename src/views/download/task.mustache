@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-11 col-md-11 col-sm-11">
-        <h4>{{getName}}</h4>
+        <h4>{{getCleanName}}</h4>
     </div>
 </div>
 <div class="row">
@@ -33,7 +33,7 @@
             <a href="#" class="btn btn-default">Actions</a>
             <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li><a href="#">Enlever</a></li>
+                <li><a onclick="clearDownload({{getId}});" href="#">Enlever</a></li>
                 <li class="divider"></li>
                 <li><a href="#">Mettre en pause</a></li>
                 <li><a href="#">Relancer</a></li>

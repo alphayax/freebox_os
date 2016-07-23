@@ -33,6 +33,18 @@ class DownloadTask {
         }
     }
 
+    public function getCleanName() {
+        $name = $this->downloadTask->getName();
+        $name = str_replace( ['.', '_'], ' ', $name);
+
+        $pattern = '/(.*) (S[0-9]+E[0-9]+)/';
+        if( preg_match( $pattern, $name, $rez)){
+            return $rez[1] . ' - '. $rez[2];
+        }
+
+        return $name;
+    }
+
     public function getSizeHr(){
         return static::convertIntoHumanReadableSize( $this->downloadTask->getSize());
     }
