@@ -12,6 +12,47 @@ class DownloadTask {
         $this->downloadTask = $downloadTask;
     }
 
+    public function getSerieTitle() {
+
+        $name = $this->downloadTask->getName();
+        $name = str_replace( ['.', '_'], ' ', $name);
+
+        $pattern = '/(.*) (S[0-9]+E[0-9]+)/';
+        if( preg_match( $pattern, $name, $rez)){
+            return trim( $rez[1]);
+        }
+
+        return $name;
+    }
+
+    public function getImage() {
+
+        $title = $this->getSerieTitle();
+
+
+        if( file_exists(  __DIR__ . '/../www/img/' . $title)){
+            return 'img/'. $title;
+        }
+
+        $param = http_build_query([
+            't' => $title,
+            'r' => 'json',
+        ]);
+
+        $url = 'http://www.omdbapi.com/?'. $param;
+        trigger_error( $url);
+        $rest = new \alphayax\rest\Rest( $url);
+        $rest->GET([
+            't' => $title,
+        ]);
+        $rez = $rest->getCurlResponse();
+
+        $img = file_get_contents($rez['Poster']);
+
+        file_put_contents( __DIR__ . '/../www/img/' . $title, $img);    // TODO : Mettre un meilleur nom pour l'image
+        return 'img/'. $title;
+    }
+
     function __get($name) {
         if( method_exists( $this->downloadTask, $name)){
             return $this->downloadTask->$name();

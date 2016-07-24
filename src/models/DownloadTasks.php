@@ -7,7 +7,12 @@ use alphayax\freebox;
 class DownloadTasks {
 
     /** @var DownloadTask[] */
-    protected $downloadTasks = [];
+    protected $downloadTasks = [
+        'all'               => [],
+        Status::DONE        => [],
+        Status::SEEDING     => [],
+        Status::DOWNLOADING => [],
+    ];
 
     public function __construct( $downloadTasks) {
 
