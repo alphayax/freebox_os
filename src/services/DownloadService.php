@@ -10,7 +10,7 @@ class DownloadService {
 
         $dlService    = new freebox\api\v3\services\download\Download( $application);
         $downloadTasks = $dlService->getAll();
-        return new freebox\os\models\DownloadTasks( $downloadTasks);
+        return new freebox\os\models\Download\DownloadTasks( $downloadTasks);
     }
 
 

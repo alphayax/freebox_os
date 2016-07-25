@@ -1,5 +1,5 @@
 <?php
-namespace alphayax\freebox\os\models;
+namespace alphayax\freebox\os\models\Download;
 use alphayax\freebox\api\v3\symbols\Download\Task\Status;
 use alphayax\freebox;
 

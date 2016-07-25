@@ -1,5 +1,5 @@
 <?php
-namespace alphayax\freebox\os\models;
+namespace alphayax\freebox\os\models\Download;
 use alphayax\freebox\api\v3\models\Download\Task;
 use alphayax\freebox\os\utils\Omdb\Omdb;
 
@@ -41,7 +41,7 @@ class DownloadTask {
             return 'folder.png'; // TODO: verifier que c'est un dossier
         }
 
-        if( file_exists(  __DIR__ . '/../www/img/' . $title)){
+        if( file_exists(  __DIR__ . '/../../www/img/' . $title)){
             return 'img/'. $title;
         }
 
@@ -55,7 +55,7 @@ class DownloadTask {
 
         $img = file_get_contents( $poster);
 
-        file_put_contents( __DIR__ . '/../www/img/' . $title, $img);    // TODO : Mettre un meilleur nom pour l'image
+        file_put_contents( __DIR__ . '/../../www/img/' . $title, $img);    // TODO : Mettre un meilleur nom pour l'image
         return 'img/'. $title;
     }
 

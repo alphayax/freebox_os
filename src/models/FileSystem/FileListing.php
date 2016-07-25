@@ -1,5 +1,7 @@
 <?php
-namespace alphayax\freebox\os\models;
+namespace alphayax\freebox\os\models\FileSystem;
+
+use alphayax\freebox\os\models\FileSystem;
 
 class FileListing {
 
@@ -12,7 +14,7 @@ class FileListing {
     public function __construct( $fileInfos) {
 
         foreach ( $fileInfos as $fileInfo){
-            $this->fileInfos[] = new \alphayax\freebox\os\models\FileInfo( $fileInfo);
+            $this->fileInfos[] = new FileSystem\FileInfo( $fileInfo);
         }
 
     }

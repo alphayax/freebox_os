@@ -1,5 +1,5 @@
 <?php
-namespace alphayax\freebox\os\models;
+namespace alphayax\freebox\os\models\FileSystem;
 
 use alphayax\freebox\os\utils\Omdb\Omdb;
 
@@ -41,7 +41,7 @@ class FileInfo {
         $title = $this->getSerieTitle();
 
 
-        if( file_exists(  __DIR__ . '/../www/img/' . $title)){
+        if( file_exists(  __DIR__ . '/../../www/img/' . $title)){
             return 'img/'. $title;
         }
 
@@ -63,7 +63,7 @@ class FileInfo {
         }
         // TODO : Attention. Le nom de fichier peut contenir les caracteres speciaux . .. / \
 
-        file_put_contents( __DIR__ . '/../www/img/' . $title, $img);    // TODO : Mettre un meilleur nom pour l'image
+        file_put_contents( __DIR__ . '/../../www/img/' . $title, $img);    // TODO : Mettre un meilleur nom pour l'image
         return 'img/'. $title;
     }
 

@@ -1,7 +1,7 @@
 <?php
 namespace alphayax\freebox\os\services;
 use alphayax\freebox\api\v3\services\FileSystem\FileSystemListing;
-use alphayax\freebox\os\models\FileListing;
+use alphayax\freebox\os\models\FileSystem\FileListing;
 
 class FileSystemService {
 
