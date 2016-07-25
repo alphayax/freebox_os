@@ -7,11 +7,13 @@ class FileListing {
 
     public $fileInfos = [];
 
+    protected $directory;
+
+
     /**
-     * FileListing constructor.
      * @param \alphayax\freebox\api\v3\models\FileSystem\FileInfo[] $fileInfos
      */
-    public function __construct( $fileInfos) {
+    public function setFiles( $fileInfos) {
 
         foreach ( $fileInfos as $fileInfo){
             $this->fileInfos[] = new FileSystem\FileInfo( $fileInfo);
@@ -19,5 +21,25 @@ class FileListing {
 
     }
 
+    public function setDirectory( $directory) {
+        $this->directory = $directory;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDirectoryParts() {
+        $parts  = explode( DIRECTORY_SEPARATOR, $this->directory);
+        $path   = '';
+        $return = [];
+        foreach( $parts as $part){
+            $path .= $part . DIRECTORY_SEPARATOR;
+            $return[] = [
+                'name'  => $part,
+                'path'  => $path,
+            ];
+        }
+        return $return;
+    }
 
 }

@@ -5,22 +5,28 @@
 <p class="lead">Liste des fichiers sur les disques connectés a la freebox</p>
 
 
+<ul class="breadcrumb">
+    {{# getDirectoryParts}}
+    <li><a href="?service=filesystem&path={{path}}">{{name}}</a></li>
+    {{/ getDirectoryParts}}
+</ul>
+
+
 <div class="row">
-{{# fileInfos}}
+    {{# fileInfos}}
+    <div class="col-lg-2 col-md-2 col-sm-2">
 
-<div class="col-lg-2 col-md-2 col-sm-2">
+        <a href="?service=filesystem&path={{getPath}}" >
+            <div class="panel panel-default" style="height: 250px">
+                <div class="panel-heading">{{getName}}</div>
+                <div class="panel-body">
+                    <img src="{{getImage}}" width="100px"/>
+                </div>
+            </div>
+        </a>
 
-            <a href="?service=filesystem&path={{getPath}}" >
-    <div class="panel panel-default" style="height: 250px">
-        <div class="panel-heading">{{getName}}</div>
-        <div class="panel-body">
-            <img src="{{getImage}}" width="100px"/>
-        </div>
     </div>
-            </a>
-
-</div>
-{{/ fileInfos}}
+    {{/ fileInfos}}
 </div>
 
 {{/ content}}

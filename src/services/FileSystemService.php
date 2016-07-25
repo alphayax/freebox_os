@@ -12,8 +12,12 @@ class FileSystemService {
 
         $fileSystemListing    = new FileSystemListing( $application);
         $fileInfos = $fileSystemListing->getFilesFromDirectory( $directory);
-        return new FileListing( $fileInfos);
 
+        $directoryContent = new FileListing();
+        $directoryContent->setDirectory( $directory);
+        $directoryContent->setFiles( $fileInfos);
+
+        return $directoryContent;
     }
 
 }
