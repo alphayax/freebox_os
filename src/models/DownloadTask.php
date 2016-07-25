@@ -1,6 +1,7 @@
 <?php
 namespace alphayax\freebox\os\models;
 use alphayax\freebox\api\v3\models\Download\Task;
+use alphayax\freebox\os\utils\Omdb\Omdb;
 
 
 class DownloadTask {
@@ -17,7 +18,14 @@ class DownloadTask {
         $name = $this->downloadTask->getName();
         $name = str_replace( ['.', '_'], ' ', $name);
 
+        $name = preg_replace(['/(\[[a-zA-Z0-9_ -]+\])/', '/(\([a-zA-Z0-9_ -]+\))/'], '', $name);
+
         $pattern = '/(.*) (S[0-9]+E[0-9]+)/';
+        if( preg_match( $pattern, $name, $rez)){
+            return trim( $rez[1]);
+        }
+
+        $pattern = '/(.*) (S[0-9]+)/';
         if( preg_match( $pattern, $name, $rez)){
             return trim( $rez[1]);
         }
@@ -29,25 +37,23 @@ class DownloadTask {
 
         $title = $this->getSerieTitle();
 
+        if( in_array( $title, ['', '.', '..'])){
+            return 'folder.png'; // TODO: verifier que c'est un dossier
+        }
 
         if( file_exists(  __DIR__ . '/../www/img/' . $title)){
             return 'img/'. $title;
         }
 
-        $param = http_build_query([
-            't' => $title,
-            'r' => 'json',
-        ]);
+        $movie = Omdb::search( $title);
+        $poster = $movie->getPoster();
 
-        $url = 'http://www.omdbapi.com/?'. $param;
-        trigger_error( $url);
-        $rest = new \alphayax\rest\Rest( $url);
-        $rest->GET([
-            't' => $title,
-        ]);
-        $rez = $rest->getCurlResponse();
 
-        $img = file_get_contents($rez['Poster']);
+        if( empty( $poster) || $poster == 'N/A'){
+            return 'folder.png';
+        }
+
+        $img = file_get_contents( $poster);
 
         file_put_contents( __DIR__ . '/../www/img/' . $title, $img);    // TODO : Mettre un meilleur nom pour l'image
         return 'img/'. $title;

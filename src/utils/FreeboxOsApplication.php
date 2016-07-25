@@ -38,6 +38,11 @@ class FreeboxOsApplication {
                 $template = 'download/list';
                 break;
 
+            case 'filesystem' :
+                $data = freebox\os\services\FileSystemService::getRender( $this->application);
+                $template = 'filesystem/list';
+                break;
+
             case 'download_dlrss':
                 $dlService    = new freebox\api\v3\services\download\Download( $this->application);
                 $dlRss        = new freebox\os\services\DlRssService( $dlService);

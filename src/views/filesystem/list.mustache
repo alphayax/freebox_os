@@ -1,0 +1,27 @@
+{{< index }}
+{{$ content}}
+
+<h1>Système de fichiers</h1>
+<p class="lead">Liste des fichiers sur les disques connectés a la freebox</p>
+
+
+<div class="row">
+{{# fileInfos}}
+
+<div class="col-lg-2 col-md-2 col-sm-2">
+
+            <a href="?service=filesystem&path={{getPath}}" >
+    <div class="panel panel-default" style="height: 250px">
+        <div class="panel-heading">{{getName}}</div>
+        <div class="panel-body">
+            <img src="{{getImage}}" width="100px"/>
+        </div>
+    </div>
+            </a>
+
+</div>
+{{/ fileInfos}}
+</div>
+
+{{/ content}}
+{{/ index }}
