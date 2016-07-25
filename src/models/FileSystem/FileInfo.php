@@ -1,6 +1,7 @@
 <?php
 namespace alphayax\freebox\os\models\FileSystem;
 
+use alphayax\freebox\api\v3\symbols\FileSystem\FileInfoType;
 use alphayax\freebox\os\utils\Omdb\Omdb;
 
 class FileInfo {
@@ -40,6 +41,7 @@ class FileInfo {
 
         $title = $this->getSerieTitle();
 
+        $isDir = $this->fileInfo->getType() == FileInfoType::DIRECTORY;
 
         if( file_exists(  __DIR__ . '/../../www/img/' . $title)){
             return 'img/'. $title;

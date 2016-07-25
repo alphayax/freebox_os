@@ -1,6 +1,7 @@
 <?php
 namespace alphayax\freebox\os\models\Download;
 use alphayax\freebox\api\v3\models\Download\Task;
+use alphayax\freebox\os\utils\MovieTitle;
 use alphayax\freebox\os\utils\Omdb\Omdb;
 
 
@@ -16,44 +17,35 @@ class DownloadTask {
     public function getSerieTitle() {
 
         $name = $this->downloadTask->getName();
-        $name = str_replace( ['.', '_'], ' ', $name);
 
-        $name = preg_replace(['/(\[[a-zA-Z0-9_ -]+\])/', '/(\([a-zA-Z0-9_ -]+\))/'], '', $name);
-
-        $pattern = '/(.*) (S[0-9]+E[0-9]+)/';
-        if( preg_match( $pattern, $name, $rez)){
-            return trim( $rez[1]);
-        }
-
-        $pattern = '/(.*) (S[0-9]+)/';
-        if( preg_match( $pattern, $name, $rez)){
-            return trim( $rez[1]);
-        }
-
-        return $name;
+        $title = new MovieTitle($name);
+        return $title->getCleanName();
     }
 
     public function getImage() {
 
         $title = $this->getSerieTitle();
 
-        if( in_array( $title, ['', '.', '..'])){
-            return 'folder.png'; // TODO: verifier que c'est un dossier
-        }
-
         if( file_exists(  __DIR__ . '/../../www/img/' . $title)){
             return 'img/'. $title;
         }
 
         $movie = Omdb::search( $title);
+
+        if( $movie->getResponse() == 'False'){
+        }
         $poster = $movie->getPoster();
 
 
+
         if( empty( $poster) || $poster == 'N/A'){
-            return 'folder.png';
+            return '';
         }
 
         $img = file_get_contents( $poster);
+        if( empty( $img)){
+            return '';
+        }
 
         file_put_contents( __DIR__ . '/../../www/img/' . $title, $img);    // TODO : Mettre un meilleur nom pour l'image
         return 'img/'. $title;

@@ -20,7 +20,13 @@
             <div class="panel panel-default" style="height: 250px">
                 <div class="panel-heading">{{getName}}</div>
                 <div class="panel-body">
-                    <img src="{{getImage}}" width="100px"/>
+                    {{# getImage}}
+                    <img src="{{.}}" width="100px"/>
+                    {{/ getImage}}
+                    {{^ getImage}}
+                        none
+                    {{/ getImage}}
+
                 </div>
             </div>
         </a>

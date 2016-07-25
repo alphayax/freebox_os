@@ -16,7 +16,15 @@ class FileListing {
     public function setFiles( $fileInfos) {
 
         foreach ( $fileInfos as $fileInfo){
-            $this->fileInfos[] = new FileSystem\FileInfo( $fileInfo);
+            switch( $fileInfo->getName()){
+                case '.'    :
+                case '..'   :
+                    continue;
+
+                default:
+                    $this->fileInfos[] = new FileSystem\FileInfo( $fileInfo);
+                    break;
+            }
         }
 
     }
