@@ -14,22 +14,42 @@
 
 <div class="row">
     {{# fileInfos}}
-    <div class="col-lg-2 col-md-2 col-sm-2">
+    <div class="col-lg-4 col-md-4 col-sm-4">
 
-        <a href="?service=filesystem&path={{getPath}}" >
-            <div class="panel panel-default" style="height: 250px">
-                <div class="panel-heading">{{getName}}</div>
+            <div class="panel {{getTypeClass}}" style="height: 250px">
+                <div class="panel-heading">
+                    {{# isDir}}
+                        <a href="?service=filesystem&path={{getPath}}" >
+                            {{getSerieTitle}}
+                        </a>
+                    {{/ isDir}}
+                    {{^ isDir}}
+                        {{getSerieTitle}}
+                    {{/ isDir}}
+                </div>
                 <div class="panel-body">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
                     {{# getImage}}
                     <img src="{{.}}" width="100px"/>
                     {{/ getImage}}
                     {{^ getImage}}
-                        none
+                        {{# isDir}}
+                            <img src="folder.png" width="100px" />
+                        {{/ isDir}}
                     {{/ getImage}}
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        <p class="text-primary">{{getWrappedName}}</p>
+                        {{# getMovieInfo}}
+                        <p>{{.}}</p>
+                        {{/ getMovieInfo}}
 
+                        {{^ isDir}}
+                            <p class="text-muted">Taille : {{getSizeHr}}</p>
+                        {{/ isDir}}
+                    </div>
                 </div>
             </div>
-        </a>
 
     </div>
     {{/ fileInfos}}

@@ -2,7 +2,9 @@
 namespace alphayax\freebox\os\models\FileSystem;
 
 use alphayax\freebox\api\v3\symbols\FileSystem\FileInfoType;
+use alphayax\freebox\os\utils\MovieTitle;
 use alphayax\freebox\os\utils\Omdb\Omdb;
+use alphayax\freebox\os\utils\Unit;
 
 class FileInfo {
 
@@ -37,17 +39,51 @@ class FileInfo {
         return $name;
     }
 
+    public function getWrappedName() {
+        return wordwrap( $this->fileInfo->getName(), 25, PHP_EOL, true);
+    }
+
+    public function getMovieInfo() {
+        $title = new MovieTitle( $this->fileInfo->getName());
+        $return = [];
+
+        $season = $title->getSeason();
+        if( $season){
+            $return[] = "Saison $season";
+        }
+
+        $episode = $title->getEpisode();
+        if( $episode){
+            $return[] = "Episode $episode";
+        }
+
+        return $return;
+    }
+
+    public function getSizeHr() {
+        return Unit::octetsToHumanReadable( $this->fileInfo->getSize());
+    }
+
+    public function isDir() {
+        return $this->fileInfo->getType() == FileInfoType::DIRECTORY;
+    }
+
+    public function getTypeClass() {
+
+        $isDir = $this->fileInfo->getType() == FileInfoType::DIRECTORY;
+        return $isDir ? 'panel-primary' : 'panel-default';
+    }
+
     public function getImage() {
 
         $title = $this->getSerieTitle();
-
-        $isDir = $this->fileInfo->getType() == FileInfoType::DIRECTORY;
 
         if( file_exists(  __DIR__ . '/../../www/img/' . $title)){
             return 'img/'. $title;
         }
 
         if( in_array( $title, ['', '.', '..'])){
+            return '';
             return 'folder.png'; // TODO: verifier que c'est un dossier
         }
 
@@ -55,12 +91,14 @@ class FileInfo {
         $poster = $movie->getPoster();
 
         if( empty( $poster) || $poster == 'N/A'){
+            return '';
             return 'folder.png';
         }
 
         $img = file_get_contents( $poster);
 
         if( empty( $img)){
+            return '';
             return 'folder.png';
         }
         // TODO : Attention. Le nom de fichier peut contenir les caracteres speciaux . .. / \

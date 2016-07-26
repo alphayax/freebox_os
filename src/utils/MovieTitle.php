@@ -27,7 +27,7 @@ class MovieTitle {
         $name = preg_replace(['/(\[[a-zA-Z0-9_ -]+\])/', '/(\([a-zA-Z0-9_ -]+\))/'], '', $name);
 
         // Try to find Season and Episode info
-        $pattern = '/(.*) (S[0-9]+)(E[0-9]+)/';
+        $pattern = '/(.*) S([0-9]+)E([0-9]+)/';
         if( preg_match( $pattern, $name, $rez)){
             $this->cleanName = trim( $rez[1]);
             $this->season    = intval( $rez[2]);
@@ -36,7 +36,7 @@ class MovieTitle {
         }
 
         // Try to find Season info
-        $pattern = '/(.*) (S[0-9]+)/';
+        $pattern = '/(.*) S([0-9]+)/';
         if( preg_match( $pattern, $name, $rez)){
             $this->cleanName = trim( $rez[1]);
             $this->season    = intval( $rez[2]);

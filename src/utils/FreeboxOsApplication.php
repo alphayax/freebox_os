@@ -30,7 +30,7 @@ class FreeboxOsApplication {
      */
     public function getRender() {
 
-        $service = $_GET['service'];
+        $service = @$_GET['service'];
         switch( $service){
 
             case 'download' :
