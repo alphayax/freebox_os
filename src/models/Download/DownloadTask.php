@@ -3,6 +3,7 @@ namespace alphayax\freebox\os\models\Download;
 use alphayax\freebox\api\v3\models\Download\Task;
 use alphayax\freebox\os\utils\MovieTitle;
 use alphayax\freebox\os\utils\Omdb\Omdb;
+use alphayax\freebox\os\utils\Unit;
 
 
 class DownloadTask {
@@ -51,6 +52,11 @@ class DownloadTask {
         return 'img/'. $title;
     }
 
+    public function getEtaHr() {
+        $eta = $this->downloadTask->getEta();
+        return Unit::secondsToHumanReadable( $eta);
+    }
+
     function __get($name) {
         if( method_exists( $this->downloadTask, $name)){
             return $this->downloadTask->$name();
@@ -85,31 +91,15 @@ class DownloadTask {
     }
 
     public function getSizeHr(){
-        return static::convertIntoHumanReadableSize( $this->downloadTask->getSize());
+        return Unit::octetsToHumanReadable( $this->downloadTask->getSize());
     }
 
     public function getDlHr() {
-        return static::convertIntoHumanReadableSize( $this->downloadTask->getRxBytes());
+        return Unit::octetsToHumanReadable( $this->downloadTask->getRxBytes());
     }
 
     public function getUlHr() {
-        return static::convertIntoHumanReadableSize( $this->downloadTask->getTxBytes());
+        return Unit::octetsToHumanReadable( $this->downloadTask->getTxBytes());
     }
 
-    /**
-     * @todo : Passer cette methode dans une classe utilitaire
-     * @param        $size int Size in octects
-     * @return string
-     */
-    protected static function convertIntoHumanReadableSize( $size){
-
-        $units = array('o', 'Ko', 'Mo', 'Go', 'To');
-
-        $size = max($size, 0);
-        $pow = floor(($size ? log($size) : 0) / log(1024));
-        $pow = min($pow, count($units) - 1);
-        $size /= (1 << (10 * $pow));
-
-        return round($size, 3) . ' ' . $units[$pow];
-    }
 }
