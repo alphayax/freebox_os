@@ -57,7 +57,7 @@ class FileInfo {
             $return[] = "Episode $episode";
         }
 
-        return $return;
+        return implode( ' - ', $return);
     }
 
     public function getSizeHr() {
@@ -66,6 +66,12 @@ class FileInfo {
 
     public function isDir() {
         return $this->fileInfo->getType() == FileInfoType::DIRECTORY;
+    }
+
+    public function isVideo() {
+        $mimeType = $this->fileInfo->getMimetype();
+        $type = explode( '/', $mimeType);
+        return $type[0] == 'video';
     }
 
     public function getTypeClass() {
@@ -84,7 +90,6 @@ class FileInfo {
 
         if( in_array( $title, ['', '.', '..'])){
             return '';
-            return 'folder.png'; // TODO: verifier que c'est un dossier
         }
 
         $movie = Omdb::search( $title);
@@ -92,14 +97,12 @@ class FileInfo {
 
         if( empty( $poster) || $poster == 'N/A'){
             return '';
-            return 'folder.png';
         }
 
         $img = file_get_contents( $poster);
 
         if( empty( $img)){
             return '';
-            return 'folder.png';
         }
         // TODO : Attention. Le nom de fichier peut contenir les caracteres speciaux . .. / \
 

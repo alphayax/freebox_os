@@ -1,6 +1,52 @@
 {{< index }}
 {{$ content}}
 
+<script>
+    function FileSystem_getSynopsis( movieTitle){
+        $.ajax({
+            type: "POST",
+            url: "api.php?service=filesystem&action=synopsis",
+            data: {
+                movie_title: movieTitle
+            },
+            success : function( response){
+                console.log( response);
+                $('#youpi').html( response.data.plot);
+                $('#synopsis').modal();
+            }
+        });
+    }
+
+
+    function FileSystem_playVideo( path){
+        $.ajax({
+            type: "POST",
+            url: "api.php?service=filesystem&action=play",
+            data: {
+                path: path
+            },
+            success : function( response){
+                console.log( response);
+            }
+        });
+    }
+
+    function FileSystem_share( path){
+        $.ajax({
+            type: "POST",
+            url: "api.php?service=filesystem&action=share",
+            data: {
+                path: path
+            },
+            success : function( response){
+                console.log( response);
+                $('#youpi').html( "Url : " + response.data.url);
+                $('#synopsis').modal();
+            }
+        });
+    }
+</script>
+
 <h1>Système de fichiers</h1>
 <p class="lead">Liste des fichiers sur les disques connectés a la freebox</p>
 
@@ -14,7 +60,7 @@
 
 <div class="row">
     {{# fileInfos}}
-    <div class="col-lg-4 col-md-4 col-sm-4">
+    <div class="col-lg-4 col-md-6 col-sm-12">
 
             <div class="panel {{getTypeClass}}" style="height: 250px">
                 <div class="panel-heading">
@@ -43,8 +89,12 @@
                         {{# getMovieInfo}}
                         <p>{{.}}</p>
                         {{/ getMovieInfo}}
-
+                        {{# isVideo}}
+                            <a onclick="FileSystem_getSynopsis('{{getSerieTitle}}');" href="#" class="btn btn-primary btn-xs">Synopsis</a>
+                            <a onclick="FileSystem_playVideo('{{getPath}}');" href="#" class="btn btn-success btn-xs">Lire</a>
+                        {{/ isVideo}}
                         {{^ isDir}}
+                            <a onclick="FileSystem_share('{{getPath}}');" href="#" class="btn btn-primary btn-xs">Partager</a>
                             <p class="text-muted">Taille : {{getSizeHr}}</p>
                         {{/ isDir}}
                     </div>
@@ -53,6 +103,23 @@
 
     </div>
     {{/ fileInfos}}
+</div>
+
+<div class="modal" id="synopsis">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Synopsis</h4>
+            </div>
+            <div class="modal-body">
+                <p id="youpi"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 {{/ content}}

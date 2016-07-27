@@ -83,6 +83,9 @@ class FreeboxOsApplication {
                 $data = $dlRss->check();
                 break;
 
+            case 'filesystem' :
+                return freebox\os\services\FileSystemService::getAction( $this->application);
+
         }
 
         return $data;
