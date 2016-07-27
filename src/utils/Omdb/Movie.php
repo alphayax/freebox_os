@@ -1,7 +1,7 @@
 <?php
 namespace alphayax\freebox\os\utils\Omdb;
 
-class Movie {
+class Movie implements \JsonSerializable {
 
     protected $Title;
     protected $Year;
@@ -171,6 +171,30 @@ class Movie {
      */
     public function getResponse() {
         return $this->Response;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    function jsonSerialize() {
+        return $this->toArray();
+    }
+
+    /**
+     * Convert into associative array
+     * @return array
+     */
+    public function toArray() {
+        $movie_x = [];
+        $properties = array_keys( get_class_vars( static::class));
+        foreach( $properties as $property){
+            $movie_x[$property] = $this->$property;
+        }
+        return $movie_x;
     }
 
 }

@@ -40,13 +40,17 @@ class FileListing {
         $parts  = explode( DIRECTORY_SEPARATOR, $this->directory);
         $path   = '';
         $return = [];
-        foreach( $parts as $part){
+        foreach( $parts as $i => $part){
+            if( empty( $part) && $i !== 0){
+                continue;
+            }
             $path .= $part . DIRECTORY_SEPARATOR;
             $return[] = [
                 'name'  => $part,
                 'path'  => $path,
             ];
         }
+        $return[0]['name'] = 'Disques';
         return $return;
     }
 

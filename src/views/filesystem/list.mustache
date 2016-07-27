@@ -53,7 +53,9 @@
 
 <ul class="breadcrumb">
     {{# getDirectoryParts}}
-    <li><a href="?service=filesystem&path={{path}}">{{name}}</a></li>
+    <li>
+        <a href="?service=filesystem&path={{path}}">{{name}}</a>
+    </li>
     {{/ getDirectoryParts}}
 </ul>
 
@@ -97,6 +99,7 @@
                             <a onclick="FileSystem_share('{{getPath}}');" href="#" class="btn btn-primary btn-xs">Partager</a>
                             <p class="text-muted">Taille : {{getSizeHr}}</p>
                         {{/ isDir}}
+                        {{debug}}
                     </div>
                 </div>
             </div>

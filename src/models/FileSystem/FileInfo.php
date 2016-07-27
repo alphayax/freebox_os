@@ -4,6 +4,7 @@ namespace alphayax\freebox\os\models\FileSystem;
 use alphayax\freebox\api\v3\symbols\FileSystem\FileInfoType;
 use alphayax\freebox\os\utils\MovieTitle;
 use alphayax\freebox\os\utils\Omdb\Omdb;
+use alphayax\freebox\os\utils\Poster;
 use alphayax\freebox\os\utils\Unit;
 
 class FileInfo {
@@ -27,7 +28,6 @@ class FileInfo {
             $this->movieTitle = new MovieTitle( $this->fileInfo->getName());
         }
     }
-
 
     public function getSerieTitle() {
         $title = new MovieTitle( $this->fileInfo->getName());
@@ -87,8 +87,9 @@ class FileInfo {
             return '';
         }
 
-        $movie = Omdb::search( $title);
-        $poster = $movie->getPoster();
+        $poster = Poster::getFromTitle( $title);
+        //$movie = Omdb::search( $title);
+        //$poster = $movie->getPoster();
 
         if( empty( $poster) || $poster == 'N/A'){
             return '';
