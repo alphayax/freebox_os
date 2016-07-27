@@ -11,32 +11,27 @@ class FileInfo {
     /** @var \alphayax\freebox\api\v3\models\FileSystem\FileInfo  */
     protected $fileInfo;
 
+    /** @var \alphayax\freebox\os\utils\MovieTitle */
+    protected $movieTitle;
 
+    /**
+     * FileInfo constructor.
+     * @param \alphayax\freebox\api\v3\models\FileSystem\FileInfo $fileInfo
+     */
     public function __construct( \alphayax\freebox\api\v3\models\FileSystem\FileInfo $fileInfo) {
-
         $this->fileInfo = $fileInfo;
+
+        // Videos
+        if( $this->isVideo()){
+            /// TODO
+            $this->movieTitle = new MovieTitle( $this->fileInfo->getName());
+        }
     }
 
 
     public function getSerieTitle() {
-
-        $name = $this->fileInfo->getName();
-        $name = str_replace( ['.', '_'], ' ', $name);
-
-        $name = preg_replace(['/(\[[a-zA-Z0-9_ -]+\])/', '/(\([a-zA-Z0-9_ -]+\))/'], '', $name);
-
-        $pattern = '/(.*) (S[0-9]+E[0-9]+)/';
-        if( preg_match( $pattern, $name, $rez)){
-            return trim( $rez[1]);
-        }
-
-        $pattern = '/(.*) (S[0-9]+)/';
-        if( preg_match( $pattern, $name, $rez)){
-            return trim( $rez[1]);
-        }
-
-
-        return $name;
+        $title = new MovieTitle( $this->fileInfo->getName());
+        return $title->getCleanName();
     }
 
     public function getWrappedName() {
