@@ -50,6 +50,15 @@ class DownloadService {
                 return [
                     'success'   => $ok,
                 ];
+
+            case 'explore':
+
+                $dlService    = new freebox\api\v3\services\download\Download( $application);
+                $downloadTasks = $dlService->getAll();
+
+                $apiResponse = new freebox\os\utils\ApiResponse($downloadTasks);
+
+                return $apiResponse;
         }
 
         return '';

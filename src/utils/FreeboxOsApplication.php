@@ -1,6 +1,7 @@
 <?php
 namespace alphayax\freebox\os\utils;
 use \alphayax\freebox;
+use Firebase\FirebaseLib;
 
 /**
  * Class FreeboxOsApplication
@@ -85,6 +86,24 @@ class FreeboxOsApplication {
 
             case 'filesystem' :
                 return freebox\os\services\FileSystemService::getAction( $this->application);
+
+            case 'test':
+                $token = $_POST['token'];
+                $DEFAULT_PATH = '/firebase/example';
+                $firebase = new FirebaseLib('https://freebox-os.firebaseio.com/', $token);
+
+                $test = array(
+                    "foo" => "bar",
+                    "i_love" => "lamp",
+                    "id" => 42
+                );
+                $dateTime = new \DateTime();
+                $firebase->set($DEFAULT_PATH . '/' . $dateTime->format('c'), $test);
+
+                $firebase->set($DEFAULT_PATH . '/name/contact001', "John Doe");
+
+                $name = $firebase->get($DEFAULT_PATH . '/name/contact001');
+                return $name;
 
         }
 

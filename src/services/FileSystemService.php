@@ -9,6 +9,7 @@ use alphayax\freebox\api\v3\symbols\AirMedia\MediaType;
 use alphayax\freebox\os\models\FileSystem\FileListing;
 use alphayax\freebox\os\utils\ApiResponse;
 use alphayax\freebox\os\utils\Omdb\Omdb;
+use alphayax\freebox\utils\Application;
 
 /**
  * Class FileSystemService
@@ -31,11 +32,9 @@ class FileSystemService {
         return $directoryContent;
     }
 
+
     public static function getAction( $application) {
-
-
         $apiResponse = new ApiResponse();
-
         $action = @$_GET['action'];
         switch( $action){
 
@@ -81,6 +80,8 @@ class FileSystemService {
                 ]);
                 break;
 
+            case 'explore':
+                return static::explore( $apiResponse, $application);
 
             default:
                 $apiResponse->setSuccess( false);
@@ -89,6 +90,59 @@ class FileSystemService {
 
 
         return $apiResponse;
+    }
+
+    /**
+     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
+     * @param \alphayax\freebox\utils\Application    $application
+     * @return \alphayax\freebox\os\utils\ApiResponse
+     */
+    protected static function explore( ApiResponse $apiResponse, Application $application) {
+
+        $directory = @$_POST['path'] ?: '/';
+
+        $fileSystemListing    = new FileSystemListing( $application);
+        $fileInfos = $fileSystemListing->getFilesFromDirectory( $directory);
+        $return = [
+            'path' => $directory,
+            'path_part' => static::getDirectoryParts( $directory),
+            'files' => [],
+        ];
+        foreach ( $fileInfos as $fileInfo){
+            if( $fileInfo->getName() == '.' || $fileInfo->getName() == '..' ){
+                continue;
+            }
+            $return['files'][] = [
+                'path'  => $fileInfo->getPath(),
+                'name'  => $fileInfo->getName(),
+            ];
+        }
+
+        $apiResponse->setData( $return);
+
+        return $apiResponse;
+    }
+
+    /**
+     * @param $directory
+     * @return mixed
+     */
+    private static function getDirectoryParts( $directory) {
+        $parts  = explode( DIRECTORY_SEPARATOR, $directory);
+        $path   = '';
+        $return = [];
+        foreach( $parts as $i => $part){
+            if( empty( $part) && $i !== 0){
+                continue;
+            }
+            $path .= $part . DIRECTORY_SEPARATOR;
+            $return[] = [
+                'name'  => $part,
+                'path'  => $path,
+            ];
+        }
+        $return[0]['name'] = 'Disques';
+        return $return;
     }
 
 }
