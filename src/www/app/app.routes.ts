@@ -1,6 +1,6 @@
 import { provideRouter, RouterConfig }  from '@angular/router';
 import { DownloadComponent } from './download/download.component';
-import { FileSystemComponent } from "./file-system.component";
+import { FileSystemComponent } from "./file-system/file-system.component";
 import { HomeComponent } from "./home/home.component";
 
 const routes: RouterConfig = [
