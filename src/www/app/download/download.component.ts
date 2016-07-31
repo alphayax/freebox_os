@@ -3,7 +3,7 @@ import {DownloadService, Download} from "./download.service";
 
 @Component({
   selector: 'download',
-  templateUrl: 'app/download.component.html',
+  templateUrl: 'app/download/download.component.html',
   providers: [DownloadService]
 
 })
