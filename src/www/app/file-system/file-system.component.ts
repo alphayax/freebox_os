@@ -26,7 +26,7 @@ import {FileSystemService, FileInfo, DirectoryPart, DirectoryInfo} from './file-
                 </div>
                 <div class="panel-body">
                     <div class="col-lg-4 col-md-4 col-sm-4">
-                        image
+                        <img *ngIf="fileInfo.image" [src]="fileInfo.image" width="100px" />
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8">
                         <p class="text-primary">{{fileInfo.path}}</p>
@@ -61,6 +61,7 @@ export class FileSystemComponent implements OnInit {
                 this.directoryInfo = directoryInfo;
                 this.toto = directoryInfo.path_part;
                 this.files = directoryInfo.files;
+                console.log( directoryInfo);
             })
             .catch(error => this.error = error);
     }

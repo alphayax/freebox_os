@@ -6,6 +6,7 @@ use alphayax\freebox\api\v3\services\FileSystem\FileSharingLink;
 use alphayax\freebox\api\v3\services\FileSystem\FileSystemListing;
 use alphayax\freebox\api\v3\symbols\AirMedia\Action;
 use alphayax\freebox\api\v3\symbols\AirMedia\MediaType;
+use alphayax\freebox\os\models\FileSystem\FileItem;
 use alphayax\freebox\os\models\FileSystem\FileListing;
 use alphayax\freebox\os\utils\ApiResponse;
 use alphayax\freebox\os\utils\Omdb\Omdb;
@@ -112,10 +113,9 @@ class FileSystemService {
             if( $fileInfo->getName() == '.' || $fileInfo->getName() == '..' ){
                 continue;
             }
-            $return['files'][] = [
-                'path'  => $fileInfo->getPath(),
-                'name'  => $fileInfo->getName(),
-            ];
+            $fileItem = new FileItem( $fileInfo);
+            $fileItem->init();
+            $return['files'][] = $fileItem;
         }
 
         $apiResponse->setData( $return);
