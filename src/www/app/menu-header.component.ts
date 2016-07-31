@@ -8,7 +8,7 @@ export class NavElem {
 }
 
 const NAV_ELEMS : NavElem[] = [
-  { service: 'Home', name: 'Accueil' },
+  { service: 'home', name: 'Accueil' },
   { service: 'file-system', name: 'Système de fichiers' },
   { service: 'download', name: 'Téléchargements' },
 ];

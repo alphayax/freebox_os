@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers} from "@angular/http";
 
+import 'rxjs/add/operator/toPromise';
+
 export class Download {
     name: string;
     status: string;
@@ -15,14 +17,14 @@ export class DownloadService {
   ) { }
 
   // Todo : Mettre l'url a jour
-  private heroesUrl = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=download&action=explore';
+  private exploreUrl = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=download&action=explore';
 
     getDownloads() {
 
         let headers = new Headers();
-        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+            headers.append('Content-Type', 'application/json');
 
-        return this.http.post(this.heroesUrl)
+        return this.http.post(this.exploreUrl, '', headers)
                .toPromise()
                .then(response => response.json().data as Download[])
                .catch(this.handleError);
