@@ -1,12 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers} from "@angular/http";
+import {DownloadItem} from "./download-item";
 
 import 'rxjs/add/operator/toPromise';
-
-export class Download {
-    name: string;
-    status: string;
-}
 
 
 @Injectable()
@@ -26,7 +22,7 @@ export class DownloadService {
 
         return this.http.post(this.exploreUrl, '', headers)
                .toPromise()
-               .then(response => response.json().data as Download[])
+               .then(response => response.json().data as DownloadItem[])
                .catch(this.handleError);
     }
 

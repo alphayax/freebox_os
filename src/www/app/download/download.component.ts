@@ -1,19 +1,22 @@
 import {Component, OnInit} from '@angular/core';
-import {DownloadService, Download} from "./download.service";
+import {DownloadService} from "./download.service";
+import {DownloadItem} from "./download-item";
+import {DownloadItemComponent} from "./download-item/download-item.component";
 
 @Component({
   selector: 'download',
   templateUrl: 'app/download/download.component.html',
+  directives: [DownloadItemComponent],
   providers: [DownloadService]
 
 })
 
 export class DownloadComponent implements OnInit {
 
-  downloads           : Download[];
-  downloadsSeeding    : Download[];
-  downloadsDone       : Download[];
-  downloadsInProgress : Download[];
+  downloads           : DownloadItem[];
+  downloadsSeeding    : DownloadItem[];
+  downloadsDone       : DownloadItem[];
+  downloadsInProgress : DownloadItem[];
   error: any;
 
 
