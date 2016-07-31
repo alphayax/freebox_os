@@ -5,11 +5,13 @@ use alphayax\freebox\os\utils\MovieTitle;
 use alphayax\freebox\os\utils\Omdb\Omdb;
 use alphayax\freebox\os\utils\Unit;
 
-
+/**
+ * @deprecated
+ */
 class DownloadTask {
 
     /** @var \alphayax\freebox\api\v3\models\Download\Task */
-    protected $downloadTask = [];
+    protected $downloadTask;
 
     public function __construct( Task $downloadTask) {
         $this->downloadTask = $downloadTask;

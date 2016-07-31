@@ -3,7 +3,11 @@ namespace alphayax\freebox\os\models\Download;
 use alphayax\freebox\api\v3\symbols\Download\Task\Status;
 use alphayax\freebox;
 
-
+/**
+ * Class DownloadTasks
+ * @package alphayax\freebox\os\models\Download
+ * @deprecated
+ */
 class DownloadTasks {
 
     /** @var DownloadTask[] */

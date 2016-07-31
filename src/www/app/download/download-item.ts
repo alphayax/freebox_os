@@ -1,5 +1,5 @@
 
-export class DownloadItem {
+export class DownloadTask {
     archive_password : string;
     created_ts : number;
     download_dir : string;
@@ -19,4 +19,20 @@ export class DownloadItem {
     tx_pct : number;
     tx_rate : number;
     type : string;
+
 }
+
+export class DownloadItem {
+    downloadTask : DownloadTask;
+
+    image : string;
+    name : string;
+    sizeHr : string;
+    rxTotalHr : string;
+    txTotalHr : string;
+    etaHr : string;
+    cleanName : string;
+    rxPct: number;
+    txPct: number;
+}
+

@@ -56,7 +56,13 @@ class DownloadService {
                 $dlService    = new freebox\api\v3\services\download\Download( $application);
                 $downloadTasks = $dlService->getAll();
 
-                $apiResponse = new freebox\os\utils\ApiResponse($downloadTasks);
+                $ret = [];
+                foreach ($downloadTasks as $downloadTask){
+                    $dl = new freebox\os\models\Download\DownloadItem( $downloadTask);
+                    $dl->init();
+                    $ret[] = $dl;
+                }
+                $apiResponse = new freebox\os\utils\ApiResponse( $ret);
 
                 return $apiResponse;
         }
