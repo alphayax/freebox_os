@@ -23,10 +23,10 @@ export class DownloadService {
         return this.http.post(this.exploreUrl, '', headers)
                .toPromise()
                .then(response => response.json().data as DownloadItem[])
-               .catch(this.handleError);
+               .catch(DownloadService.handleError);
     }
 
-    private handleError(error: any) {
+    private static handleError(error: any) {
     console.error('An error occurred', error);
     return Promise.reject(error.message || error);
   }

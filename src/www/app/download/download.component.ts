@@ -29,8 +29,8 @@ export class DownloadComponent implements OnInit {
         .then(downloads => {
           this.downloads            = downloads;
           this.downloadsSeeding     = downloads.filter(download => download.downloadTask.status === 'seeding');
-          this.downloadsDone        = downloads.filter(download => download.downloadTask.status === 'downloading');
-          this.downloadsInProgress  = downloads.filter(download => download.downloadTask.status === 'done');
+          this.downloadsDone        = downloads.filter(download => download.downloadTask.status === 'done');
+          this.downloadsInProgress  = downloads.filter(download => download.downloadTask.status === 'downloading');
         })
         .catch(error => this.error = error);
   }
