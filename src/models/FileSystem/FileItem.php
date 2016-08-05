@@ -15,6 +15,7 @@ class FileItem implements \JsonSerializable {
     protected $path;
     protected $name;
     protected $image;
+    protected $isDir;
 
 
     /**
@@ -29,6 +30,7 @@ class FileItem implements \JsonSerializable {
         $this->image    = $this->getImage();
         $this->name     = $this->getCleanName();
         $this->path     = $this->fileInfo->getPath();
+        $this->isDir    = $this->isDir();
     }
 
     public function getCleanName() {

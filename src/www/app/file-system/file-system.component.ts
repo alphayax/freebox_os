@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {FileSystemService, FileInfo, DirectoryPart, DirectoryInfo} from './file-system.service';
+import { Component, OnInit } from '@angular/core';
+import { FileSystemService, DirectoryPart, DirectoryInfo } from './file-system.service';
+import { FileInfoComponent } from "./file-info/file-info.component";
+import { FileInfo } from "./file-info";
 
 @Component({
     selector: 'file-system',
     template: `
-
 <h1>Système de fichiers</h1>
 <p class="lead">Liste des fichiers sur les disques connectés a la freebox</p>
-
 
 <ul class="breadcrumb">
     <li *ngFor="let part of toto">
@@ -15,31 +15,14 @@ import {FileSystemService, FileInfo, DirectoryPart, DirectoryInfo} from './file-
     </li>
 </ul>
 
-
 <div class="row">
-
     <div *ngFor="let fileInfo of files" class="col-lg-4 col-md-6 col-sm-12">
-
-            <div class="panel panel-primary" style="height: 250px">
-                <div class="panel-heading" style="cursor: pointer" (click)="getDirectoryInfo(fileInfo.path)">
-                    {{fileInfo.name}}
-                </div>
-                <div class="panel-body">
-                    <div class="col-lg-4 col-md-4 col-sm-4">
-                        <img *ngIf="fileInfo.image" [src]="fileInfo.image" width="100px" />
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8">
-                        <p class="text-primary">{{fileInfo.path}}</p>
-                        infos...
-                    </div>
-                </div>
-            </div>
-
+        <file-info [fileInfo]="fileInfo"  (click)="getDirectoryInfo(fileInfo.path)"></file-info>
     </div>
 </div>
     `,
-    providers : [FileSystemService]
-
+    providers : [FileSystemService],
+    directives : [FileInfoComponent]
 })
 
 

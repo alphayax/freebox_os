@@ -1,0 +1,16 @@
+<div class="panel panel-primary" style="height: 250px">
+    <div class="panel-heading" style="cursor: pointer">
+        {{fileInfo.name}}
+    </div>
+    <div class="panel-body">
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <img *ngIf="fileInfo.image" [src]="fileInfo.image" width="100px" />
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-8">
+            <p class="text-muted">{{fileInfo.fileInfo.name}}</p>
+            <p *ngIf="fileInfo.isDir">
+                Directory
+            </p>
+        </div>
+    </div>
+</div>
