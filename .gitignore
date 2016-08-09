@@ -10,3 +10,5 @@
 # Project files
 /**/app_token
 /clover.xml
+/src/etc/assoc.json
+/src/etc/poster.json
