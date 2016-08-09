@@ -11,6 +11,12 @@
             <p *ngIf="fileInfo.isDir">
                 Directory
             </p>
+            <p *ngIf="!fileInfo.isDir">
+                <a class="btn btn-primary btn-xs">Lire</a>
+                <a class="btn btn-primary btn-xs">Télécharger</a>
+                <a class="btn btn-primary btn-xs">Envoyer sur ma box</a>
+            </p>
+
         </div>
     </div>
 </div>

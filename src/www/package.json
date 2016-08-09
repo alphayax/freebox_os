@@ -1,6 +1,7 @@
 {
   "name": "freebox_os_angular",
   "version": "0.0.1",
+  "description": "Alphayax Freebox OS Angular 2",
   "scripts": {
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
     "lite": "lite-server",
