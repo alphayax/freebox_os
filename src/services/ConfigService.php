@@ -3,6 +3,7 @@ namespace alphayax\freebox\os\services;
 use alphayax\freebox\api\v3\services\ApiVersion;
 use alphayax\freebox\api\v3\services\login\Association;
 use alphayax\freebox\api\v3\symbols as v3_symbols;
+use alphayax\freebox\os\etc\Config;
 use alphayax\freebox\os\utils\ApiResponse;
 use alphayax\freebox\utils\Application;
 
@@ -44,11 +45,16 @@ class ConfigService {
      * @return \alphayax\freebox\os\utils\ApiResponse
      */
     protected function getFreebox( ApiResponse $apiResponse, Application $application) {
-        $apiVersion = new ApiVersion( $application);
-        $maFreebox = $apiVersion->getApiVersion();
-        $apiResponse->setData([
-            $maFreebox,
-        ]);
+
+        $assocConf = Config::get( 'assoc');
+        $FbxInfos = [];
+
+        // TODO : Return assocConf (without token)
+        foreach ( $assocConf as $freebox){
+            $FbxInfos[] = $freebox['host'];
+        }
+
+        $apiResponse->setData( $FbxInfos);
 
         return $apiResponse;
     }
@@ -135,17 +141,9 @@ class ConfigService {
     }
 
     protected static function saveNewAssociation( $association_x) {
-
-        $assocEtc = __DIR__ . '/../etc/assoc.json';
-        if( ! file_exists( $assocEtc)){
-            file_put_contents( $assocEtc, '[]');
-        }
-
-        $assoc_content = file_get_contents( $assocEtc);
-        $assoc_xs = json_decode( $assoc_content, true);
-        $assoc_xs[] = $association_x;
-
-        file_put_contents( $assocEtc, json_encode( $assoc_xs));
+        $assocConf = Config::get( 'assoc');
+        $assocConf[] = $association_x;
+        Config::set( 'assoc', $assocConf);
     }
 
 }

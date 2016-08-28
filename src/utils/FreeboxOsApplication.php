@@ -21,9 +21,9 @@ class FreeboxOsApplication {
      * FreeboxOsApplication constructor.
      */
     public function __construct() {
-        $this->application = new freebox\utils\Application(static::APP_ID, static::APP_NAME, static::APP_VERSION);
-        $this->application->authorize();
-        $this->application->openSession();
+        $this->application = new freebox\utils\Application( static::APP_ID, static::APP_NAME, static::APP_VERSION);
+ //       $this->application->authorize();
+   //     $this->application->openSession();
     }
 
     /**
@@ -75,10 +75,16 @@ class FreeboxOsApplication {
         $data = [];
         switch( $service){
 
+            case 'config' :
+                return freebox\os\services\ConfigService::getAction( $this->application);
+
+
             case 'download' :
                 return freebox\os\services\DownloadService::getAction( $this->application);
 
             case 'download_dlrss':
+                $this->application->authorize();    // TODO : Temporary fix
+                $this->application->openSession();
                 $dlService  = new freebox\api\v3\services\download\Download( $this->application);
                 $dlRss      = new freebox\os\services\DlRssService( $dlService);
                 $data = $dlRss->check();

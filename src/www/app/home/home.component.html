@@ -1,1 +1,21 @@
 <h1>Bienvenuuuuue !!!</h1>
+<p class="lead">Liste des freebox connectées au systeme</p>
+
+<table class="table table-striped table-hover ">
+    <thead>
+    <tr>
+        <th>Freebox</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let freeboxInfo of freeboxInfos">
+        <td>{{freeboxInfo}}</td>
+    </tr>
+    </tbody>
+</table>
+
+<a [routerLink]="['/association']" class="btn btn-primary">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&emsp;Associer une freebox locale
+</a>
+
+

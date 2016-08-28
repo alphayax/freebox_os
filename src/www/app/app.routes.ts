@@ -2,6 +2,7 @@ import { provideRouter, RouterConfig }  from '@angular/router';
 import { DownloadComponent } from './download/download.component';
 import { FileSystemComponent } from "./file-system/file-system.component";
 import { HomeComponent } from "./home/home.component";
+import { AssociationComponent } from "./association/association.component";
 
 const routes: RouterConfig = [
   {
@@ -11,6 +12,10 @@ const routes: RouterConfig = [
   {
     path: 'file-system',
     component: FileSystemComponent
+  },
+  {
+    path: 'association',
+    component: AssociationComponent
   },
   {
     path: 'home',
