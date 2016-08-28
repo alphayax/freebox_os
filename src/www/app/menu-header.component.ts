@@ -36,7 +36,7 @@ const NAV_ELEMS : NavElem[] = [
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Extensions<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="?service=download_dlrss">Dl Rss</a></li>
+                            <li><a routerLink="dl-rss">Dl Rss</a></li>
                         </ul>
                     </li>
                 </ul>

@@ -3,6 +3,7 @@ import { DownloadComponent } from './download/download.component';
 import { FileSystemComponent } from "./file-system/file-system.component";
 import { HomeComponent } from "./home/home.component";
 import { AssociationComponent } from "./association/association.component";
+import { DlRssComponent } from "./dl-rss/dl-rss.component";
 
 const routes: RouterConfig = [
   {
@@ -20,6 +21,10 @@ const routes: RouterConfig = [
   {
     path: 'home',
     component: HomeComponent
+  },
+  {
+    path: 'dl-rss',
+    component: DlRssComponent
   },
   {
     path: '',

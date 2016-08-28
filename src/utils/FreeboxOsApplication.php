@@ -78,21 +78,15 @@ class FreeboxOsApplication {
             case 'config' :
                 return freebox\os\services\ConfigService::getAction( $this->application);
 
-
             case 'download' :
                 return freebox\os\services\DownloadService::getAction( $this->application);
 
             case 'download_dlrss':
-                $this->application->authorize();    // TODO : Temporary fix
-                $this->application->openSession();
-                $dlService  = new freebox\api\v3\services\download\Download( $this->application);
-                $dlRss      = new freebox\os\services\DlRssService( $dlService);
-                $data = $dlRss->check();
-                break;
+                return freebox\os\services\DlRssService::getAction( $this->application);
 
             case 'filesystem' :
                 return freebox\os\services\FileSystemService::getAction( $this->application);
-
+/*
             case 'test':
                 $token = $_POST['token'];
                 $DEFAULT_PATH = '/firebase/example';
@@ -110,7 +104,7 @@ class FreeboxOsApplication {
 
                 $name = $firebase->get($DEFAULT_PATH . '/name/contact001');
                 return $name;
-
+*/
         }
 
         return $data;

@@ -1,0 +1,38 @@
+
+<h1>Scan de flux RSS</h1>
+<p class="lead">Analyses de flux RSS a la recherche d'un élément particluier</p>
+
+
+<div *ngFor="let rssSearch of rssSearches" class="panel panel-default">
+    <div class="panel-heading">{{rssSearch.pattern}}</div>
+    <div class="panel-body">
+        <div class="col-lg-10 col-md-10 col-sm-10">
+            - {{ rssSearch.rss }}<br/>
+            - {{ rssSearch.pattern }}<br/>
+            - {{ rssSearch.last_date }}<br/>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2">
+            <a (click)="checkRss(rssSearch.id)" class="btn btn-success btn-xs">
+                <span class="glyphicon glyphicon glyphicon-refresh" aria-hidden="true"></span>&emsp;Verifier
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="rss_results">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Téléchargements ajoutés</h4>
+            </div>
+            <div class="modal-body">
+                <p id="youpi"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -8,7 +8,6 @@ import {DownloadItemComponent} from "./download-item/download-item.component";
   templateUrl: 'app/download/download.component.html',
   directives: [DownloadItemComponent],
   providers: [DownloadService]
-
 })
 
 export class DownloadComponent implements OnInit {
