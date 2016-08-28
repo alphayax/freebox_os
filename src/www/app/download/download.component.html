@@ -37,7 +37,11 @@
     </div>
     <div class="tab-pane fade" id="done">
         <p>Téléchargements Terminés</p>
-        <a href="#" class="btn btn-default">Retirer les téléchargements terminées</a>
+
+        <a (click)="cleanDone()" class="btn btn-primary btn-xs">
+            <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>&emsp;Retirer les téléchargements terminées
+        </a>
+
         <div *ngFor="let download of downloadsDone">
             <download-item [downloadItem]="download"></download-item>
         </div>

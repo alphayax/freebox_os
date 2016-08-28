@@ -35,6 +35,14 @@ export class DownloadComponent implements OnInit {
         .catch(error => this.error = error);
   }
 
+  cleanDone(){
+      this.downloadService.cleanDone()
+          .then(downloads => {
+              console.log( downloads);
+          })
+          .catch(error => this.error = error);
+  }
+
   ngOnInit() {
     this.getDownloads();
   }

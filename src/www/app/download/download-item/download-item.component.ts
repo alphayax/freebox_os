@@ -1,19 +1,31 @@
 import { Component, Input } from '@angular/core';
 import { DownloadItem } from "../download-item";
+import { DownloadItemService } from "./download-item.service";
 
 @Component({
   selector: 'download-item',
   templateUrl: 'app/download/download-item/download-item.component.html',
+  providers: [DownloadItemService]
 })
 
 export class DownloadItemComponent {
 
+  error: any;
+
   @Input()
   downloadItem: DownloadItem;
 
-  clearDownload( downloadId){
-    console.log( 'Non implémenté. DlId = ' + downloadId);
-    console.log( this.downloadItem);
+  constructor(
+      private downloadItemService: DownloadItemService
+  ){ }
+
+  clearDownload(){
+
+    this.downloadItemService.cleanFromId( this.downloadItem.downloadTask.id)
+        .then(downloads => {
+          console.log( downloads);
+        })
+        .catch(error => this.error = error);
   }
 
   public getRxPct() : number {

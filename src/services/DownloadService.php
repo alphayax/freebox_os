@@ -18,12 +18,16 @@ class DownloadService {
      * @param $application
      * @return mixed
      */
-    public static function getAction( $application) {
-
+    public static function getAction( freebox\utils\Application $application) {
         $action = $_GET['action'];
         switch ( $action){
 
             case 'clear_done':
+                $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
+                $application->setAppToken( $freeboxMaster['token']);
+                $application->setFreeboxApiHost( $freeboxMaster['host']);
+                $application->authorize();
+                $application->openSession();
                 $dlService  = new freebox\api\v3\services\download\Download( $application);
                 $response = [
                     'success'   => true,
@@ -44,6 +48,11 @@ class DownloadService {
 
 
             case 'clear_id':
+                $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
+                $application->setAppToken( $freeboxMaster['token']);
+                $application->setFreeboxApiHost( $freeboxMaster['host']);
+                $application->authorize();
+                $application->openSession();
                 $dlService  = new freebox\api\v3\services\download\Download( $application);
                 $downloadTask = $dlService->getFromId( $_GET['id']);
                 $ok = $dlService->deleteFromId( $downloadTask->getId());
@@ -52,6 +61,12 @@ class DownloadService {
                 ];
 
             case 'explore':
+
+                $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
+                $application->setAppToken( $freeboxMaster['token']);
+                $application->setFreeboxApiHost( $freeboxMaster['host']);
+                $application->authorize();
+                $application->openSession();
 
                 $dlService    = new freebox\api\v3\services\download\Download( $application);
                 $downloadTasks = $dlService->getAll();
@@ -69,5 +84,7 @@ class DownloadService {
 
         return '';
     }
+
+
 
 }
