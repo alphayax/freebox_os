@@ -22,32 +22,6 @@ class FreeboxOsApplication {
      */
     public function __construct() {
         $this->application = new freebox\utils\Application( static::APP_ID, static::APP_NAME, static::APP_VERSION);
- //       $this->application->authorize();
-   //     $this->application->openSession();
-    }
-
-    /**
-     * For index.php
-     */
-    public function getRender() {
-
-        $service = @$_GET['service'];
-        switch( $service){
-
-            case 'home' :
-            default :
-                $template = 'home';
-                $data = [];
-                break;
-        }
-
-        /// Rendering
-        $m = new \Mustache_Engine([
-            'pragmas' => [\Mustache_Engine::PRAGMA_BLOCKS],
-            'loader'  => new \Mustache_Loader_FilesystemLoader( __DIR__.'/../views'),
-        ]);
-
-        return $m->loadTemplate( $template)->render( $data);
     }
 
     /**

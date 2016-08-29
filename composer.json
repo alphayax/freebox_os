@@ -13,7 +13,6 @@
   "require" : {
     "php": ">=5.5.0",
     "alphayax/freebox_api_php": "^1.2.0",
-    "mustache/mustache": "^2.9.0",
     "ktamas77/firebase-php": "dev-master"
   },
   "require-dev" : {
