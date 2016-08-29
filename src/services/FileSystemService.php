@@ -7,8 +7,8 @@ use alphayax\freebox\api\v3\services\FileSystem\FileSystemListing;
 use alphayax\freebox\api\v3\symbols\AirMedia\Action;
 use alphayax\freebox\api\v3\symbols\AirMedia\MediaType;
 use alphayax\freebox\os\etc\Config;
+use alphayax\freebox\os\models\FileSystem\FileInfo;
 use alphayax\freebox\os\models\FileSystem\FileItem;
-use alphayax\freebox\os\models\FileSystem\FileListing;
 use alphayax\freebox\os\utils\ApiResponse;
 use alphayax\freebox\os\utils\Omdb\Omdb;
 use alphayax\freebox\utils\Application;
@@ -18,22 +18,6 @@ use alphayax\freebox\utils\Application;
  * @package alphayax\freebox\os\services
  */
 class FileSystemService {
-
-
-    public static function getRender( $application) {
-
-        $directory = @$_GET['path'] ?: '/';
-
-        $fileSystemListing    = new FileSystemListing( $application);
-        $fileInfos = $fileSystemListing->getFilesFromDirectory( $directory);
-
-        $directoryContent = new FileListing();
-        $directoryContent->setDirectory( $directory);
-        $directoryContent->setFiles( $fileInfos);
-
-        return $directoryContent;
-    }
-
 
     public static function getAction( $application) {
         $apiResponse = new ApiResponse();
@@ -120,8 +104,7 @@ class FileSystemService {
             if( $fileInfo->getName() == '.' || $fileInfo->getName() == '..' ){
                 continue;
             }
-            $fileItem = new FileItem( $fileInfo);
-            $fileItem->init();
+            $fileItem = new FileInfo( $fileInfo);
             $return['files'][] = $fileItem;
         }
 

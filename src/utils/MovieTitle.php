@@ -1,14 +1,14 @@
 <?php
 namespace alphayax\freebox\os\utils;
 
-class MovieTitle {
+class MovieTitle implements \JsonSerializable {
 
     protected $rawTitle;
     protected $episode;
     protected $season;
     protected $cleanName;
 
-    public function __construct($rawTitle) {
+    public function __construct( $rawTitle) {
         $this->rawTitle = $rawTitle;
         $this->extractData();
     }
@@ -43,6 +43,14 @@ class MovieTitle {
             return;
         }
 
+        // Try to find Episode number
+        $pattern = '/(.*) ([0-9]+)/';
+        if( preg_match( $pattern, $name, $rez)){
+            $this->cleanName = trim( $rez[1]);
+            $this->episode   = intval( $rez[2]);
+            return;
+        }
+
         $this->cleanName = trim( $name);
     }
 
@@ -65,6 +73,35 @@ class MovieTitle {
      */
     public function getCleanName() {
         return $this->cleanName;
+    }
+
+
+    /**
+     * Return an array representation of the model properties
+     * @return array
+     */
+    public function toArray(){
+        $ModelArray = [];
+        foreach( get_object_vars( $this) as $propertyName => $propertyValue){
+            if( is_object( $propertyValue)){
+                /// TODO : Faire un meilleur check
+                $ModelArray[$propertyName] = $propertyValue->toArray();
+            } else {
+                $ModelArray[$propertyName] = $propertyValue;
+            }
+        }
+        return $ModelArray;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize() {
+        return $this->toArray();
     }
 
 }

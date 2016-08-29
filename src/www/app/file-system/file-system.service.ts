@@ -25,6 +25,9 @@ export class FileSystemService {
 
   // TODO : Mettre la vraie url externe
   private filesystem_explore_url = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=explore';
+  private filesystem_play = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=play';
+  private filesystem_share = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=share';
+  private filesystem_synopsis = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=synopsis';
 
     getDirectoryInfo( path) {
 
@@ -34,12 +37,12 @@ export class FileSystemService {
         return this.http.post(this.filesystem_explore_url, 'path='+path,{ headers: headers })
                .toPromise()
                .then(response => response.json().data as DirectoryInfo)
-               .catch(this.handleError);
+               .catch( this.handleError);
     }
 
     private handleError(error: any) {
-    console.error('An error occurred', error);
-    return Promise.reject(error.message || error);
-  }
+        console.error('An error occurred', error);
+        return Promise.reject(error.message || error);
+    }
 }
 
