@@ -3,16 +3,11 @@ namespace alphayax\freebox\os\services;
 use alphayax\freebox\api\v3\symbols\Download\Task\Status;
 use alphayax\freebox;
 
-
+/**
+ * Class DownloadService
+ * @package alphayax\freebox\os\services
+ */
 class DownloadService {
-
-    public static function getRender( $application) {
-
-        $dlService    = new freebox\api\v3\services\download\Download( $application);
-        $downloadTasks = $dlService->getAll();
-        return new freebox\os\models\Download\DownloadTasks( $downloadTasks);
-    }
-
 
     /**
      * @param $application

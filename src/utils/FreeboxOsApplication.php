@@ -34,11 +34,6 @@ class FreeboxOsApplication {
         $service = @$_GET['service'];
         switch( $service){
 
-            case 'download' :
-                $data = freebox\os\services\DownloadService::getRender( $this->application);
-                $template = 'download/list';
-                break;
-
             case 'filesystem' :
                 $data = freebox\os\services\FileSystemService::getRender( $this->application);
                 $template = 'filesystem/list';

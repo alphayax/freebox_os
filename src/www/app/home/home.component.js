@@ -9,15 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require("@angular/router");
+var home_service_1 = require("./home.service");
 var HomeComponent = (function () {
-    function HomeComponent() {
+    function HomeComponent(homeService) {
+        this.homeService = homeService;
     }
+    HomeComponent.prototype.getFreeboxInfo = function () {
+        var _this = this;
+        this.homeService.getFreeboxInfo()
+            .then(function (freeboxInfos) {
+            _this.freeboxInfos = freeboxInfos;
+            console.log(freeboxInfos);
+        })
+            .catch(function (error) { return _this.error = error; });
+    };
+    HomeComponent.prototype.ngOnInit = function () {
+        this.getFreeboxInfo();
+    };
     HomeComponent = __decorate([
         core_1.Component({
             selector: 'home',
-            templateUrl: 'app/home/home.component.html'
+            templateUrl: 'app/home/home.component.html',
+            directives: [router_1.ROUTER_DIRECTIVES],
+            providers: [home_service_1.HomeService]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [home_service_1.HomeService])
     ], HomeComponent);
     return HomeComponent;
 }());
