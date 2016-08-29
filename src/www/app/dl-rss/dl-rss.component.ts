@@ -10,6 +10,7 @@ import {RssSearch} from "./rss-search";
 
 export class DlRssComponent implements OnInit {
 
+    checkRssResults: string[];
 
     rssSearches: RssSearch[];
 
@@ -19,11 +20,12 @@ export class DlRssComponent implements OnInit {
 
 
     checkRss( id){
-        console.log(id);
         this.dlRssService.checkRss( id)
-            .then(result => {
-                console.log(result);
-            });
+            .then(result => this.checkRssResults = result);
+    }
+
+    cleanResults() {
+        this.checkRssResults = [];
     }
 
     getPatterns(){
