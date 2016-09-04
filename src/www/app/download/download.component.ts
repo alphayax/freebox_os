@@ -22,7 +22,7 @@ export class DownloadComponent implements OnInit {
       private downloadService: DownloadService
   ){ }
 
-  getDownloads(){
+  getDownloads() : void {
     this.downloadService.getDownloads()
         .then(downloads => {
           this.downloads            = downloads;
@@ -33,7 +33,7 @@ export class DownloadComponent implements OnInit {
         .catch(error => this.error = error);
   }
 
-  cleanDone(){
+  cleanDone() : void {
       this.downloadService.cleanDone()
           .then(downloads => {
               console.log( downloads);

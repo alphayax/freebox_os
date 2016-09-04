@@ -89,8 +89,16 @@ class ConfigService {
         $application->setFreeboxApiHost( $freebox_uri);
 
         /// Try to connect to the box
-        $apiVersion = new ApiVersion( $application);
-        $maFreebox = $apiVersion->getApiVersion();
+        try {
+            $apiVersion = new ApiVersion($application);
+            $maFreebox = $apiVersion->getApiVersion();
+        }
+        catch( \Exception $e){
+            $apiResponse->setSuccess( false);
+            $apiResponse->setError( $e->getMessage());
+
+            return $apiResponse;
+        }
 
         if( empty( $maFreebox)){
             $apiResponse->setSuccess( false);
