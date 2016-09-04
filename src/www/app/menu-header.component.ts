@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {ROUTER_DIRECTIVES} from "@angular/router";
 
 export class NavElem {
   name: string;
@@ -44,8 +43,6 @@ const NAV_ELEMS : NavElem[] = [
         </div>
     </nav>
     `,
-  directives: [ROUTER_DIRECTIVES],
-
 })
 
 export class MenuHeaderComponent {

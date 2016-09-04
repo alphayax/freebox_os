@@ -1,11 +1,9 @@
 import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES} from "@angular/router";
 import {HomeService} from "./home.service";
 
 @Component({
     selector: 'home',
     templateUrl: 'app/home/home.component.html',
-    directives: [ROUTER_DIRECTIVES],
     providers: [HomeService]
 })
 

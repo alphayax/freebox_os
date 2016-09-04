@@ -1,11 +1,13 @@
-import { provideRouter, RouterConfig }  from '@angular/router';
+import { ModuleWithProviders }  from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
 import { DownloadComponent } from './download/download.component';
 import { FileSystemComponent } from "./file-system/file-system.component";
 import { HomeComponent } from "./home/home.component";
 import { AssociationComponent } from "./association/association.component";
 import { DlRssComponent } from "./dl-rss/dl-rss.component";
 
-const routes: RouterConfig = [
+const appRoutes: Routes = [
   {
     path: 'download',
     component: DownloadComponent
@@ -33,6 +35,4 @@ const routes: RouterConfig = [
   }
 ];
 
-export const appRouterProviders = [
-  provideRouter(routes)
-];
+export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);

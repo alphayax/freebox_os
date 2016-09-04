@@ -6,7 +6,6 @@ import {DownloadItemComponent} from "./download-item/download-item.component";
 @Component({
   selector: 'download',
   templateUrl: 'app/download/download.component.html',
-  directives: [DownloadItemComponent],
   providers: [DownloadService]
 })
 

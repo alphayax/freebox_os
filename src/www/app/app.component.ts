@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ROUTER_DIRECTIVES} from "@angular/router";
+import { Routes, RouterModule } from '@angular/router';
 import {MenuHeaderComponent} from "./menu-header.component";
 
 @Component({
@@ -8,11 +8,6 @@ import {MenuHeaderComponent} from "./menu-header.component";
   <menu-header></menu-header>    
   <router-outlet></router-outlet>
     `,
-  directives: [
-      ROUTER_DIRECTIVES,
-      MenuHeaderComponent,
-  ],
-
 })
 
 export class AppComponent {

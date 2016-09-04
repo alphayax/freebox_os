@@ -6,8 +6,7 @@ import { FileInfo } from "./file-info";
 @Component({
     selector: 'file-system',
     templateUrl : 'app/file-system/file-system.component.html',
-    providers : [FileSystemService],
-    directives : [FileInfoComponent]
+    providers : [FileSystemService]
 })
 
 
