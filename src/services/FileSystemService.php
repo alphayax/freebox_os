@@ -54,17 +54,7 @@ class FileSystemService {
                 break;
 
             case 'share':
-                $path = @$_POST['path'];
-
-                // First, we have to share the file over the internet (It's stupid, but it's working only like that...)
-                $fileShare = new FileSharingLink( $application);
-                $share     = $fileShare->create( $path);
-                $apiResponse->setData([
-                    'name'   => $share->getName(),
-                    'url'    => $share->getFullurl(),
-                    'expire' => $share->getExpire(),
-                ]);
-                break;
+                return static::share( $apiResponse, $application);
 
             case 'explore':
                 return static::explore( $apiResponse, $application);
@@ -74,6 +64,32 @@ class FileSystemService {
                 $apiResponse->setError( "Unknown action ($action)");
         }
 
+
+        return $apiResponse;
+    }
+
+    /**
+     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
+     * @param \alphayax\freebox\utils\Application    $application
+     * @return \alphayax\freebox\os\utils\ApiResponse
+     */
+    protected static function share( ApiResponse $apiResponse, Application $application) {
+
+        $freeboxMaster = Config::get( 'assoc')[0];
+        $application->setAppToken( $freeboxMaster['token']);
+        $application->setFreeboxApiHost( $freeboxMaster['host']);
+        $application->authorize();
+        $application->openSession();
+
+        $path = @$_POST['path'];
+
+        $fileShare = new FileSharingLink( $application);
+        $share     = $fileShare->create( $path);
+        $apiResponse->setData([
+            'name'   => $share->getName(),
+            'url'    => $share->getFullurl(),
+            'expire' => $share->getExpire(),
+        ]);
 
         return $apiResponse;
     }
