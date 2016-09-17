@@ -1,5 +1,5 @@
 <div class="panel panel-primary" style="height: 250px">
-    <div class="panel-heading" style="cursor: pointer">
+    <div class="panel-heading" style="cursor: pointer;">
         {{fileInfo.name}}
     </div>
     <div class="panel-body">
@@ -9,12 +9,14 @@
         <div class="col-lg-8 col-md-8 col-sm-8">
             <p class="text-muted">{{fileInfo.fileInfo.name}}</p>
             <p *ngIf="fileInfo.isDir">
-                Directory
+                Repertoire<br />
+                <a (click)="navigate( fileInfo.path)" class="btn btn-default btn-xs">Parcourir ...</a>
             </p>
             <p *ngIf="!fileInfo.isDir">
-                <a class="btn btn-primary btn-xs">Lire</a>
+                <a class="btn btn-primary btn-xs" (click)="playInBrowser( fileInfo.path)">Streamer</a>
                 <a class="btn btn-primary btn-xs">Télécharger</a>
-                <a class="btn btn-primary btn-xs">Envoyer sur ma box</a>
+                <a class="btn btn-primary btn-xs">Lire sur la box</a>
+                <a class="btn btn-primary btn-xs">Télécharger sur ma box</a>
             </p>
 
         </div>

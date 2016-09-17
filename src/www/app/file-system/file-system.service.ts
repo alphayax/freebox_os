@@ -15,19 +15,36 @@ export class DirectoryInfo {
     files : FileInfo[];
 }
 
+export class ShareLink {
+    name : string;
+    url : string;
+    expire : string;
+}
+
 
 @Injectable()
 export class FileSystemService {
 
-  constructor(
+    constructor(
       private http: Http
-  ) { }
+    ) { }
 
-  // TODO : Mettre la vraie url externe
-  private filesystem_explore_url = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=explore';
-  private filesystem_play = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=play';
-  private filesystem_share = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=share';
-  private filesystem_synopsis = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=synopsis';
+    // TODO : Mettre la vraie url externe
+    private filesystem_explore_url = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=explore';
+    private filesystem_play = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=play';
+    private filesystem_share = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=share';
+    private filesystem_synopsis = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=synopsis';
+
+    getShareLink( path){
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+        return this.http.post(this.filesystem_share, 'path='+path,{ headers: headers })
+            .toPromise()
+            .then(response => response.json().data as ShareLink)
+            .catch( this.handleError);
+    }
 
     getDirectoryInfo( path) {
 
