@@ -6,6 +6,7 @@ import { FileSystemComponent } from "./file-system/file-system.component";
 import { HomeComponent } from "./home/home.component";
 import { AssociationComponent } from "./association/association.component";
 import { DlRssComponent } from "./dl-rss/dl-rss.component";
+import {PlayerComponent} from "./player/player.component";
 
 const appRoutes: Routes = [
   {
@@ -14,6 +15,10 @@ const appRoutes: Routes = [
   },
   {
     path: 'file-system',
+    component: FileSystemComponent
+  },
+  {
+    path: 'file-system/:path',
     component: FileSystemComponent
   },
   {
@@ -27,6 +32,10 @@ const appRoutes: Routes = [
   {
     path: 'dl-rss',
     component: DlRssComponent
+  },
+  {
+    path: 'player/:url/:mime',
+    component: PlayerComponent
   },
   {
     path: '',

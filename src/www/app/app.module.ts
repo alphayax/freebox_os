@@ -15,6 +15,7 @@ import {HomeComponent} from "./home/home.component";
 import {DlRssComponent} from "./dl-rss/dl-rss.component";
 
 import {FileSystemService} from "./file-system/file-system.service";
+import {PlayerComponent} from "./player/player.component";
 
 @NgModule ({
     imports: [
@@ -25,14 +26,15 @@ import {FileSystemService} from "./file-system/file-system.service";
     ],
     declarations: [
         AppComponent,
-        HomeComponent,
+        AssociationComponent,
+        DlRssComponent,
         DownloadComponent,
         DownloadItemComponent,
-        AssociationComponent,
-        FileSystemComponent,
-        MenuHeaderComponent,
         FileInfoComponent,
-        DlRssComponent,
+        FileSystemComponent,
+        HomeComponent,
+        MenuHeaderComponent,
+        PlayerComponent,
     ],
     providers: [
         FileSystemService,
