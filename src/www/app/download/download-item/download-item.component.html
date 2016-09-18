@@ -37,7 +37,7 @@
                     <ul class="dropdown-menu">
                         <li><a (click)="clearDownload(downloadItem.downloadTask.id);">Enlever</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">Mettre en pause</a></li>
+                        <li><a (click)="pauseDownload(downloadItem.downloadTask.id);">Mettre en pause</a></li>
                         <li><a href="#">Relancer</a></li>
                     </ul>
                 </div>

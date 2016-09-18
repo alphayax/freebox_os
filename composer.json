@@ -12,7 +12,7 @@
   ],
   "require" : {
     "php": ">=5.5.0",
-    "alphayax/freebox_api_php": "^1.2.3",
+    "alphayax/freebox_api_php": "^1.2.4",
     "ktamas77/firebase-php": "dev-master"
   },
   "require-dev" : {

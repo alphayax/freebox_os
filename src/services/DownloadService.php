@@ -24,6 +24,9 @@ class DownloadService {
             case 'clear_id':
                 return static::clearFromId( $apiResponse, $application);
 
+            case 'pause_id':
+                return static::pauseFromId( $apiResponse, $application);
+
             case 'explore':
                 return static::explore( $apiResponse, $application);
 
@@ -75,6 +78,28 @@ class DownloadService {
         $dlService  = new freebox\api\v3\services\download\Download( $application);
         $downloadTask = $dlService->getFromId( $_GET['id']);
         $isSuccess = $dlService->deleteFromId( $downloadTask->getId());
+        $apiResponse->setSuccess( $isSuccess);
+
+        return $apiResponse;
+    }
+
+    /**
+     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
+     * @param \alphayax\freebox\utils\Application    $application
+     * @return \alphayax\freebox\os\utils\ApiResponse
+     */
+    public static function pauseFromId( freebox\os\utils\ApiResponse $apiResponse, freebox\utils\Application $application) {
+        $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
+        $application->setAppToken( $freeboxMaster['token']);
+        $application->setFreeboxApiHost( $freeboxMaster['host']);
+        $application->authorize();
+        $application->openSession();
+
+        $dlService  = new freebox\api\v3\services\download\Download( $application);
+        $downloadTask = $dlService->getFromId( $_GET['id']);
+        $downloadTask->setStatus( Status::DOWNLOADING);
+
+        $isSuccess = $dlService->update( $downloadTask);
         $apiResponse->setSuccess( $isSuccess);
 
         return $apiResponse;

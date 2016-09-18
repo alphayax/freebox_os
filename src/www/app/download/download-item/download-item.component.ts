@@ -28,6 +28,15 @@ export class DownloadItemComponent {
         .catch(error => this.error = error);
   }
 
+  pauseDownload(){
+
+    this.downloadItemService.pauseFromId( this.downloadItem.downloadTask.id)
+        .then(downloads => {
+          console.log( downloads);
+        })
+        .catch(error => this.error = error);
+  }
+
   public getRxPct() : number {
     return this.downloadItem.downloadTask.rx_pct / 100;
   }
