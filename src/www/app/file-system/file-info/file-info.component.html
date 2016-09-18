@@ -13,10 +13,10 @@
                 <a (click)="navigate( fileInfo.path)" class="btn btn-default btn-xs">Parcourir ...</a>
             </p>
             <p *ngIf="!fileInfo.isDir">
-                <a class="btn btn-primary btn-xs" (click)="playInBrowser( fileInfo.path)">Streamer</a>
-                <a class="btn btn-primary btn-xs">Télécharger</a>
-                <a class="btn btn-primary btn-xs">Lire sur la box</a>
-                <a class="btn btn-primary btn-xs">Télécharger sur ma box</a>
+                <a *ngIf="isStreamable()" class="btn btn-primary btn-xs" (click)="playInBrowser( fileInfo.path)">Streamer</a>
+                <a class="btn btn-primary btn-xs" (click)="directDownload( fileInfo.path)">Télécharger</a>
+                <a class="btn btn-default btn-xs">Lire sur la box</a>
+                <a class="btn btn-default btn-xs">Télécharger sur ma box</a>
             </p>
 
         </div>

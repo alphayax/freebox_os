@@ -14,70 +14,98 @@ class DownloadService {
      * @return mixed
      */
     public static function getAction( freebox\utils\Application $application) {
+        $apiResponse = new freebox\os\utils\ApiResponse();
         $action = $_GET['action'];
         switch ( $action){
 
             case 'clear_done':
-                $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
-                $application->setAppToken( $freeboxMaster['token']);
-                $application->setFreeboxApiHost( $freeboxMaster['host']);
-                $application->authorize();
-                $application->openSession();
-                $dlService  = new freebox\api\v3\services\download\Download( $application);
-                $response = [
-                    'success'   => true,
-                    'data'      => [],
-                ];
-                $ok = true;
-                $downloadTasks = $dlService->getAll();
-                foreach( $downloadTasks as $downloadTask){
-                    switch( $downloadTask->getStatus()){
-                        case freebox\api\v3\symbols\Download\Task\Status::DONE :
-                            $ok = $dlService->deleteFromId( $downloadTask->getId()) && $ok;
-                            $response['data'][] = $downloadTask->getName();
-                            break;
-                    }
-                }
-                $response['success'] = $ok;
-                return $response;
-
+                return static::clearDone( $apiResponse, $application);
 
             case 'clear_id':
-                $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
-                $application->setAppToken( $freeboxMaster['token']);
-                $application->setFreeboxApiHost( $freeboxMaster['host']);
-                $application->authorize();
-                $application->openSession();
-                $dlService  = new freebox\api\v3\services\download\Download( $application);
-                $downloadTask = $dlService->getFromId( $_GET['id']);
-                $ok = $dlService->deleteFromId( $downloadTask->getId());
-                return [
-                    'success'   => $ok,
-                ];
+                return static::clearFromId( $apiResponse, $application);
 
             case 'explore':
+                return static::explore( $apiResponse, $application);
 
-                $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
-                $application->setAppToken( $freeboxMaster['token']);
-                $application->setFreeboxApiHost( $freeboxMaster['host']);
-                $application->authorize();
-                $application->openSession();
-
-                $dlService    = new freebox\api\v3\services\download\Download( $application);
-                $downloadTasks = $dlService->getAll();
-
-                $ret = [];
-                foreach ($downloadTasks as $downloadTask){
-                    $dl = new freebox\os\models\Download\DownloadItem( $downloadTask);
-                    $dl->init();
-                    $ret[] = $dl;
-                }
-                $apiResponse = new freebox\os\utils\ApiResponse( $ret);
-
-                return $apiResponse;
+            default:
+                $apiResponse->setSuccess( false);
+                $apiResponse->setError( "Unknown action ($action)");
         }
 
-        return '';
+        return $apiResponse;
+    }
+
+    public static function clearDone( freebox\os\utils\ApiResponse $apiResponse, freebox\utils\Application $application) {
+        $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
+        $application->setAppToken( $freeboxMaster['token']);
+        $application->setFreeboxApiHost( $freeboxMaster['host']);
+        $application->authorize();
+        $application->openSession();
+        $dlService  = new freebox\api\v3\services\download\Download( $application);
+        $response = [
+            'success'   => true,
+            'data'      => [],
+        ];
+        $isSuccess = true;
+        $downloadTasks = $dlService->getAll();
+        foreach( $downloadTasks as $downloadTask){
+            switch( $downloadTask->getStatus()){
+                case freebox\api\v3\symbols\Download\Task\Status::DONE :
+                    $isSuccess = $dlService->deleteFromId( $downloadTask->getId()) && $isSuccess;
+                    $response['data'][] = $downloadTask->getName();
+                    break;
+            }
+        }
+        $apiResponse->setSuccess( $isSuccess);
+        return $apiResponse;
+    }
+
+    /**
+     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
+     * @param \alphayax\freebox\utils\Application    $application
+     * @return \alphayax\freebox\os\utils\ApiResponse
+     */
+    public static function clearFromId( freebox\os\utils\ApiResponse $apiResponse, freebox\utils\Application $application) {
+        $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
+        $application->setAppToken( $freeboxMaster['token']);
+        $application->setFreeboxApiHost( $freeboxMaster['host']);
+        $application->authorize();
+        $application->openSession();
+
+        $dlService  = new freebox\api\v3\services\download\Download( $application);
+        $downloadTask = $dlService->getFromId( $_GET['id']);
+        $isSuccess = $dlService->deleteFromId( $downloadTask->getId());
+        $apiResponse->setSuccess( $isSuccess);
+
+        return $apiResponse;
+    }
+
+    /**
+     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
+     * @param \alphayax\freebox\utils\Application    $application
+     * @return \alphayax\freebox\os\utils\ApiResponse
+     */
+    public static function explore( freebox\os\utils\ApiResponse $apiResponse, freebox\utils\Application $application) {
+
+        $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
+        $application->setAppToken( $freeboxMaster['token']);
+        $application->setFreeboxApiHost( $freeboxMaster['host']);
+        $application->authorize();
+        $application->openSession();
+
+        $dlService    = new freebox\api\v3\services\download\Download( $application);
+        $downloadTasks = $dlService->getAll();
+
+        $ret = [];
+        foreach ($downloadTasks as $downloadTask){
+            $dl = new freebox\os\models\Download\DownloadItem( $downloadTask);
+            $dl->init();
+            $ret[] = $dl;
+        }
+
+        $apiResponse->setData( $ret);
+
+        return $apiResponse;
     }
 
 

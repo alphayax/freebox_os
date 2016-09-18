@@ -26,12 +26,24 @@ export class FileInfoComponent {
         this.router.navigate(['/file-system', btoa( path)]);
     }
 
+    isStreamable(){
+        return (
+            this.fileInfo.fileInfo.mimetype === 'video/ogg' ||
+            this.fileInfo.fileInfo.mimetype === 'video/mp4' ||
+            this.fileInfo.fileInfo.mimetype === 'video/webm'
+        );
+    }
+
     playInBrowser( path) {
         this.fileSystemService.getShareLink( path)
             .then( shareLink => {
                 let link = ['/player', btoa( shareLink.url), btoa( this.fileInfo.fileInfo.mimetype)];
                 this.router.navigate(link);
             })
+    }
+
+    directDownload( ) {
+
     }
 }
 

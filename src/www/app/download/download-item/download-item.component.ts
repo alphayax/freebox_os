@@ -43,5 +43,6 @@ export class DownloadItemComponent {
   public getImage(){
     return this.downloadItem.image;
   }
+
 }
 

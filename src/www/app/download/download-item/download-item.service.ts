@@ -7,13 +7,12 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class DownloadItemService {
 
-
-  constructor(
+    constructor(
       private http: Http
-  ) { }
+    ) { }
 
-  // Todo : Mettre l'url a jour
-  private clearFromIdUrl = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=download&action=clear_id';
+    // Todo : Mettre l'url a jour
+    private clearFromIdUrl = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=download&action=clear_id';
 
     cleanFromId( downloadId) {
 
@@ -27,9 +26,9 @@ export class DownloadItemService {
     }
 
     private static handleError(error: any) {
-    console.error('An error occurred', error);
-    return Promise.reject(error.message || error);
-  }
+        console.error('An error occurred', error);
+        return Promise.reject(error.message || error);
+    }
 
 }
 
