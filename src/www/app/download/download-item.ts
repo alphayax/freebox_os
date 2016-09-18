@@ -34,5 +34,6 @@ export class DownloadItem {
     cleanName : string;
     rxPct: number;
     txPct: number;
+    path: string;
 }
 

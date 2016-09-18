@@ -8,7 +8,7 @@ import 'rxjs/add/operator/toPromise';
 export class DownloadItemService {
 
     constructor(
-      private http: Http
+        private http: Http
     ) { }
 
     // Todo : Mettre l'url a jour
@@ -20,10 +20,14 @@ export class DownloadItemService {
         let headers = new Headers();
             headers.append('Content-Type', 'application/json');
 
-        return this.http.post(this.clearFromIdUrl + '&id='+ downloadId, '', headers)
-               .toPromise()
-               .then(response => response.json().success as boolean)
-               .catch(DownloadItemService.handleError);
+        let params = JSON.stringify({
+            "id" : downloadId
+        });
+
+        return this.http.post( this.clearFromIdUrl, params, headers)
+           .toPromise()
+           .then(response => response.json().success as boolean)
+           .catch(DownloadItemService.handleError);
     }
 
     updateFromId( downloadId, status) {
@@ -37,9 +41,9 @@ export class DownloadItemService {
         });
 
         return this.http.post(this.updateFromIdUrl, params, headers)
-               .toPromise()
-               .then(response => response.json().success as boolean)
-               .catch(DownloadItemService.handleError);
+           .toPromise()
+           .then(response => response.json().success as boolean)
+           .catch(DownloadItemService.handleError);
     }
 
     private static handleError(error: any) {

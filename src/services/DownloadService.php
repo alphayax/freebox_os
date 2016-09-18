@@ -44,22 +44,22 @@ class DownloadService {
         $application->setFreeboxApiHost( $freeboxMaster['host']);
         $application->authorize();
         $application->openSession();
-        $dlService  = new freebox\api\v3\services\download\Download( $application);
-        $response = [
-            'success'   => true,
-            'data'      => [],
-        ];
+
+        $cleanedTasks = [];
         $isSuccess = true;
+
+        $dlService  = new freebox\api\v3\services\download\Download( $application);
         $downloadTasks = $dlService->getAll();
         foreach( $downloadTasks as $downloadTask){
             switch( $downloadTask->getStatus()){
                 case freebox\api\v3\symbols\Download\Task\Status::DONE :
                     $isSuccess = $dlService->deleteFromId( $downloadTask->getId()) && $isSuccess;
-                    $response['data'][] = $downloadTask->getName();
+                    $cleanedTasks[] = $downloadTask->getName();
                     break;
             }
         }
         $apiResponse->setSuccess( $isSuccess);
+        $apiResponse->setData( $cleanedTasks);
         return $apiResponse;
     }
 
@@ -75,10 +75,14 @@ class DownloadService {
         $application->authorize();
         $application->openSession();
 
+        $json = json_decode( file_get_contents('php://input'), true);
+        $downloadId = @$json['id'];
+
         $dlService  = new freebox\api\v3\services\download\Download( $application);
-        $downloadTask = $dlService->getFromId( $_GET['id']);
+        $downloadTask = $dlService->getFromId( $downloadId);
         $isSuccess = $dlService->deleteFromId( $downloadTask->getId());
         $apiResponse->setSuccess( $isSuccess);
+        $apiResponse->setData( static::taskToDownloadItem( $downloadTask));
 
         return $apiResponse;
     }

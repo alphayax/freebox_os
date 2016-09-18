@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { DownloadItem } from "../download-item";
 import { DownloadItemService } from "./download-item.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'download-item',
@@ -16,7 +17,8 @@ export class DownloadItemComponent {
   downloadItem: DownloadItem;
 
   constructor(
-      private downloadItemService: DownloadItemService
+      private downloadItemService: DownloadItemService,
+      private router: Router
   ){ }
 
   clearDownload(){
@@ -60,6 +62,11 @@ export class DownloadItemComponent {
 
   public getImage(){
     return this.downloadItem.image;
+  }
+
+
+  navigate(){
+    this.router.navigate(['/file-system', btoa( this.downloadItem.path)]);
   }
 
 }

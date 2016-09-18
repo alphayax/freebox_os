@@ -27,8 +27,8 @@
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3">
                 Taille : {{downloadItem.sizeHr}}<br/>
-                Recu : {{downloadItem.rxTotalHr}} ({{downloadItem.downloadTask.rx_rate}} o/s)<br />
-                Envoyé : {{downloadItem.txTotalHr}} ({{downloadItem.downloadTask.tx_rate}} o/s)
+                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>&nbsp;{{downloadItem.rxTotalHr}} ({{downloadItem.downloadTask.rx_rate}} o/s)<br />
+                <span class="glyphicon glyphicon-upload"  aria-hidden="true"></span>&nbsp;{{downloadItem.txTotalHr}} ({{downloadItem.downloadTask.tx_rate}} o/s)<br />
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2">
                 <div class="btn-group">
@@ -39,6 +39,8 @@
                         <li class="divider"></li>
                         <li><a (click)="pauseDownload(downloadItem.downloadTask.id);">Mettre en pause</a></li>
                         <li><a (click)="resumeDownload(downloadItem.downloadTask.id);">Relancer</a></li>
+                        <li class="divider"></li>
+                        <li><a (click)="navigate();">Voir dans explorateur</a></li>
                     </ul>
                 </div>
             </div>

@@ -20,6 +20,7 @@ class DownloadItem implements \JsonSerializable {
     protected $cleanName;
     protected $rxPct;
     protected $txPct;
+    protected $path;
 
 
     public function __construct( Task $downloadTask) {
@@ -35,6 +36,7 @@ class DownloadItem implements \JsonSerializable {
         $this->etaHr        = Unit::secondsToHumanReadable( $this->downloadTask->getEta());
         $this->rxPct        = $this->downloadTask->getRxPct() / 100;
         $this->txPct        = $this->downloadTask->getTxPct() / 100;
+        $this->path         = base64_decode( $this->downloadTask->getDownloadDir());
     }
 
     public function getCleanName() {

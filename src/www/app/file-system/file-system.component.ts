@@ -48,7 +48,6 @@ export class FileSystemComponent implements OnInit {
             } else {
                 path = '/'
             }
-            console.log( path);
             this.getDirectoryInfo( path);
         });
     }
