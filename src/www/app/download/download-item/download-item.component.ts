@@ -30,7 +30,16 @@ export class DownloadItemComponent {
 
   pauseDownload(){
 
-    this.downloadItemService.pauseFromId( this.downloadItem.downloadTask.id)
+    this.downloadItemService.updateFromId( this.downloadItem.downloadTask.id, 'pause')
+        .then(downloads => {
+          console.log( downloads);
+        })
+        .catch(error => this.error = error);
+  }
+
+  resumeDownload(){
+
+    this.downloadItemService.updateFromId( this.downloadItem.downloadTask.id, 'download')
         .then(downloads => {
           console.log( downloads);
         })

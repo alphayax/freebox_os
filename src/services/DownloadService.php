@@ -24,8 +24,8 @@ class DownloadService {
             case 'clear_id':
                 return static::clearFromId( $apiResponse, $application);
 
-            case 'pause_id':
-                return static::pauseFromId( $apiResponse, $application);
+            case 'update_id':
+                return static::updateFromId( $apiResponse, $application);
 
             case 'explore':
                 return static::explore( $apiResponse, $application);
@@ -88,19 +88,29 @@ class DownloadService {
      * @param \alphayax\freebox\utils\Application    $application
      * @return \alphayax\freebox\os\utils\ApiResponse
      */
-    public static function pauseFromId( freebox\os\utils\ApiResponse $apiResponse, freebox\utils\Application $application) {
+    public static function updateFromId(freebox\os\utils\ApiResponse $apiResponse, freebox\utils\Application $application) {
         $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
         $application->setAppToken( $freeboxMaster['token']);
         $application->setFreeboxApiHost( $freeboxMaster['host']);
         $application->authorize();
         $application->openSession();
 
+        $json = json_decode( file_get_contents('php://input'), true);
+        $downloadId = @$json['id'];
+        $status     = @$json['status'];
+
+
         $dlService  = new freebox\api\v3\services\download\Download( $application);
-        $downloadTask = $dlService->getFromId( $_GET['id']);
-        $downloadTask->setStatus( Status::DOWNLOADING);
+        $downloadTask = $dlService->getFromId( $downloadId);
+
+        switch( $status){
+            case 'pause'    : $downloadTask->setStatus( Status::STOPPED);       break;
+            case 'download' : $downloadTask->setStatus( Status::DOWNLOADING);   break;
+        }
 
         $isSuccess = $dlService->update( $downloadTask);
         $apiResponse->setSuccess( $isSuccess);
+        $apiResponse->setData( static::taskToDownloadItem( $downloadTask));
 
         return $apiResponse;
     }
@@ -123,14 +133,22 @@ class DownloadService {
 
         $ret = [];
         foreach ($downloadTasks as $downloadTask){
-            $dl = new freebox\os\models\Download\DownloadItem( $downloadTask);
-            $dl->init();
-            $ret[] = $dl;
+            $ret[] = static::taskToDownloadItem( $downloadTask);
         }
 
         $apiResponse->setData( $ret);
 
         return $apiResponse;
+    }
+
+    /**
+     * @param \alphayax\freebox\api\v3\models\Download\Task $task
+     * @return \alphayax\freebox\os\models\Download\DownloadItem
+     */
+    protected static function taskToDownloadItem( freebox\api\v3\models\Download\Task $task) {
+        $dl = new freebox\os\models\Download\DownloadItem( $task);
+        $dl->init();
+        return $dl;
     }
 
 

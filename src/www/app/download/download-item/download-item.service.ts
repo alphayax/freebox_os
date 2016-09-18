@@ -13,7 +13,7 @@ export class DownloadItemService {
 
     // Todo : Mettre l'url a jour
     private clearFromIdUrl = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=download&action=clear_id';
-    private pauseFromIdUrl = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=download&action=pause_id';
+    private updateFromIdUrl = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=download&action=update_id';
 
     cleanFromId( downloadId) {
 
@@ -26,12 +26,17 @@ export class DownloadItemService {
                .catch(DownloadItemService.handleError);
     }
 
-    pauseFromId( downloadId) {
+    updateFromId( downloadId, status) {
 
         let headers = new Headers();
             headers.append('Content-Type', 'application/json');
 
-        return this.http.post(this.pauseFromIdUrl + '&id='+ downloadId, '', headers)
+        let params = JSON.stringify({
+            "id" : downloadId,
+            "status" : status
+        });
+
+        return this.http.post(this.updateFromIdUrl, params, headers)
                .toPromise()
                .then(response => response.json().success as boolean)
                .catch(DownloadItemService.handleError);

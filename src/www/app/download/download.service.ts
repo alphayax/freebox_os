@@ -8,14 +8,14 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class DownloadService {
 
-  constructor(
+    constructor(
       private http: Http
-  ) { }
+    ) { }
 
-  // Todo : Mettre l'url a jour
-  private exploreUrl = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=download&action=explore';
-  private clearDoneUrl = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=download&action=clear_done';
-  private clearFromIdUrl = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=download&action=clear_id';
+    // Todo : Mettre l'url a jour
+    private exploreUrl = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=download&action=explore';
+    private clearDoneUrl = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=download&action=clear_done';
+    private clearFromIdUrl = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=download&action=clear_id';
 
     getDownloads() {
 
@@ -51,9 +51,9 @@ export class DownloadService {
     }
 
     private static handleError(error: any) {
-    console.error('An error occurred', error);
-    return Promise.reject(error.message || error);
-  }
+        console.error('An error occurred', error);
+        return Promise.reject(error.message || error);
+    }
 
 }
 

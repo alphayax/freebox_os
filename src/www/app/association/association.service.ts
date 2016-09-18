@@ -8,12 +8,12 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class AssociationService {
 
-  constructor(
+    constructor(
       private http: Http
-  ) { }
+    ) { }
 
-  // TODO : Mettre la vraie url externe
-  private config_freebox_url = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=config&action=association';
+    // TODO : Mettre la vraie url externe
+    private config_freebox_url = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=config&action=association';
 
     addFreebox( association){
 
@@ -27,8 +27,9 @@ export class AssociationService {
     }
 
     private handleError(error: any) {
-    console.error('HOME SERVICE : An error occurred', error);
-    return Promise.reject(error.message || error);
-  }
+        console.error('HOME SERVICE : An error occurred', error);
+        return Promise.reject(error.message || error);
+    }
+    
 }
 
