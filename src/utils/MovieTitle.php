@@ -43,6 +43,13 @@ class MovieTitle implements \JsonSerializable {
             return;
         }
 
+        $pattern = '/(.*) Saison ([0-9]+)/';
+        if( preg_match( $pattern, $name, $rez)){
+            $this->cleanName = trim( $rez[1]);
+            $this->season    = intval( $rez[2]);
+            return;
+        }
+
         // Try to find Episode number
         $pattern = '/(.*) ([0-9]+)/';
         if( preg_match( $pattern, $name, $rez)){

@@ -31,19 +31,17 @@ export class DownloadItemComponent {
   }
 
   pauseDownload(){
-
     this.downloadItemService.updateFromId( this.downloadItem.downloadTask.id, 'pause')
-        .then(downloads => {
-          console.log( downloads);
+        .then(download => {
+            this.downloadItem = download;
         })
         .catch(error => this.error = error);
   }
 
   resumeDownload(){
-
     this.downloadItemService.updateFromId( this.downloadItem.downloadTask.id, 'download')
-        .then(downloads => {
-          console.log( downloads);
+        .then(download => {
+          this.downloadItem = download;
         })
         .catch(error => this.error = error);
   }
@@ -69,5 +67,12 @@ export class DownloadItemComponent {
     this.router.navigate(['/file-system', btoa( this.downloadItem.path)]);
   }
 
+  isStoppable(){
+    return this.downloadItem.downloadTask.status !== 'stopped' && this.downloadItem.downloadTask.status !== 'error';
+  }
+
+  isResumable(){
+      return this.downloadItem.downloadTask.status === 'stopped';
+  }
 }
 

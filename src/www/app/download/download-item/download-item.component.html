@@ -37,8 +37,12 @@
                     <ul class="dropdown-menu">
                         <li><a (click)="clearDownload(downloadItem.downloadTask.id);">Enlever</a></li>
                         <li class="divider"></li>
-                        <li><a (click)="pauseDownload(downloadItem.downloadTask.id);">Mettre en pause</a></li>
-                        <li><a (click)="resumeDownload(downloadItem.downloadTask.id);">Relancer</a></li>
+                        <li *ngIf="isStoppable()">
+                            <a (click)="pauseDownload(downloadItem.downloadTask.id);">Mettre en pause</a>
+                        </li>
+                        <li *ngIf="isResumable()">
+                            <a (click)="resumeDownload(downloadItem.downloadTask.id);">Relancer</a>
+                        </li>
                         <li class="divider"></li>
                         <li><a (click)="navigate();">Voir dans explorateur</a></li>
                     </ul>

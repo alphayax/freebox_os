@@ -3,6 +3,7 @@ namespace alphayax\freebox\os\models\Download;
 use alphayax\freebox\api\v3\models\Download\Task;
 use alphayax\freebox\os\utils\MovieTitle;
 use alphayax\freebox\os\utils\Omdb\Omdb;
+use alphayax\freebox\os\utils\Poster;
 use alphayax\freebox\os\utils\Unit;
 
 
@@ -59,20 +60,15 @@ class DownloadItem implements \JsonSerializable {
             return 'img/'. $title;
         }
 
-        $movie = Omdb::search( $title);
-
-        if( $movie->getResponse() == 'False'){
-            return '';
-        }
-        $poster = $movie->getPoster();
-
-
+        $poster = Poster::getFromTitle( $title);
         if( empty( $poster) || $poster == 'N/A'){
             return '';
         }
 
+        /// Download poster
         $img = file_get_contents( $poster);
         if( empty( $img)){
+            trigger_error( "Poster cannot be downloaded : $poster");
             return '';
         }
 

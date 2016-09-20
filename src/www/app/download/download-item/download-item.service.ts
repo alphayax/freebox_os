@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers} from "@angular/http";
+import {DownloadItem} from "../download-item";
 
 import 'rxjs/add/operator/toPromise';
 
@@ -30,7 +31,7 @@ export class DownloadItemService {
            .catch(DownloadItemService.handleError);
     }
 
-    updateFromId( downloadId, status) {
+    updateFromId( downloadId, status) : Promise<DownloadItem>{
 
         let headers = new Headers();
             headers.append('Content-Type', 'application/json');
@@ -42,7 +43,7 @@ export class DownloadItemService {
 
         return this.http.post(this.updateFromIdUrl, params, headers)
            .toPromise()
-           .then(response => response.json().success as boolean)
+           .then(response => response.json().data as DownloadItem)
            .catch(DownloadItemService.handleError);
     }
 
