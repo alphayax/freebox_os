@@ -1,50 +1,49 @@
 <html>
-  <head>
+<head>
     <title>Alphayax Freebox OS</title>
     <meta charset="UTF-8">
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!--
-    <link rel="stylesheet" href="styles.css">
-    <!-- 1. Load libraries -->
 
-     <!-- Polyfill(s) for older browsers -->
+    <!-- Polyfills for older browsers -->
     <script src="node_modules/core-js/client/shim.min.js"></script>
     <script src="node_modules/zone.js/dist/zone.js"></script>
     <script src="node_modules/reflect-metadata/Reflect.js"></script>
     <script src="node_modules/systemjs/dist/system.src.js"></script>
 
-    <!-- 2. Configure SystemJS -->
     <script src="systemjs.config.js"></script>
     <script>
-      System.import('app').catch(function(err){ console.error(err); });
+        System.import('app').catch(function (err) {
+            console.error(err);
+        });
     </script>
 
-    <link rel="stylesheet" href="https://bootswatch.com/darkly/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://bootswatch.com/assets/css/custom.min.css" />
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" href="css/sk-cube.css"/>
+    <link rel="stylesheet" href="https://bootswatch.com/darkly/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://bootswatch.com/assets/css/custom.min.css"/>
 
+</head>
+<body>
 
-  </head>
-  <body>
+<div class="container">
+    <my-app>
+        <!-- Loading image -->
+        <div class="sk-cube-grid">
+            <div class="sk-cube sk-cube1"></div>
+            <div class="sk-cube sk-cube2"></div>
+            <div class="sk-cube sk-cube3"></div>
+            <div class="sk-cube sk-cube4"></div>
+            <div class="sk-cube sk-cube5"></div>
+            <div class="sk-cube sk-cube6"></div>
+            <div class="sk-cube sk-cube7"></div>
+            <div class="sk-cube sk-cube8"></div>
+            <div class="sk-cube sk-cube9"></div>
+        </div>
+    </my-app>
+</div>
 
-  <div class="container">
-    <my-app>Loading...</my-app>
-  </div>
-
-  <!--
-    <div id="firebaseui-auth-container"></div>
-
-    <div id="sign-in-status"></div>
-    <div id="sign-in" onclick="firebase.auth().signOut();">sign out</div>
-    <div id="account-details"></div>
-    <div onclick="firebase.auth().signOut();">sign out</div>
-    <div onclick="firebase.auth().signInWithPopup( new firebase.auth.GoogleAuthProvider());">sign IN</div>
-    </div>
-    -->
-
-    <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-  </body>
+<script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
 </html>
 
