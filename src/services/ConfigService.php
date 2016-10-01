@@ -46,6 +46,11 @@ class ConfigService {
      */
     protected function getFreebox( ApiResponse $apiResponse, Application $application) {
 
+        $json = json_decode( file_get_contents('php://input'), true);
+        $uid  = @$json['uid'];
+
+        trigger_error( "UID : $uid");
+
         $assocConf = Config::get( 'assoc');
         $FbxInfos = [];
 
