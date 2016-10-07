@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {AssociationService} from "./association.service";
+import {AngularFire, FirebaseAuthState} from "angularfire2";
 
 @Component({
     selector: 'association',
@@ -9,6 +10,7 @@ import {AssociationService} from "./association.service";
 
 export class AssociationComponent {
 
+    user: FirebaseAuthState;
     app_token: string;
     track_id: number;
     api_domain: string;
@@ -17,29 +19,43 @@ export class AssociationComponent {
     error: any;
 
     constructor(
-        private associationService : AssociationService
-    ){ }
+        private associationService : AssociationService,
+        public  af: AngularFire,
+    ){
+        this.af.auth.subscribe(user => {
+            if( user) {
+                this.user = user;
+            } else {
+                this.user = null;
+            }
+        });
+    }
 
     addFreebox(){
-        console.log( "component : addFreebox");
-        let association = {
-            "app_token"  : this.app_token,
-            "track_id"   : this.track_id,
-            "api_domain" : this.api_domain,
-            "https_port" : this.https_port
-        };
 
         /// Check parameters
-        if( ! association.api_domain || ! association.track_id || ! association.https_port || ! association.app_token){
+        if( ! this.user || ! this.user.uid){
+            console.error( 'User is not logged in');
+        }
+        if( ! this.app_token || ! this.track_id || ! this.api_domain || ! this.https_port){
             console.error( 'Erreur : Tous les champs ne sont pas renseignes.');
             return;
         }
+
+        /// Create association object
+        let association = {
+            "uid"        : this.user.uid,
+            "app_token"  : this.app_token,
+            "track_id"   : this.track_id,
+            "api_domain" : this.api_domain,
+            "https_port" : this.https_port,
+        };
 
         this.associationService.addFreebox( association)
             .then(freebox => {
                 console.log( freebox);
             })
-            .catch(error => this.error = error);
+            .catch(error => console.error(error));
     }
 }
 
