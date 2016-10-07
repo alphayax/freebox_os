@@ -39,6 +39,7 @@ class DownloadService {
     }
 
     public static function clearDone( freebox\os\utils\ApiResponse $apiResponse, freebox\utils\Application $application) {
+
         $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
         $application->setAppToken( $freeboxMaster['token']);
         $application->setFreeboxApiHost( $freeboxMaster['host']);
