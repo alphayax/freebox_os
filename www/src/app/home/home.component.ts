@@ -21,7 +21,6 @@ export class HomeComponent {
 
     getFreeboxInfo( uid) {
         console.log( uid);
-        //console.log( this.af.auth);
         this.homeService.getFreeboxInfo( uid)
             .then(freeboxInfos => {
                 this.freeboxInfos = freeboxInfos;
@@ -52,6 +51,10 @@ export class HomeComponent {
             provider: AuthProviders.Google,
             method: AuthMethods.Popup,
         });
+    }
+
+    logout(){
+        this.af.auth.logout();
     }
 }
 
