@@ -1,37 +1,20 @@
 import {Injectable} from '@angular/core';
-import {Http, Headers} from "@angular/http";
-
-import 'rxjs/add/operator/toPromise';
+import {FreehubApiService} from "../shared/freehub-api.service";
 
 
 
 @Injectable()
 export class HomeService {
 
-  constructor(
-      private http: Http
-  ) { }
-
-  // TODO : Mettre la vraie url externe
-  private config_freebox_url = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=config&action=get_freebox';
+    constructor(
+        private freeHubApiService : FreehubApiService,
+    ) { }
 
     getFreeboxInfo( uid){
 
-        let headers = new Headers();
-            headers.append('Content-Type', 'application/json');
-
-        let params = JSON.stringify({
+        return this.freeHubApiService.send( 'config', 'get_freebox', {
             "uid" : uid
-        });
-
-        return this.http.post( this.config_freebox_url, params,{ headers: headers })
-               .toPromise()
-               .then(response => response.json().data as string[])
-               .catch(this.handleError);
+        }).then( response => response as string[]);
     }
 
-    private handleError(error: any) {
-        console.error('HOME SERVICE : An error occurred', error);
-        return Promise.reject(error.message || error);
-    }
 }
