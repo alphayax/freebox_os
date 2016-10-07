@@ -86,7 +86,7 @@ class DlRssService {
 
         if( empty( $config)){
             $apiResponse->setSuccess( false);
-            $apiResponse->setError( 'Configuration non trouvee' . var_export($id, true));
+            $apiResponse->setError( 'Configuration non trouvee ' . var_export($id, true));
             return $apiResponse;
         }
 
@@ -98,6 +98,11 @@ class DlRssService {
         $downloadService = new Download( $application);
 
         $rss = simplexml_load_file( $config['rss']);
+        if( ! $rss){
+            $apiResponse->setSuccess( false);
+            $apiResponse->setError( "Impossible de scanner le flux RSS");
+            return $apiResponse;
+        }
         foreach( $rss->xpath('//item') as $item){
             $title = (string) $item->xpath('title')[0];
             $date  = (string) $item->xpath('pubDate')[0];
