@@ -12,10 +12,12 @@ import { DownloadComponent }     from "./download/download.component";
 import { DownloadItemComponent } from "./download/download-item/download-item.component";
 import { FileInfoComponent }     from "./file-system/file-info/file-info.component";
 import { FileSystemComponent }   from "./file-system/file-system.component";
-import { FileSystemService }     from "./file-system/file-system.service";
 import { HomeComponent }         from "./home/home.component";
 import { MenuHeaderComponent }   from "./menu-header.component";
 import { PlayerComponent }       from "./player/player.component";
+
+import { FileSystemService }     from "./file-system/file-system.service";
+import { FreehubApiService }     from "./shared/freehub-api.service";
 
 export const config = {
   apiKey: "AIzaSyBzQwe1bXEUpOUD_Q3Gm8JzdZn0FtRMtWs",
@@ -51,6 +53,7 @@ const myFirebaseAuthConfig = {
     ],
     providers: [
         FileSystemService,
+        FreehubApiService,
     ],
     bootstrap: [
         AppComponent
