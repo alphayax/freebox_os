@@ -5,9 +5,9 @@ import { AngularFire,AuthMethods,AuthProviders } from 'angularfire2';
   selector:'app-root',
   templateUrl: 'app.component.html',
   styles : [
-      '@import url("https://bootswatch.com/darkly/bootstrap.min.css")',
-      '@import url("https://bootswatch.com/assets/css/custom.min.css")',
-  ]
+      '@import url("https://bootswatch.com/darkly/bootstrap.min.css");',
+      '@import url("https://bootswatch.com/assets/css/custom.min.css");',
+  ],
 })
 
 export class AppComponent{
