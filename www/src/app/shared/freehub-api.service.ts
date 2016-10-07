@@ -14,9 +14,7 @@ export class FreehubApiService {
 
     // TODO : Récuperer le host d'un fichier de configuration
     private host = 'http://ayx.freeboxos.fr:14789';
-    private endPoint = '/freebox_os/api.php?'
-
-    //private config_freebox_url = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=config&action=association';
+    private endPoint = '/freebox_os/api.php?';
 
     send( service, action, params){
 

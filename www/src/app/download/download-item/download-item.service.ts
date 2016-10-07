@@ -1,55 +1,28 @@
 import {Injectable} from '@angular/core';
-import {Http, Headers} from "@angular/http";
 import {DownloadItem} from "../download-item";
-
-import 'rxjs/add/operator/toPromise';
+import {FreehubApiService} from "../../shared/freehub-api.service";
 
 
 @Injectable()
 export class DownloadItemService {
 
     constructor(
-        private http: Http
+        private freeHubApiService : FreehubApiService,
     ) { }
-
-    // Todo : Mettre l'url a jour
-    private clearFromIdUrl = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=download&action=clear_id';
-    private updateFromIdUrl = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=download&action=update_id';
 
     cleanFromId( downloadId) {
 
-        let headers = new Headers();
-            headers.append('Content-Type', 'application/json');
-
-        let params = JSON.stringify({
+        return this.freeHubApiService.send( 'download', 'clear_id', {
             "id" : downloadId
         });
-
-        return this.http.post( this.clearFromIdUrl, params, headers)
-           .toPromise()
-           .then(response => response.json().success as boolean)
-           .catch(DownloadItemService.handleError);
     }
 
     updateFromId( downloadId, status) : Promise<DownloadItem>{
 
-        let headers = new Headers();
-            headers.append('Content-Type', 'application/json');
-
-        let params = JSON.stringify({
+        return this.freeHubApiService.send( 'download', 'update_id', {
             "id" : downloadId,
             "status" : status
-        });
-
-        return this.http.post(this.updateFromIdUrl, params, headers)
-           .toPromise()
-           .then(response => response.json().data as DownloadItem)
-           .catch(DownloadItemService.handleError);
-    }
-
-    private static handleError(error: any) {
-        console.error('An error occurred', error);
-        return Promise.reject(error.message || error);
+        }).then( response => response as DownloadItem);
     }
 
 }
