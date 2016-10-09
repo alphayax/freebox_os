@@ -87,13 +87,14 @@ class FileSystemService {
      */
     protected static function share( ApiResponse $apiResponse, Application $application) {
 
+        $json = json_decode( file_get_contents('php://input'), true);
+        $path = @$json['path'] ?: '/';
+
         $freeboxMaster = Config::get( 'assoc')[0];
         $application->setAppToken( $freeboxMaster['token']);
         $application->setFreeboxApiHost( $freeboxMaster['host']);
         $application->authorize();
         $application->openSession();
-
-        $path = @$_POST['path'];
 
         $fileShare = new FileSharingLink( $application);
         $share     = $fileShare->create( $path);

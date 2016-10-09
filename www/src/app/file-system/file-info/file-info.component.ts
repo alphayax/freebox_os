@@ -1,8 +1,8 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { FileInfo } from "../file-info";
-import {FileSystemService} from "../file-system.service";
-import {Router} from "@angular/router";
-import {FreehubApiService} from "../../shared/freehub-api.service";
+import { Router} from "@angular/router";
+import { FreehubApiService} from "../../shared/freehub-api.service";
+
 
 @Component({
     selector: 'file-info',
@@ -14,13 +14,13 @@ export class FileInfoComponent {
     @Input()
     fileInfo: FileInfo;
 
-    @ViewChild('mavideo') mavideo;
+    @ViewChild('mavideo')
+    mavideo;
 
     url: string;
 
     constructor(
         private router: Router,
-        private fileSystemService: FileSystemService,
         private freeHubApiService : FreehubApiService,
     ){ }
 
@@ -37,11 +37,12 @@ export class FileInfoComponent {
     }
 
     playInBrowser( path) {
-        this.fileSystemService.getShareLink( path)
-            .then( shareLink => {
-                let link = ['/player', btoa( shareLink.url), btoa( this.fileInfo.fileInfo.mimetype)];
-                this.router.navigate(link);
-            })
+        this.freeHubApiService.send( 'filesystem', 'share', {
+            "path" : path
+        }).then( shareLink => {
+            let link = ['/player', btoa( shareLink.url), btoa( this.fileInfo.fileInfo.mimetype)];
+            this.router.navigate(link);
+        });
     }
 
     directDownload( ) {

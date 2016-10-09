@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FileSystemService, DirectoryInfo } from './file-system.service';
+import { DirectoryInfo } from './file-system.service';
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { FreehubApiService } from "../shared/freehub-api.service";
 
 @Component({
     selector: 'file-system',
     templateUrl : 'file-system.component.html',
-    providers : [FileSystemService]
 })
 
 

@@ -52,7 +52,6 @@ const myFirebaseAuthConfig = {
         PlayerComponent,
     ],
     providers: [
-        FileSystemService,
         FreehubApiService,
     ],
     bootstrap: [
