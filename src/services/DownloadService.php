@@ -38,6 +38,11 @@ class DownloadService {
         return $apiResponse;
     }
 
+    /**
+     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
+     * @param \alphayax\freebox\utils\Application    $application
+     * @return \alphayax\freebox\os\utils\ApiResponse
+     */
     public static function clearDone( freebox\os\utils\ApiResponse $apiResponse, freebox\utils\Application $application) {
 
         $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];

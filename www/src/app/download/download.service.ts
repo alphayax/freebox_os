@@ -10,7 +10,7 @@ export class DownloadService {
         private freeHubApiService : FreehubApiService,
     ) { }
 
-    getDownloads() {
+    getDownloads() : Promise<DownloadItem[]> {
 
         return this.freeHubApiService.send( 'download', 'explore', {
         }).then( response => response as DownloadItem[]);
