@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FileSystemService, DirectoryPart, DirectoryInfo } from './file-system.service';
-import { FileInfo } from "./file-info";
-import {ActivatedRoute, Params, Router} from "@angular/router";
+import { FileSystemService, DirectoryInfo } from './file-system.service';
+import { ActivatedRoute, Params, Router } from "@angular/router";
+import { FreehubApiService } from "../shared/freehub-api.service";
 
 @Component({
     selector: 'file-system',
@@ -13,15 +13,11 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 export class FileSystemComponent implements OnInit {
 
     directoryInfo: DirectoryInfo;
-    toto: DirectoryPart;
-    files : FileInfo[];
-    error: any;
-
 
     constructor(
-        private fileSystemService: FileSystemService,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private freeHubApiService : FreehubApiService,
     ){ }
 
     navigate( path){
@@ -29,14 +25,11 @@ export class FileSystemComponent implements OnInit {
     }
 
     getDirectoryInfo( path){
-        this.fileSystemService.getDirectoryInfo( path)
-            .then(directoryInfo => {
-                this.directoryInfo = directoryInfo;
-                this.toto = directoryInfo.path_part;
-                this.files = directoryInfo.files;
-                console.log( directoryInfo);
-            })
-            .catch(error => this.error = error);
+        this.freeHubApiService.send( 'filesystem', 'explore', {
+            "path" : path
+        }).then( directoryInfo => {
+            this.directoryInfo = directoryInfo;
+        });
     }
 
     ngOnInit() {

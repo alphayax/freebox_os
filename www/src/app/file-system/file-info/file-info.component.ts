@@ -2,6 +2,7 @@ import {Component, Input, ViewChild} from '@angular/core';
 import { FileInfo } from "../file-info";
 import {FileSystemService} from "../file-system.service";
 import {Router} from "@angular/router";
+import {FreehubApiService} from "../../shared/freehub-api.service";
 
 @Component({
     selector: 'file-info',
@@ -19,7 +20,8 @@ export class FileInfoComponent {
 
     constructor(
         private router: Router,
-        private fileSystemService: FileSystemService
+        private fileSystemService: FileSystemService,
+        private freeHubApiService : FreehubApiService,
     ){ }
 
     navigate( path){
@@ -44,5 +46,11 @@ export class FileInfoComponent {
 
     directDownload( ) {
 
+    }
+
+    play( path){
+        this.freeHubApiService.send( 'filesystem', 'play', {
+            "path" : path
+        })
     }
 }

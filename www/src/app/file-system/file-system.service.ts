@@ -31,7 +31,6 @@ export class FileSystemService {
 
     // TODO : Mettre la vraie url externe
     private filesystem_explore_url = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=explore';
-    private filesystem_play = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=play';
     private filesystem_share = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=share';
     private filesystem_synopsis = 'http://ayx.freeboxos.fr:14789/freebox_os/api.php?service=filesystem&action=synopsis';
 

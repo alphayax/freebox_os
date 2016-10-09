@@ -33,25 +33,7 @@ class FileSystemService {
 
 
             case 'play':
-                $path = @$_POST['path'];
-
-                // First, we have to share the file over the internet (It's stupid, but it's working only like that...)
-                $fileShare = new FileSharingLink( $application);
-                $share = $fileShare->create( $path);
-
-                // Then, we launch the AirMedia Request
-                $request = new AirMediaReceiverRequest();
-                $request->setAction( Action::START);
-                $request->setMediaType( MediaType::VIDEO);
-                $request->setMedia( $share->getFullurl());
-
-                $am = new AirMediaReceiver( $application);
-                $sent = $am->sendRequest( 'Freebox Player', $request);
-                $apiResponse->setData([
-                    'sent' => $sent,
-                    'path' => $path,
-                ]);
-                break;
+                return static::play( $apiResponse, $application);
 
             case 'share':
                 return static::share( $apiResponse, $application);
@@ -64,6 +46,36 @@ class FileSystemService {
                 $apiResponse->setError( "Unknown action ($action)");
         }
 
+        return $apiResponse;
+    }
+
+    /**
+     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
+     * @param \alphayax\freebox\utils\Application    $application
+     * @return \alphayax\freebox\os\utils\ApiResponse
+     */
+    protected static function play( ApiResponse $apiResponse, Application $application) {
+
+        $json = json_decode( file_get_contents('php://input'), true);
+        $path = @$json['path'];
+
+        // First, we have to share the file over the internet (It's stupid, but it's working only like that...)
+        $fileShare = new FileSharingLink( $application);
+        $share = $fileShare->create( $path);
+
+        // Then, we launch the AirMedia Request
+        $request = new AirMediaReceiverRequest();
+        $request->setAction( Action::START);
+        $request->setMediaType( MediaType::VIDEO);
+        $request->setMedia( $share->getFullurl());
+
+        $am = new AirMediaReceiver( $application);
+        $sent = $am->sendRequest( 'Freebox Player', $request);
+
+        $apiResponse->setData([
+            'sent' => $sent,
+            'path' => $path,
+        ]);
 
         return $apiResponse;
     }
@@ -101,13 +113,14 @@ class FileSystemService {
      */
     protected static function explore( ApiResponse $apiResponse, Application $application) {
 
+        $json = json_decode( file_get_contents('php://input'), true);
+        $directory = @$json['path'] ?: '/';
+
         $freeboxMaster = Config::get( 'assoc')[0];
         $application->setAppToken( $freeboxMaster['token']);
         $application->setFreeboxApiHost( $freeboxMaster['host']);
         $application->authorize();
         $application->openSession();
-
-        $directory = @$_POST['path'] ?: '/';
 
         $fileSystemListing    = new FileSystemListing( $application);
         $fileInfos = $fileSystemListing->getFilesFromDirectory( $directory);
