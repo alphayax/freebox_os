@@ -2,47 +2,31 @@
 namespace alphayax\freebox\os\services;
 use alphayax\freebox\api\v3\services\download\Download;
 use alphayax\freebox\os\etc\Config;
-use alphayax\freebox\os\utils\ApiResponse;
-use alphayax\freebox\utils\Application;
+use alphayax\freebox\os\utils\Service;
 
 /**
  * Class DlRssService
  * @package alphayax\freebox\os\services
  */
-class DlRssService {
+class DlRssService extends Service {
 
     /**
-     * @param $application
-     * @return \alphayax\freebox\os\utils\ApiResponse
+     * @inheritdoc
      */
-    public static function getAction( $application) {
-        $apiResponse = new ApiResponse();
+    public function executeAction() {
         $action = @$_GET['action'];
         switch( $action){
 
-            case 'get_list':
-                $apiResponse = static::getList( $apiResponse, $application);
-                break;
-
-            case 'check_from_id':
-                $apiResponse = static::checkFromId( $apiResponse, $application);
-                break;
-
-            default:
-                $apiResponse->setSuccess( false);
-                $apiResponse->setError( "Unknown action ($action)");
-
+            case 'get_list'     : $this->getList();     break;
+            case 'check_from_id': $this->checkFromId(); break;
+            default : $this->actionNotFound( $action);  break;
         }
-
-        return $apiResponse;
     }
 
     /**
-     * @param ApiResponse $apiResponse
-     * @param $application
-     * @return \alphayax\freebox\os\utils\ApiResponse
+     *
      */
-    private static function getList( ApiResponse $apiResponse, $application) {
+    private function getList() {
         $configs = [];
 
         /// Scan files for configs
@@ -55,17 +39,13 @@ class DlRssService {
             $configs[] = $config;
         }
 
-        $apiResponse->setData( $configs);
-
-        return $apiResponse;
+        $this->apiResponse->setData( $configs);
     }
 
     /**
-     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
-     * @param                                        $application
-     * @return \alphayax\freebox\os\utils\ApiResponse
+     *
      */
-    private static function checkFromId( ApiResponse $apiResponse, Application $application) {
+    private function checkFromId() {
 
         $return = [];
         $config = [];
@@ -85,23 +65,23 @@ class DlRssService {
         }
 
         if( empty( $config)){
-            $apiResponse->setSuccess( false);
-            $apiResponse->setError( 'Configuration non trouvee ' . var_export($id, true));
-            return $apiResponse;
+            $this->apiResponse->setSuccess( false);
+            $this->apiResponse->setError( 'Configuration non trouvee ' . var_export($id, true));
+            return;
         }
 
         $freeboxMaster = Config::get( 'assoc')[0];
-        $application->setAppToken( $freeboxMaster['token']);
-        $application->setFreeboxApiHost( $freeboxMaster['host']);
-        $application->authorize();
-        $application->openSession();
-        $downloadService = new Download( $application);
+        $this->application->setAppToken( $freeboxMaster['token']);
+        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
+        $this->application->authorize();
+        $this->application->openSession();
+        $downloadService = new Download( $this->application);
 
         $rss = simplexml_load_file( $config['rss']);
         if( ! $rss){
-            $apiResponse->setSuccess( false);
-            $apiResponse->setError( "Impossible de scanner le flux RSS");
-            return $apiResponse;
+            $this->apiResponse->setSuccess( false);
+            $this->apiResponse->setError( "Impossible de scanner le flux RSS");
+            return;
         }
         foreach( $rss->xpath('//item') as $item){
             $title = (string) $item->xpath('title')[0];
@@ -123,8 +103,7 @@ class DlRssService {
         unset( $config['id']);
 
         file_put_contents( $rfi, json_encode( $config, JSON_PRETTY_PRINT));
-        $apiResponse->setData($return);
-        return $apiResponse;
+        $this->apiResponse->setData($return);
     }
 
 }

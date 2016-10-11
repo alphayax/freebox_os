@@ -1,7 +1,6 @@
 <?php
 namespace alphayax\freebox\os\utils;
 use \alphayax\freebox;
-use Firebase\FirebaseLib;
 
 /**
  * Class FreeboxOsApplication
@@ -24,26 +23,29 @@ class FreeboxOsApplication {
         $this->application = new freebox\utils\Application( static::APP_ID, static::APP_NAME, static::APP_VERSION);
     }
 
+    protected function getService( $service) {
+        switch( $service){
+            case 'config'         : return new freebox\os\services\ConfigService( $this->application);
+            case 'download'       : return new freebox\os\services\DownloadService( $this->application);
+            case 'filesystem'     : return new freebox\os\services\FileSystemService( $this->application);
+            case 'download_dlrss' : return new freebox\os\services\DlRssService( $this->application);
+            default : throw new \Exception( 'Unknown service : '. $service);
+        }
+    }
+
     /**
      * For API
      */
     public function getAction() {
         $service = $_GET['service'];
-        $data = [];
+
+        /*
         switch( $service){
-
-            case 'config' :
-                return freebox\os\services\ConfigService::getAction( $this->application);
-
-            case 'download' :
-                return freebox\os\services\DownloadService::getAction( $this->application);
 
             case 'download_dlrss':
                 return freebox\os\services\DlRssService::getAction( $this->application);
 
-            case 'filesystem' :
-                return freebox\os\services\FileSystemService::getAction( $this->application);
-/*
+
             case 'test':
                 $token = $_POST['token'];
                 $DEFAULT_PATH = '/firebase/example';
@@ -61,10 +63,15 @@ class FreeboxOsApplication {
 
                 $name = $firebase->get($DEFAULT_PATH . '/name/contact001');
                 return $name;
-*/
-        }
 
-        return $data;
+            default:
+                return [];
+        }*/
+
+        $service = $this->getService( $service);
+        $service->executeAction();
+
+        return $service->getApiResponse();
     }
 
 }

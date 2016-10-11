@@ -8,59 +8,55 @@ use alphayax\freebox\api\v3\symbols\AirMedia\Action;
 use alphayax\freebox\api\v3\symbols\AirMedia\MediaType;
 use alphayax\freebox\os\etc\Config;
 use alphayax\freebox\os\models\FileSystem\FileInfo;
-use alphayax\freebox\os\models\FileSystem\FileItem;
-use alphayax\freebox\os\utils\ApiResponse;
 use alphayax\freebox\os\utils\Omdb\Omdb;
-use alphayax\freebox\utils\Application;
+use alphayax\freebox\os\utils\Service;
 
 /**
  * Class FileSystemService
  * @package alphayax\freebox\os\services
  */
-class FileSystemService {
+class FileSystemService extends Service {
 
-    public static function getAction( $application) {
-        $apiResponse = new ApiResponse();
+    /**
+     * @inheritdoc
+     */
+    public function executeAction() {
         $action = @$_GET['action'];
         switch( $action){
 
-            case 'synopsis' :
-                $movie = Omdb::search( @$_POST['movie_title']);
-                $apiResponse->setData([
-                    'plot'  => $movie->getPlot(),
-                ]);
-                break;
-
-
-            case 'play':
-                return static::play( $apiResponse, $application);
-
-            case 'share':
-                return static::share( $apiResponse, $application);
-
-            case 'explore':
-                return static::explore( $apiResponse, $application);
-
-            default:
-                $apiResponse->setSuccess( false);
-                $apiResponse->setError( "Unknown action ($action)");
+            case 'synopsis' : $this->synopsis();        break;
+            case 'play'     : $this->play();            break;
+            case 'share'    : $this->share();           break;
+            case 'explore'  : $this->explore();         break;
+            default : $this->actionNotFound( $action);  break;
         }
-
-        return $apiResponse;
     }
 
     /**
-     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
-     * @param \alphayax\freebox\utils\Application    $application
-     * @return \alphayax\freebox\os\utils\ApiResponse
+     *
      */
-    protected static function play( ApiResponse $apiResponse, Application $application) {
+    protected function synopsis() {
+        $movie = Omdb::search( @$_POST['movie_title']);
+        $this->apiResponse->setData([
+            'plot'  => $movie->getPlot(),
+        ]);
+    }
 
-        $json = json_decode( file_get_contents('php://input'), true);
-        $path = @$json['path'];
+    /**
+     *
+     */
+    protected function play() {
+
+        $path = @$this->apiRequest['path'];
+
+        $freeboxMaster = Config::get( 'assoc')[0];
+        $this->application->setAppToken( $freeboxMaster['token']);
+        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
+        $this->application->authorize();
+        $this->application->openSession();
 
         // First, we have to share the file over the internet (It's stupid, but it's working only like that...)
-        $fileShare = new FileSharingLink( $application);
+        $fileShare = new FileSharingLink( $this->application);
         $share = $fileShare->create( $path);
 
         // Then, we launch the AirMedia Request
@@ -69,65 +65,55 @@ class FileSystemService {
         $request->setMediaType( MediaType::VIDEO);
         $request->setMedia( $share->getFullurl());
 
-        $am = new AirMediaReceiver( $application);
+        $am = new AirMediaReceiver( $this->application);
         $sent = $am->sendRequest( 'Freebox Player', $request);
 
-        $apiResponse->setData([
+        $this->apiResponse->setData([
             'sent' => $sent,
             'path' => $path,
         ]);
-
-        return $apiResponse;
     }
 
     /**
-     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
-     * @param \alphayax\freebox\utils\Application    $application
-     * @return \alphayax\freebox\os\utils\ApiResponse
+     *
      */
-    protected static function share( ApiResponse $apiResponse, Application $application) {
+    protected function share() {
 
-        $json = json_decode( file_get_contents('php://input'), true);
-        $path = @$json['path'] ?: '/';
+        $path = @$this->apiRequest['path'] ?: '/';
 
         $freeboxMaster = Config::get( 'assoc')[0];
-        $application->setAppToken( $freeboxMaster['token']);
-        $application->setFreeboxApiHost( $freeboxMaster['host']);
-        $application->authorize();
-        $application->openSession();
+        $this->application->setAppToken( $freeboxMaster['token']);
+        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
+        $this->application->authorize();
+        $this->application->openSession();
 
-        $fileShare = new FileSharingLink( $application);
+        $fileShare = new FileSharingLink( $this->application);
         $share     = $fileShare->create( $path);
-        $apiResponse->setData([
+        $this->apiResponse->setData([
             'name'   => $share->getName(),
             'url'    => $share->getFullurl(),
             'expire' => $share->getExpire(),
         ]);
-
-        return $apiResponse;
     }
 
     /**
-     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
-     * @param \alphayax\freebox\utils\Application    $application
-     * @return \alphayax\freebox\os\utils\ApiResponse
+     *
      */
-    protected static function explore( ApiResponse $apiResponse, Application $application) {
+    protected function explore() {
 
-        $json = json_decode( file_get_contents('php://input'), true);
-        $directory = @$json['path'] ?: '/';
+        $directory = @$this->apiRequest['path'] ?: '/';
 
         $freeboxMaster = Config::get( 'assoc')[0];
-        $application->setAppToken( $freeboxMaster['token']);
-        $application->setFreeboxApiHost( $freeboxMaster['host']);
-        $application->authorize();
-        $application->openSession();
+        $this->application->setAppToken( $freeboxMaster['token']);
+        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
+        $this->application->authorize();
+        $this->application->openSession();
 
-        $fileSystemListing    = new FileSystemListing( $application);
+        $fileSystemListing    = new FileSystemListing( $this->application);
         $fileInfos = $fileSystemListing->getFilesFromDirectory( $directory);
         $return = [
             'path' => $directory,
-            'path_part' => static::getDirectoryParts( $directory),
+            'path_part' => $this->getDirectoryParts( $directory),
             'files' => [],
         ];
         foreach ( $fileInfos as $fileInfo){
@@ -138,16 +124,14 @@ class FileSystemService {
             $return['files'][] = $fileItem;
         }
 
-        $apiResponse->setData( $return);
-
-        return $apiResponse;
+        $this->apiResponse->setData( $return);
     }
 
     /**
      * @param $directory
      * @return mixed
      */
-    private static function getDirectoryParts( $directory) {
+    private function getDirectoryParts( $directory) {
         $parts  = explode( DIRECTORY_SEPARATOR, $directory);
         $path   = '';
         $return = [];

@@ -4,52 +4,32 @@ use alphayax\freebox\api\v3\services\ApiVersion;
 use alphayax\freebox\api\v3\services\login\Association;
 use alphayax\freebox\api\v3\symbols as v3_symbols;
 use alphayax\freebox\os\etc\Config;
-use alphayax\freebox\os\utils\ApiResponse;
-use alphayax\freebox\utils\Application;
+use alphayax\freebox\os\utils\Service;
 
 /**
  * Class ConfigService
  * @package alphayax\freebox\os\services
  */
-class ConfigService {
+class ConfigService extends Service {
 
     /**
-     * @param $application
-     * @return mixed
+     * @inheritdoc
      */
-    public static function getAction( $application) {
-        $apiResponse = new ApiResponse();
+    public function executeAction() {
         $action = @$_GET['action'];
         switch( $action){
 
-            case 'get_freebox':
-                $apiResponse = static::getFreebox( $apiResponse, $application);
-                break;
-
-            case 'association':
-                $apiResponse = static::association( $apiResponse, $application);
-                break;
-
-            default:
-                $apiResponse->setSuccess( false);
-                $apiResponse->setError( "Unknown action ($action)");
-
+            case 'get_freebox': $this->getFreebox();    break;
+            case 'association': $this->association();   break;
+            default : $this->actionNotFound( $action);  break;
         }
-
-        return $apiResponse;
     }
 
     /**
-     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
-     * @param \alphayax\freebox\utils\Application    $application
-     * @return \alphayax\freebox\os\utils\ApiResponse
+     *
      */
-    protected function getFreebox( ApiResponse $apiResponse, Application $application) {
-
-        $json = json_decode( file_get_contents('php://input'), true);
-        $uid  = @$json['uid'];
-
-        trigger_error( "UID : $uid");
+    protected function getFreebox() {
+        //$uid  = @$this->apiRequest['uid'];
 
         $assocConf = Config::get( 'assoc');
         $FbxInfos = [];
@@ -59,30 +39,26 @@ class ConfigService {
             $FbxInfos[] = $freebox['host'];
         }
 
-        $apiResponse->setData( $FbxInfos);
-
-        return $apiResponse;
+        $this->apiResponse->setData( $FbxInfos);
     }
 
     /**
-     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
-     * @param \alphayax\freebox\utils\Application    $application
-     * @return \alphayax\freebox\os\utils\ApiResponse
+     *
      */
-    private static function association( ApiResponse $apiResponse, Application $application) {
+    private function association() {
 
-        $json = json_decode( file_get_contents('php://input'), true);
-        $app_token  = @$json['app_token'];
-        $track_id   = @$json['track_id'];
-        $api_domain = @$json['api_domain'];
-        $https_port = @$json['https_port'];
+        $app_token  = @$this->apiRequest['app_token'];
+        $track_id   = @$this->apiRequest['track_id'];
+        $api_domain = @$this->apiRequest['api_domain'];
+        $https_port = @$this->apiRequest['https_port'];
+        $uid        = @$this->apiRequest['uid'];
 
         /// Check parameters
-        if( empty( $app_token) || empty( $track_id) || empty( $api_domain) || empty( $https_port)){
-            $apiResponse->setSuccess( false);
-            $apiResponse->setError( 'Requested parameters are missing');
+        if( empty( $app_token) || empty( $track_id) || empty( $api_domain) || empty( $https_port) || empty( $uid)){
+            $this->apiResponse->setSuccess( false);
+            $this->apiResponse->setError( 'Requested parameters are missing');
 
-            return $apiResponse;
+            return;
         }
 
         /// Build Freebox URI
@@ -90,72 +66,70 @@ class ConfigService {
 
         // TODO : Check if https is available
 
-        $application->setAppToken( $app_token);
-        $application->setFreeboxApiHost( $freebox_uri);
+        $this->application->setAppToken( $app_token);
+        $this->application->setFreeboxApiHost( $freebox_uri);
 
         /// Try to connect to the box
         try {
-            $apiVersion = new ApiVersion($application);
+            $apiVersion = new ApiVersion($this->application);
             $maFreebox = $apiVersion->getApiVersion();
         }
         catch( \Exception $e){
-            $apiResponse->setSuccess( false);
-            $apiResponse->setError( $e->getMessage());
+            $this->apiResponse->setSuccess( false);
+            $this->apiResponse->setError( $e->getMessage());
 
-            return $apiResponse;
+            return;
         }
 
         if( empty( $maFreebox)){
-            $apiResponse->setSuccess( false);
-            $apiResponse->setError( 'Unable to contact the freebox on '. $freebox_uri);
+            $this->apiResponse->setSuccess( false);
+            $this->apiResponse->setError( 'Unable to contact the freebox on '. $freebox_uri);
 
-            return $apiResponse;
+            return;
         }
 
         /// Try token
         try {
-            $assoc = new Association( $application);
+            $assoc = new Association( $this->application);
             $assoc->setTrackId( $track_id);
 
             /// Check Authorization status
             $status = $assoc->getAuthorizationStatus()['status'];
             if( $status != Association::STATUS_GRANTED){
-                $apiResponse->setSuccess( false);
-                $apiResponse->setError( 'Association status not valid : '. $status);
+                $this->apiResponse->setSuccess( false);
+                $this->apiResponse->setError( 'Association status not valid : '. $status);
 
-                return $apiResponse;
+                return;
             }
 
             /// Open session
-            $application->openSession();
+            $this->application->openSession();
         }
         catch( \Exception $e){
-            $apiResponse->setSuccess( false);
-            $apiResponse->setError( $e->getMessage());
+            $this->apiResponse->setSuccess( false);
+            $this->apiResponse->setError( $e->getMessage());
 
-            return $apiResponse;
+            return;
         }
 
         /// Saving assoc
-        static::saveNewAssociation( [
+        $this->saveNewAssociation( $uid, [
             'token' => $app_token,
             'host'  => $freebox_uri,
         ]);
 
 
         $permissions = [
-            'explorer' => $application->hasPermission( v3_symbols\Permissions::EXPLORER),
-            'download' => $application->hasPermission( v3_symbols\Permissions::DOWNLOADER),
+            'explorer' => $this->application->hasPermission( v3_symbols\Permissions::EXPLORER),
+            'download' => $this->application->hasPermission( v3_symbols\Permissions::DOWNLOADER),
         ];
 
-        $apiResponse->setData( $permissions);
-
-        return $apiResponse;
+        $this->apiResponse->setData( $permissions);
     }
 
-    protected static function saveNewAssociation( $association_x) {
+    protected function saveNewAssociation( $uid, $association_x) {
         $assocConf = Config::get( 'assoc');
-        $assocConf[] = $association_x;
+        $assocConf[$uid] = $association_x;
         Config::set( 'assoc', $assocConf);
     }
 

@@ -7,54 +7,38 @@ use alphayax\freebox;
  * Class DownloadService
  * @package alphayax\freebox\os\services
  */
-class DownloadService {
+class DownloadService extends freebox\os\utils\Service {
 
     /**
-     * @param $application
-     * @return mixed
+     * @inheritdoc
      */
-    public static function getAction( freebox\utils\Application $application) {
-        $apiResponse = new freebox\os\utils\ApiResponse();
+    public function executeAction() {
         $action = $_GET['action'];
         switch ( $action){
 
-            case 'clear_done':
-                return static::clearDone( $apiResponse, $application);
-
-            case 'clear_id':
-                return static::clearFromId( $apiResponse, $application);
-
-            case 'update_id':
-                return static::updateFromId( $apiResponse, $application);
-
-            case 'explore':
-                return static::explore( $apiResponse, $application);
-
-            default:
-                $apiResponse->setSuccess( false);
-                $apiResponse->setError( "Unknown action ($action)");
+            case 'clear_done'   : $this->clearDone();    break;
+            case 'clear_id'     : $this->clearFromId();  break;
+            case 'update_id'    : $this->updateFromId(); break;
+            case 'explore'      : $this->explore();      break;
+            default : $this->actionNotFound( $action);   break;
         }
-
-        return $apiResponse;
     }
 
     /**
-     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
-     * @param \alphayax\freebox\utils\Application    $application
-     * @return \alphayax\freebox\os\utils\ApiResponse
+     *
      */
-    public static function clearDone( freebox\os\utils\ApiResponse $apiResponse, freebox\utils\Application $application) {
+    public function clearDone() {
 
         $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
-        $application->setAppToken( $freeboxMaster['token']);
-        $application->setFreeboxApiHost( $freeboxMaster['host']);
-        $application->authorize();
-        $application->openSession();
+        $this->application->setAppToken( $freeboxMaster['token']);
+        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
+        $this->application->authorize();
+        $this->application->openSession();
 
         $cleanedTasks = [];
         $isSuccess = true;
 
-        $dlService  = new freebox\api\v3\services\download\Download( $application);
+        $dlService  = new freebox\api\v3\services\download\Download( $this->application);
         $downloadTasks = $dlService->getAll();
         foreach( $downloadTasks as $downloadTask){
             switch( $downloadTask->getStatus()){
@@ -64,53 +48,44 @@ class DownloadService {
                     break;
             }
         }
-        $apiResponse->setSuccess( $isSuccess);
-        $apiResponse->setData( $cleanedTasks);
-        return $apiResponse;
+        $this->apiResponse->setSuccess( $isSuccess);
+        $this->apiResponse->setData( $cleanedTasks);
     }
 
     /**
-     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
-     * @param \alphayax\freebox\utils\Application    $application
-     * @return \alphayax\freebox\os\utils\ApiResponse
+     *
      */
-    public static function clearFromId( freebox\os\utils\ApiResponse $apiResponse, freebox\utils\Application $application) {
+    public function clearFromId() {
         $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
-        $application->setAppToken( $freeboxMaster['token']);
-        $application->setFreeboxApiHost( $freeboxMaster['host']);
-        $application->authorize();
-        $application->openSession();
+        $this->application->setAppToken( $freeboxMaster['token']);
+        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
+        $this->application->authorize();
+        $this->application->openSession();
 
-        $json = json_decode( file_get_contents('php://input'), true);
-        $downloadId = @$json['id'];
+        $downloadId = @$this->apiRequest['id'];
 
-        $dlService  = new freebox\api\v3\services\download\Download( $application);
+        $dlService  = new freebox\api\v3\services\download\Download( $this->application);
         $downloadTask = $dlService->getFromId( $downloadId);
         $isSuccess = $dlService->deleteFromId( $downloadTask->getId());
-        $apiResponse->setSuccess( $isSuccess);
-        $apiResponse->setData( static::taskToDownloadItem( $downloadTask));
-
-        return $apiResponse;
+        $this->apiResponse->setSuccess( $isSuccess);
+        $this->apiResponse->setData( $this->taskToDownloadItem( $downloadTask));
     }
 
     /**
-     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
-     * @param \alphayax\freebox\utils\Application    $application
-     * @return \alphayax\freebox\os\utils\ApiResponse
+     *
      */
-    public static function updateFromId(freebox\os\utils\ApiResponse $apiResponse, freebox\utils\Application $application) {
+    public function updateFromId() {
         $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
-        $application->setAppToken( $freeboxMaster['token']);
-        $application->setFreeboxApiHost( $freeboxMaster['host']);
-        $application->authorize();
-        $application->openSession();
+        $this->application->setAppToken( $freeboxMaster['token']);
+        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
+        $this->application->authorize();
+        $this->application->openSession();
 
-        $json = json_decode( file_get_contents('php://input'), true);
-        $downloadId = @$json['id'];
-        $status     = @$json['status'];
+        $downloadId = @$this->apiRequest['id'];
+        $status     = @$this->apiRequest['status'];
 
 
-        $dlService  = new freebox\api\v3\services\download\Download( $application);
+        $dlService  = new freebox\api\v3\services\download\Download( $this->application);
         $downloadTask = $dlService->getFromId( $downloadId);
 
         switch( $status){
@@ -119,48 +94,40 @@ class DownloadService {
         }
 
         $isSuccess = $dlService->update( $downloadTask);
-        $apiResponse->setSuccess( $isSuccess);
-        $apiResponse->setData( static::taskToDownloadItem( $downloadTask));
-
-        return $apiResponse;
+        $this->apiResponse->setSuccess( $isSuccess);
+        $this->apiResponse->setData( $this->taskToDownloadItem( $downloadTask));
     }
 
     /**
-     * @param \alphayax\freebox\os\utils\ApiResponse $apiResponse
-     * @param \alphayax\freebox\utils\Application    $application
-     * @return \alphayax\freebox\os\utils\ApiResponse
+     *
      */
-    public static function explore( freebox\os\utils\ApiResponse $apiResponse, freebox\utils\Application $application) {
+    public function explore() {
 
         $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
-        $application->setAppToken( $freeboxMaster['token']);
-        $application->setFreeboxApiHost( $freeboxMaster['host']);
-        $application->authorize();
-        $application->openSession();
+        $this->application->setAppToken( $freeboxMaster['token']);
+        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
+        $this->application->authorize();
+        $this->application->openSession();
 
-        $dlService    = new freebox\api\v3\services\download\Download( $application);
+        $dlService    = new freebox\api\v3\services\download\Download( $this->application);
         $downloadTasks = $dlService->getAll();
 
         $ret = [];
         foreach ($downloadTasks as $downloadTask){
-            $ret[] = static::taskToDownloadItem( $downloadTask);
+            $ret[] = $this->taskToDownloadItem( $downloadTask);
         }
 
-        $apiResponse->setData( $ret);
-
-        return $apiResponse;
+        $this->apiResponse->setData( $ret);
     }
 
     /**
      * @param \alphayax\freebox\api\v3\models\Download\Task $task
      * @return \alphayax\freebox\os\models\Download\DownloadItem
      */
-    protected static function taskToDownloadItem( freebox\api\v3\models\Download\Task $task) {
+    protected function taskToDownloadItem( freebox\api\v3\models\Download\Task $task) {
         $dl = new freebox\os\models\Download\DownloadItem( $task);
         $dl->init();
         return $dl;
     }
-
-
 
 }
