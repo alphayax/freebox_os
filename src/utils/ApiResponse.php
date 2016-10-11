@@ -19,7 +19,7 @@ class ApiResponse implements \JsonSerializable {
      * @param array $data
      */
     public function __construct( array $data = []){
-        $this->startTime = microtime();
+        $this->startTime = microtime( true);
         $this->data = $data;
     }
 
@@ -49,7 +49,7 @@ class ApiResponse implements \JsonSerializable {
      * @return int
      */
     protected function computeElapsedTime() {
-        return microtime() - $this->startTime;
+        return microtime( true) - $this->startTime;
     }
 
     /**
