@@ -91,6 +91,7 @@ class DownloadService extends freebox\os\utils\Service {
         switch( $status){
             case 'pause'    : $downloadTask->setStatus( Status::STOPPED);       break;
             case 'download' : $downloadTask->setStatus( Status::DOWNLOADING);   break;
+            case 'retry'    : $downloadTask->setStatus( Status::RETRY);         break;
         }
 
         $isSuccess = $dlService->update( $downloadTask);

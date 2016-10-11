@@ -43,6 +43,9 @@
                         <li *ngIf="isResumable()">
                             <a (click)="resumeDownload(downloadItem.downloadTask.id);">Relancer</a>
                         </li>
+                        <li *ngIf="isRetryable()">
+                            <a (click)="retryDownload(downloadItem.downloadTask.id);">Réessayer</a>
+                        </li>
                         <li class="divider"></li>
                         <li><a (click)="navigate();">Voir dans explorateur</a></li>
                     </ul>

@@ -39,6 +39,13 @@ export class DownloadItemComponent {
             });
     }
 
+    retryDownload() {
+        this.downloadItemService.updateFromId( this.downloadItem.downloadTask.id, 'retry')
+            .then(download => {
+                this.downloadItem = download;
+            });
+    }
+
     public getRxPct(): number {
         return this.downloadItem.downloadTask.rx_pct / 100;
     }
@@ -66,6 +73,10 @@ export class DownloadItemComponent {
 
     isResumable() {
         return this.downloadItem.downloadTask.status === 'stopped';
+    }
+
+    isRetryable() {
+        return this.downloadItem.downloadTask.status === 'error';
     }
 }
 
