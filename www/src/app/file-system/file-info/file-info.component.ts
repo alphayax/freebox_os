@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FileInfo } from "../file-info";
 import { Router} from "@angular/router";
 import { FreehubApiService} from "../../shared/freehub-api.service";
@@ -14,9 +14,6 @@ export class FileInfoComponent {
     @Input()
     fileInfo: FileInfo;
 
-    @ViewChild('mavideo')
-    mavideo;
-
     url: string;
 
     constructor(
@@ -24,7 +21,7 @@ export class FileInfoComponent {
         private freeHubApiService : FreehubApiService,
     ){ }
 
-    navigate( path){
+    navigate( path : string){
         this.router.navigate(['/file-system', btoa( path)]);
     }
 
@@ -36,7 +33,11 @@ export class FileInfoComponent {
         );
     }
 
-    playInBrowser( path) {
+    isPlayable(){
+        return this.fileInfo.fileInfo.mimetype.substr( 0, 5) == 'audio' || this.fileInfo.fileInfo.mimetype.substr( 0, 5) == 'video';
+    }
+
+    playInBrowser( path : string) {
         this.freeHubApiService.send( 'filesystem', 'share', {
             "path" : path
         }).then( shareLink => {
@@ -46,7 +47,7 @@ export class FileInfoComponent {
     }
 
     directDownload( ) {
-
+        console.info('Pas encore implémenté !');
     }
 
     play( path){
@@ -54,4 +55,5 @@ export class FileInfoComponent {
             "path" : path
         })
     }
+
 }

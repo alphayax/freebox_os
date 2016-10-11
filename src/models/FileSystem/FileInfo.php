@@ -10,6 +10,9 @@ use alphayax\freebox\os\utils\Poster;
  */
 class FileInfo implements \JsonSerializable {
 
+    // Q&D fix
+    const IMG_HOST = 'http://api.freehub.ondina.alphayax.com:14789/img/';
+
     /** @var \alphayax\freebox\api\v3\models\FileSystem\FileInfo  */
     protected $fileInfo;
 
@@ -36,7 +39,7 @@ class FileInfo implements \JsonSerializable {
 
         // Directory
         if( $this->isDir()){
-            $this->image = 'folder.png';
+            $this->image = static::IMG_HOST . 'folder.png';
         }
 
         // Videos
@@ -64,13 +67,13 @@ class FileInfo implements \JsonSerializable {
     public function getImage() {
 
         if( $this->isDir()){
-            return 'folder.png';
+            return static::IMG_HOST.'folder.png';
         }
 
         $title = $this->movieTitle->getCleanName();
 
-        if( file_exists(  __DIR__ . '/../../www/img/' . $title)){
-            return 'img/'. $title;
+        if( file_exists(  __DIR__ . '/../../../www/img/' . $title)){
+            return static::IMG_HOST. $title;
         }
 
 
@@ -85,8 +88,8 @@ class FileInfo implements \JsonSerializable {
         }
 
         // TODO : Attention. Le nom de fichier peut contenir les caracteres speciaux . .. / \
-        file_put_contents( __DIR__ . '/../../www/img/' . $title, $img);    // TODO : Mettre un meilleur nom pour l'image
-        return 'img/'. $title;
+        file_put_contents( __DIR__ . '/../../../www/img/' . $title, $img);    // TODO : Mettre un meilleur nom pour l'image (genre imdb id)
+        return static::IMG_HOST. $title;
     }
 
     /**

@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { DirectoryInfo } from './file-system.service';
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { FreehubApiService } from "../shared/freehub-api.service";
+import {DirectoryInfo} from "./directory-info";
 
 @Component({
     selector: 'file-system',
     templateUrl : 'file-system.component.html',
 })
+
 
 
 export class FileSystemComponent implements OnInit {

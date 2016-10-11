@@ -25,7 +25,7 @@ class DownloadService extends freebox\os\utils\Service {
     }
 
     /**
-     *
+     * Remove downloads marked as "done"
      */
     public function clearDone() {
 
@@ -53,7 +53,7 @@ class DownloadService extends freebox\os\utils\Service {
     }
 
     /**
-     *
+     * Remove a download with a specific id
      */
     public function clearFromId() {
         $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
@@ -72,7 +72,7 @@ class DownloadService extends freebox\os\utils\Service {
     }
 
     /**
-     *
+     * Update the status of a download with a specific id
      */
     public function updateFromId() {
         $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
@@ -99,7 +99,7 @@ class DownloadService extends freebox\os\utils\Service {
     }
 
     /**
-     *
+     * Get all the download
      */
     public function explore() {
 

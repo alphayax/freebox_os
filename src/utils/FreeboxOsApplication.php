@@ -23,8 +23,15 @@ class FreeboxOsApplication {
         $this->application = new freebox\utils\Application( static::APP_ID, static::APP_NAME, static::APP_VERSION);
     }
 
+    /**
+     * Service Factory
+     * @param $service
+     * @return Service
+     * @throws \Exception
+     */
     protected function getService( $service) {
         switch( $service){
+
             case 'config'         : return new freebox\os\services\ConfigService( $this->application);
             case 'download'       : return new freebox\os\services\DownloadService( $this->application);
             case 'filesystem'     : return new freebox\os\services\FileSystemService( $this->application);
@@ -41,10 +48,6 @@ class FreeboxOsApplication {
 
         /*
         switch( $service){
-
-            case 'download_dlrss':
-                return freebox\os\services\DlRssService::getAction( $this->application);
-
 
             case 'test':
                 $token = $_POST['token'];

@@ -4,7 +4,6 @@ import {Http, Headers} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
 
 
-
 @Injectable()
 export class FreehubApiService {
 
@@ -13,8 +12,8 @@ export class FreehubApiService {
     ) { }
 
     // TODO : Récuperer le host d'un fichier de configuration
-    private host = 'http://ayx.freeboxos.fr:14789';
-    private endPoint = '/freebox_os/api.php?';
+    private host = 'http://api.freehub.ondina.alphayax.com:14789';
+    private endPoint = '/api.php?';
 
     send( service, action, params){
 

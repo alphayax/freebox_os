@@ -16,7 +16,6 @@ import { HomeComponent }         from "./home/home.component";
 import { MenuHeaderComponent }   from "./menu-header.component";
 import { PlayerComponent }       from "./player/player.component";
 
-import { FileSystemService }     from "./file-system/file-system.service";
 import { FreehubApiService }     from "./shared/freehub-api.service";
 
 export const config = {
@@ -28,7 +27,7 @@ export const config = {
 
 const myFirebaseAuthConfig = {
   provider: AuthProviders.Google,
-  method: AuthMethods.Redirect
+  method: AuthMethods.Popup
 };
 
 @NgModule({

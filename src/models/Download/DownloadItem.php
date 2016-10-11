@@ -9,6 +9,9 @@ use alphayax\freebox\os\utils\Unit;
 
 class DownloadItem implements \JsonSerializable {
 
+    // Q&D fix
+    const IMG_HOST = 'http://api.freehub.ondina.alphayax.com:14789/img/';
+
     /** @var \alphayax\freebox\api\v3\models\Download\Task */
     protected $downloadTask;
 
@@ -56,8 +59,8 @@ class DownloadItem implements \JsonSerializable {
 
         $title = $this->getCleanName();
 
-        if( file_exists(  __DIR__ . '/../../www/img/' . $title)){
-            return 'img/'. $title;
+        if( file_exists(  __DIR__ . '/../../../www/img/' . $title)){
+            return static::IMG_HOST . $title;
         }
 
         $poster = Poster::getFromTitle( $title);
@@ -72,8 +75,8 @@ class DownloadItem implements \JsonSerializable {
             return '';
         }
 
-        file_put_contents( __DIR__ . '/../../www/img/' . $title, $img);    // TODO : Mettre un meilleur nom pour l'image
-        return 'img/'. $title;
+        file_put_contents( __DIR__ . '/../../../www/img/' . $title, $img);    // TODO : Mettre un meilleur nom pour l'image
+        return static::IMG_HOST . $title;
     }
 
     /**

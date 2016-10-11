@@ -14,8 +14,8 @@
             </p>
             <p *ngIf="!fileInfo.isDir">
                 <a *ngIf="isStreamable()" class="btn btn-primary btn-xs" (click)="playInBrowser( fileInfo.path)">Streamer</a>
-                <a class="btn btn-primary btn-xs" (click)="directDownload( fileInfo.path)">Télécharger</a>
-                <a class="btn btn-default btn-xs">Lire sur la box</a>
+                <a *ngIf="isPlayable()"   class="btn btn-primary btn-xs" (click)="play( fileInfo.path)">Lire sur la box</a>
+                <a class="btn btn-default btn-xs" (click)="directDownload( fileInfo.path)">Télécharger</a>
                 <a class="btn btn-default btn-xs">Télécharger sur ma box</a>
             </p>
 
