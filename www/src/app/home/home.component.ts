@@ -12,7 +12,7 @@ export class HomeComponent {
 
     freeboxInfos : string[];
     error: any;
-    values:Array<any>;
+    uid: string;
 
     constructor(
         private homeService : HomeService,
@@ -34,15 +34,9 @@ export class HomeComponent {
 
             // User is logged
             if( auth) {
-                let tempArray=[];
-                for(let key in auth){
-                    tempArray.push(auth[key]);
-                    console.log( key, auth[key]);
-                }
-                this.values=tempArray;
+                this.uid = auth.uid;
                 this.getFreeboxInfo( auth.uid);
             }
-
         });
     }
 

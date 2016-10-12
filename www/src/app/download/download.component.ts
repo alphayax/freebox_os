@@ -23,7 +23,6 @@ export class DownloadComponent implements OnInit {
     getDownloads() : void {
         this.downloadService.getDownloads()
             .then(downloads => {
-                console.log( downloads);
               this.downloads            = downloads;
               this.downloadsSeeding     = downloads.filter(download => download.downloadTask.status === 'seeding');
               this.downloadsDone        = downloads.filter(download => download.downloadTask.status === 'done');

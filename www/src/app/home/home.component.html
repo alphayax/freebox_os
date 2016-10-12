@@ -13,11 +13,16 @@
         <thead>
         <tr>
             <th>Freebox</th>
+            <th>&nbsp;</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let freeboxInfo of freeboxInfos">
-            <td>{{freeboxInfo}}</td>
+            <td>{{freeboxInfo.host}}</td>
+            <td>
+                <span *ngIf="freeboxInfo.uid == uid" class="label label-primary">Principale</span>
+                <span *ngIf="freeboxInfo.uid != uid" class="label label-default">Secondaire</span>
+            </td>
         </tr>
         </tbody>
     </table>

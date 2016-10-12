@@ -54,6 +54,7 @@ export class AssociationComponent {
         this.associationService.addFreebox( association)
             .then(freebox => {
                 console.log( freebox);
+                console.log( "Association réussie")
             })
             .catch(error => console.error(error));
     }

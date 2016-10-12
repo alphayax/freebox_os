@@ -29,14 +29,17 @@ class ConfigService extends Service {
      *
      */
     protected function getFreebox() {
-        //$uid  = @$this->apiRequest['uid'];
+        $uid  = @$this->apiRequest['uid'];
 
         $assocConf = Config::get( 'assoc');
         $FbxInfos = [];
 
         // TODO : Return assocConf (without token)
-        foreach ( $assocConf as $freebox){
-            $FbxInfos[] = $freebox['host'];
+        foreach ( $assocConf as $uid => $freebox){
+            $FbxInfos[] = [
+                "uid"   => $uid,
+                "host"  => $freebox['host'],
+            ];
         }
 
         $this->apiResponse->setData( $FbxInfos);
