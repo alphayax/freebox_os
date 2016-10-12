@@ -35,7 +35,7 @@ class DownloadService extends freebox\os\utils\Service {
         $this->application->authorize();
         $this->application->openSession();
 
-        $cleanedTasks = [];
+        $cleanedTaskIds = [];
         $isSuccess = true;
 
         $dlService  = new freebox\api\v3\services\download\Download( $this->application);
@@ -44,12 +44,12 @@ class DownloadService extends freebox\os\utils\Service {
             switch( $downloadTask->getStatus()){
                 case freebox\api\v3\symbols\Download\Task\Status::DONE :
                     $isSuccess = $dlService->deleteFromId( $downloadTask->getId()) && $isSuccess;
-                    $cleanedTasks[] = $downloadTask->getName();
+                    $cleanedTaskIds[] = $downloadTask->getId();
                     break;
             }
         }
         $this->apiResponse->setSuccess( $isSuccess);
-        $this->apiResponse->setData( $cleanedTasks);
+        $this->apiResponse->setData( $cleanedTaskIds);
     }
 
     /**

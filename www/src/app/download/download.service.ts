@@ -16,10 +16,10 @@ export class DownloadService {
         }).then( response => response as DownloadItem[]);
     }
 
-    cleanDone() {
+    cleanDone() : Promise<number[]> {
 
         return this.freeHubApiService.send( 'download', 'clear_done', {
-        }).then( response => response as string[]);
+        }).then( response => response as number[]);
     }
 
 }
