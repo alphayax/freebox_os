@@ -25,9 +25,9 @@ abstract class Service {
     }
 
     /**
-     *
+     * @param $action
      */
-    abstract public function executeAction();
+    abstract public function executeAction( $action);
 
     /**
      * @param $action

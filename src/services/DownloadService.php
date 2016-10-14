@@ -12,8 +12,7 @@ class DownloadService extends freebox\os\utils\Service {
     /**
      * @inheritdoc
      */
-    public function executeAction() {
-        $action = $_GET['action'];
+    public function executeAction( $action) {
         switch ( $action){
 
             case 'clear_done'   : $this->clearDone();    break;

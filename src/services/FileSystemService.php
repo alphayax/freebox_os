@@ -20,8 +20,7 @@ class FileSystemService extends Service {
     /**
      * @inheritdoc
      */
-    public function executeAction() {
-        $action = @$_GET['action'];
+    public function executeAction( $action) {
         switch( $action){
 
             case 'synopsis' : $this->synopsis();        break;

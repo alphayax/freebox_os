@@ -15,8 +15,7 @@ class ConfigService extends Service {
     /**
      * @inheritdoc
      */
-    public function executeAction() {
-        $action = @$_GET['action'];
+    public function executeAction( $action) {
         switch( $action){
 
             case 'get_freebox': $this->getFreebox();    break;
@@ -29,7 +28,7 @@ class ConfigService extends Service {
      *
      */
     protected function getFreebox() {
-        $uid  = @$this->apiRequest['uid'];
+        $_SESSION['uid']  = @$this->apiRequest['uid'];
 
         $assocConf = Config::get( 'assoc');
         $FbxInfos = [];

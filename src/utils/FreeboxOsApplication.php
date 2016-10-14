@@ -44,7 +44,8 @@ class FreeboxOsApplication {
      * For API
      */
     public function getAction() {
-        $service = $_GET['service'];
+        $service    = @$_GET['service'];
+        $action     = @$_GET['action'];
 
         /*
         switch( $service){
@@ -72,7 +73,7 @@ class FreeboxOsApplication {
         }*/
 
         $service = $this->getService( $service);
-        $service->executeAction();
+        $service->executeAction( $action);
 
         return $service->getApiResponse();
     }

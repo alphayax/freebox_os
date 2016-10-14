@@ -13,8 +13,7 @@ class DlRssService extends Service {
     /**
      * @inheritdoc
      */
-    public function executeAction() {
-        $action = @$_GET['action'];
+    public function executeAction( $action) {
         switch( $action){
 
             case 'get_list'     : $this->getList();     break;
