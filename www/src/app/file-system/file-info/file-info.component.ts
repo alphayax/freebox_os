@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { FileInfo } from "../file-info";
-import { Router} from "@angular/router";
+import { Router, Params, ActivatedRoute } from "@angular/router";
 import { FreehubApiService} from "../../shared/freehub-api.service";
 
 
@@ -9,20 +9,27 @@ import { FreehubApiService} from "../../shared/freehub-api.service";
     templateUrl: 'file-info.component.html',
 })
 
-export class FileInfoComponent {
+export class FileInfoComponent implements OnInit {
 
     @Input()
     fileInfo: FileInfo;
-
+    uid: string;
     url: string;
 
     constructor(
         private router: Router,
+        private route: ActivatedRoute,
         private freeHubApiService : FreehubApiService,
     ){ }
 
-    navigate( path : string){
-        this.router.navigate(['/file-system', btoa( path)]);
+    ngOnInit() {
+        this.route.params.forEach((params: Params) => {
+            this.uid = params['uid'];
+        });
+    }
+
+    navigate(){
+        this.router.navigate(['/file-system', this.uid, btoa( this.fileInfo.path)]);
     }
 
     isStreamable(){
@@ -37,9 +44,9 @@ export class FileInfoComponent {
         return this.fileInfo.fileInfo.mimetype.substr( 0, 5) == 'audio' || this.fileInfo.fileInfo.mimetype.substr( 0, 5) == 'video';
     }
 
-    playInBrowser( path : string) {
+    playInBrowser() {
         this.freeHubApiService.send( 'filesystem', 'share', {
-            "path" : path
+            "path" : this.fileInfo.path
         }).then( shareLink => {
             let link = ['/player', btoa( shareLink.url), btoa( this.fileInfo.fileInfo.mimetype)];
             this.router.navigate(link);
@@ -50,9 +57,9 @@ export class FileInfoComponent {
         console.info('Pas encore implémenté !');
     }
 
-    play( path){
+    play(){
         this.freeHubApiService.send( 'filesystem', 'play', {
-            "path" : path
+            "path" : this.fileInfo.path
         })
     }
 

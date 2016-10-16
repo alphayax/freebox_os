@@ -13,6 +13,7 @@ import {DirectoryInfo} from "./directory-info";
 export class FileSystemComponent implements OnInit {
 
     directoryInfo: DirectoryInfo;
+    uid: string;
 
     constructor(
         private route: ActivatedRoute,
@@ -21,7 +22,7 @@ export class FileSystemComponent implements OnInit {
     ){ }
 
     navigate( path){
-        this.router.navigate(['/file-system', btoa( path)]);
+        this.router.navigate(['/file-system', this.uid, btoa( path)]);
     }
 
     getDirectoryInfo( uid, path){
@@ -36,13 +37,13 @@ export class FileSystemComponent implements OnInit {
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
             let path = params['path'];
-            let uid  = params['uid'];
+            this.uid = params['uid'];
             if( path){
                 path = atob( path);
             } else {
                 path = '/'
             }
-            this.getDirectoryInfo( uid, path);
+            this.getDirectoryInfo( this.uid, path);
         });
     }
 }
