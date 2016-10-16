@@ -17,9 +17,6 @@ class DownloadItem implements \JsonSerializable {
 
     protected $image;
     protected $name;
-    protected $sizeHr;
-    protected $rxTotalHr;
-    protected $txTotalHr;
     protected $etaHr;
     protected $cleanName;
     protected $rxPct;
@@ -34,9 +31,6 @@ class DownloadItem implements \JsonSerializable {
     public function init() {
         $this->cleanName    = $this->getCleanName();
         $this->image        = $this->getImage();
-        $this->sizeHr       = Unit::octetsToHumanReadable( $this->downloadTask->getSize());
-        $this->rxTotalHr    = Unit::octetsToHumanReadable( $this->downloadTask->getRxBytes());
-        $this->txTotalHr    = Unit::octetsToHumanReadable( $this->downloadTask->getTxBytes());
         $this->etaHr        = Unit::secondsToHumanReadable( $this->downloadTask->getEta());
         $this->rxPct        = $this->downloadTask->getRxPct() / 100;
         $this->txPct        = $this->downloadTask->getTxPct() / 100;

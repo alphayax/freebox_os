@@ -17,6 +17,7 @@ import { MenuHeaderComponent }   from "./menu-header.component";
 import { PlayerComponent }       from "./player/player.component";
 
 import { FreehubApiService }     from "./shared/freehub-api.service";
+import {OctetToHumanReadablePipe} from "./shared/octet-human-readable.pipe";
 
 export const config = {
   apiKey: "AIzaSyBzQwe1bXEUpOUD_Q3Gm8JzdZn0FtRMtWs",
@@ -49,6 +50,8 @@ const myFirebaseAuthConfig = {
         HomeComponent,
         MenuHeaderComponent,
         PlayerComponent,
+        // Pipes
+        OctetToHumanReadablePipe,
     ],
     providers: [
         { provide: LOCALE_ID, useValue: "fr-FR" },
