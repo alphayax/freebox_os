@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {HomeService} from "./home.service";
 import { AngularFire,AuthMethods,AuthProviders } from 'angularfire2';
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'home',
@@ -16,28 +17,28 @@ export class HomeComponent {
 
     constructor(
         private homeService : HomeService,
+        private router: Router,
         public  af: AngularFire,
     ){}
 
-    getFreeboxInfo( uid) {
-        console.log( uid);
-        this.homeService.getFreeboxInfo( uid)
-            .then(freeboxInfos => {
-                this.freeboxInfos = freeboxInfos;
-                console.log(freeboxInfos);
-            })
-            .catch(error => this.error = error);
-    }
-
     ngOnInit() {
         this.af.auth.subscribe(auth => {
-
-            // User is logged
             if( auth) {
                 this.uid = auth.uid;
                 this.getFreeboxInfo( auth.uid);
             }
         });
+    }
+
+    getFreeboxInfo( uid) {
+        this.homeService.getFreeboxInfo( uid)
+            .then(freeboxInfos => {
+                this.freeboxInfos = freeboxInfos;
+            })
+    }
+
+    navigate( uid, path){
+        this.router.navigate(['/file-system', uid, btoa( path)]);
     }
 
     login() {

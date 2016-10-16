@@ -24,9 +24,10 @@ export class FileSystemComponent implements OnInit {
         this.router.navigate(['/file-system', btoa( path)]);
     }
 
-    getDirectoryInfo( path){
+    getDirectoryInfo( uid, path){
         this.freeHubApiService.send( 'filesystem', 'explore', {
-            "path" : path
+            "path" : path,
+            "uid"  : uid
         }).then( directoryInfo => {
             this.directoryInfo = directoryInfo;
         });
@@ -35,12 +36,13 @@ export class FileSystemComponent implements OnInit {
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
             let path = params['path'];
+            let uid  = params['uid'];
             if( path){
                 path = atob( path);
             } else {
                 path = '/'
             }
-            this.getDirectoryInfo( path);
+            this.getDirectoryInfo( uid, path);
         });
     }
 }

@@ -7,8 +7,8 @@ export class NavElem {
 
 const NAV_ELEMS : NavElem[] = [
   { service: 'home', name: 'Accueil' },
-  { service: 'file-system', name: 'Système de fichiers' },
-  { service: 'download', name: 'Téléchargements' },
+  { service: 'file-system', name: 'Fichiers' },
+  { service: 'download', name: 'Mes téléchargements' },
 ];
 
 @Component({
