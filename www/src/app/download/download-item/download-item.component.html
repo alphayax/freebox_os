@@ -26,9 +26,9 @@
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3">
-                Taille : {{downloadItem.sizeHr}}<br/>
-                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>&nbsp;{{downloadItem.rxTotalHr}} ({{downloadItem.downloadTask.rx_rate}} o/s)<br />
-                <span class="glyphicon glyphicon-upload"  aria-hidden="true"></span>&nbsp;{{downloadItem.txTotalHr}} ({{downloadItem.downloadTask.tx_rate}} o/s)<br />
+                Taille : {{downloadItem.downloadTask.size | o2hr}}<br/>
+                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>&nbsp;{{downloadItem.downloadTask.rx_bytes | o2hr }} ({{downloadItem.downloadTask.rx_rate | o2hr }}/s)<br />
+                <span class="glyphicon glyphicon-upload"   aria-hidden="true"></span>&nbsp;{{downloadItem.downloadTask.tx_bytes | o2hr }} ({{downloadItem.downloadTask.tx_rate | o2hr }}/s)<br />
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2">
                 <div class="btn-group">
