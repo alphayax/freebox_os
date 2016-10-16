@@ -79,8 +79,9 @@ class FileSystemService extends Service {
     protected function share() {
 
         $path = @$this->apiRequest['path'] ?: '/';
+        $uid  = @$this->apiRequest['uid']  ?: 0;
 
-        $freeboxMaster = Config::get( 'assoc')[0];
+        $freeboxMaster = Config::get( 'assoc')[$uid];
         $this->application->setAppToken( $freeboxMaster['token']);
         $this->application->setFreeboxApiHost( $freeboxMaster['host']);
         $this->application->authorize();
@@ -101,8 +102,9 @@ class FileSystemService extends Service {
     protected function explore() {
 
         $directory = @$this->apiRequest['path'] ?: '/';
+        $uid       = @$this->apiRequest['uid']  ?: 0;
 
-        $freeboxMaster = Config::get( 'assoc')[0];
+        $freeboxMaster = Config::get( 'assoc')[$uid];
         $this->application->setAppToken( $freeboxMaster['token']);
         $this->application->setFreeboxApiHost( $freeboxMaster['host']);
         $this->application->authorize();

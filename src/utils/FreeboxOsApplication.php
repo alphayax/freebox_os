@@ -34,8 +34,8 @@ class FreeboxOsApplication {
 
             case 'config'         : return new freebox\os\services\ConfigService( $this->application);
             case 'download'       : return new freebox\os\services\DownloadService( $this->application);
-            case 'filesystem'     : return new freebox\os\services\FileSystemService( $this->application);
             case 'download_dlrss' : return new freebox\os\services\DlRssService( $this->application);
+            case 'filesystem'     : return new freebox\os\services\FileSystemService( $this->application);
             default : throw new \Exception( 'Unknown service : '. $service);
         }
     }
@@ -47,35 +47,29 @@ class FreeboxOsApplication {
         $service    = @$_GET['service'];
         $action     = @$_GET['action'];
 
-        /*
-        switch( $service){
-
-            case 'test':
-                $token = $_POST['token'];
-                $DEFAULT_PATH = '/firebase/example';
-                $firebase = new FirebaseLib('https://freebox-os.firebaseio.com/', $token);
-
-                $test = array(
-                    "foo" => "bar",
-                    "i_love" => "lamp",
-                    "id" => 42
-                );
-                $dateTime = new \DateTime();
-                $firebase->set($DEFAULT_PATH . '/' . $dateTime->format('c'), $test);
-
-                $firebase->set($DEFAULT_PATH . '/name/contact001', "John Doe");
-
-                $name = $firebase->get($DEFAULT_PATH . '/name/contact001');
-                return $name;
-
-            default:
-                return [];
-        }*/
-
         $service = $this->getService( $service);
         $service->executeAction( $action);
 
         return $service->getApiResponse();
     }
+
+    /*
+        $token = $_POST['token'];
+        $DEFAULT_PATH = '/firebase/example';
+        $firebase = new FirebaseLib('https://freebox-os.firebaseio.com/', $token);
+
+        $test = array(
+            "foo" => "bar",
+            "i_love" => "lamp",
+            "id" => 42
+        );
+        $dateTime = new \DateTime();
+        $firebase->set($DEFAULT_PATH . '/' . $dateTime->format('c'), $test);
+
+        $firebase->set($DEFAULT_PATH . '/name/contact001', "John Doe");
+
+        $name = $firebase->get($DEFAULT_PATH . '/name/contact001');
+        return $name;
+    */
 
 }
