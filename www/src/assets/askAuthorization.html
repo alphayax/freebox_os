@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Association</title>
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/darkly/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/assets/css/custom.min.css" />
+</head>
+<body>
+    <form id="authorize_form" method="POST" enctype='text/plain' action="http://mafreebox.freebox.fr/api/v3/login/authorize/">
+        <input type="hidden"
+               name='{"app_id": "com.alphayax.freebox.os","app_name": "AYX Freebox OS","app_version": "1.0.0","device_name": "ayx fbx os", "hack": "'
+               value='"}'/>
+    </form>
+
+    <div class="container">
+        <a onclick="getElementById('authorize_form').submit();" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-link" aria-hidden="true"></span>&emsp;Envoyer une demande d'association
+        </a>
+    </div>
+</body>
+</html>
