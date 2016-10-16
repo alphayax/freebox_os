@@ -3,12 +3,12 @@ import { Component } from '@angular/core';
 export class NavElem {
   name: string;
   service: string;
+  icon: string;
 }
 
 const NAV_ELEMS : NavElem[] = [
-  { service: 'home', name: 'Accueil' },
-  { service: 'file-system', name: 'Fichiers' },
-  { service: 'download', name: 'Mes téléchargements' },
+  { service: 'home', name: 'Accueil', icon: 'home' },
+  { service: 'download', name: 'Mes téléchargements', icon: 'download-alt' },
 ];
 
 @Component({
