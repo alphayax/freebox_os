@@ -1,55 +1,62 @@
-<div class="row" *ngIf="downloadItem">
-    <div class="col-lg-2 col-md-2 col-sm-2">
-        <img *ngIf="downloadItem.image" [src]="downloadItem.image" width="100px" />
-    </div>
 
-    <div class="col-lg-10 col-md-10 col-sm-10">
+<div *ngIf="downloadItem" class="panel panel-default">
+    <div class="panel-heading">
+        {{downloadItem.movieTitle.cleanName}}&emsp;
+        <span *ngIf="downloadItem.movieTitle.season" class="text-muted">Saison {{downloadItem.movieTitle.season}}</span>
+        <span *ngIf="downloadItem.movieTitle.episode" class="text-muted">Episode {{downloadItem.movieTitle.episode}}</span>
+    </div>
+    <div class="panel-body">
+
         <div class="row">
-            <div class="col-lg-11 col-md-11 col-sm-11">
-                <h4>{{downloadItem.cleanName}}</h4>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-5 col-md-5 col-sm-5">
-                <div class="bs-component">
-                    <span class="label label-success">{{downloadItem.downloadTask.type}}</span>
-                    <span class="label label-default">{{downloadItem.downloadTask.status}}</span>
-                    <span class="text-muted">&emsp;{{downloadItem.etaHr}}</span>
-                </div>
-                <div class="bs-component" style="margin-top: 10px;">
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-info" [style.width]="downloadItem.downloadTask.rx_pct / 100 + '%'">{{downloadItem.downloadTask.rx_pct / 100}} %</div>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-success" [style.width]="downloadItem.downloadTask.tx_pct / 100 + '%'">{{downloadItem.downloadTask.tx_pct / 100}} %</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                Taille : {{downloadItem.downloadTask.size | o2hr}}<br/>
-                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>&nbsp;{{downloadItem.downloadTask.rx_bytes | o2hr }} ({{downloadItem.downloadTask.rx_rate | o2hr }}/s)<br />
-                <span class="glyphicon glyphicon-upload"   aria-hidden="true"></span>&nbsp;{{downloadItem.downloadTask.tx_bytes | o2hr }} ({{downloadItem.downloadTask.tx_rate | o2hr }}/s)<br />
-            </div>
             <div class="col-lg-2 col-md-2 col-sm-2">
-                <div class="btn-group">
-                    <a href="#" class="btn btn-default">Actions</a>
-                    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a (click)="clearDownload(downloadItem.downloadTask.id);">Enlever</a></li>
-                        <li class="divider"></li>
-                        <li *ngIf="isStoppable()">
-                            <a (click)="pauseDownload(downloadItem.downloadTask.id);">Mettre en pause</a>
-                        </li>
-                        <li *ngIf="isResumable()">
-                            <a (click)="resumeDownload(downloadItem.downloadTask.id);">Relancer</a>
-                        </li>
-                        <li *ngIf="isRetryable()">
-                            <a (click)="retryDownload(downloadItem.downloadTask.id);">Réessayer</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a (click)="navigate();">Voir dans explorateur</a></li>
-                    </ul>
+                <img *ngIf="downloadItem.image" [src]="downloadItem.image" width="100px" />
+            </div>
+
+            <div class="col-lg-10 col-md-10 col-sm-10">
+                <div class="row">
+                    <div class="col-lg-7 col-md-7 col-sm-7">
+                        <div class="bs-component">
+                            <span class="label label-success">{{downloadItem.downloadTask.type}}</span>
+                            <span class="label label-default">{{downloadItem.downloadTask.status}}</span>
+                            <span class="text-muted">&emsp;{{downloadItem.etaHr}}</span>
+                        </div>
+                        <div class="bs-component" style="margin-top: 10px;">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-info" [style.width]="downloadItem.downloadTask.rx_pct / 100 + '%'">{{downloadItem.downloadTask.rx_pct / 100}} %</div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-success" [style.width]="downloadItem.downloadTask.tx_pct / 100 + '%'">{{downloadItem.downloadTask.tx_pct / 100}} %</div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="btn-group">
+                            <a *ngIf="isSeeding()" class="btn btn-default btn-xs" (click)="clearDownload();">
+                                <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
+                            </a>
+                            <a *ngIf="isDownloaded()" class="btn btn-success btn-xs" (click)="clearDownload();">
+                                <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
+                            </a>
+                            <a *ngIf="isStoppable()" class="btn btn-default btn-xs" (click)="pauseDownload();">
+                                <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+                            </a>
+                            <a *ngIf="isResumable()" class="btn btn-success btn-xs" (click)="resumeDownload();">
+                                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                            </a>
+                            <a *ngIf="isRetryable()" class="btn btn-success btn-xs" (click)="retryDownload();">
+                                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                            </a>
+                            <a class="btn btn-default btn-xs" (click)="navigate();">
+                                <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        Taille : {{downloadItem.downloadTask.size | o2hr}}<br/>
+                        <span class="glyphicon glyphicon-download" aria-hidden="true"></span>&nbsp;{{downloadItem.downloadTask.rx_bytes | o2hr }} ({{downloadItem.downloadTask.rx_rate | o2hr }}/s)<br />
+                        <span class="glyphicon glyphicon-upload"   aria-hidden="true"></span>&nbsp;{{downloadItem.downloadTask.tx_bytes | o2hr }} ({{downloadItem.downloadTask.tx_rate | o2hr }}/s)<br />
+                    </div>
                 </div>
+
             </div>
         </div>
 

@@ -7,6 +7,7 @@ class MovieTitle implements \JsonSerializable {
     protected $episode;
     protected $season;
     protected $cleanName;
+    protected $year;
 
     public function __construct( $rawTitle) {
         $this->rawTitle = $rawTitle;
@@ -25,6 +26,13 @@ class MovieTitle implements \JsonSerializable {
 
         // Remove tags
         $name = preg_replace(['/(\[[a-zA-Z0-9_ -]+\])/', '/(\([a-zA-Z0-9_ -]+\))/'], '', $name);
+
+        // Extract year
+        $pattern = '/.*[^0-9]([0-9]{4})[^0-9].*/';
+        if( preg_match( $pattern, $name, $rez)){
+            $this->year = trim( $rez[1]);
+            $name = preg_replace('/([0-9]{4})/', '', $name);
+        }
 
         // Try to find Season and Episode info
         $pattern = '/(.*) S([0-9]+)E([0-9]+)/';
@@ -62,26 +70,32 @@ class MovieTitle implements \JsonSerializable {
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getEpisode() {
         return $this->episode;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getSeason() {
         return $this->season;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCleanName() {
         return $this->cleanName;
     }
 
+    /**
+     * @return int
+     */
+    public function getYear() {
+        return $this->year;
+    }
 
     /**
      * Return an array representation of the model properties

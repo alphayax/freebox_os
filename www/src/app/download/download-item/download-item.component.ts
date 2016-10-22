@@ -69,6 +69,14 @@ export class DownloadItemComponent implements OnInit {
         this.router.navigate(['/file-system', this.uid, btoa( this.downloadItem.path)]);
     }
 
+    isSeeding(){
+        return this.downloadItem.downloadTask.status === 'seeding';
+    }
+
+    isDownloaded(){
+        return this.downloadItem.downloadTask.status === 'done';
+    }
+
     isStoppable() {
         return this.downloadItem.downloadTask.status !== 'stopped' && this.downloadItem.downloadTask.status !== 'error';
     }

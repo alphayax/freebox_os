@@ -2,7 +2,6 @@
 namespace alphayax\freebox\os\models\Download;
 use alphayax\freebox\api\v3\models\Download\Task;
 use alphayax\freebox\os\utils\MovieTitle;
-use alphayax\freebox\os\utils\Omdb\Omdb;
 use alphayax\freebox\os\utils\Poster;
 use alphayax\freebox\os\utils\Unit;
 
@@ -23,26 +22,28 @@ class DownloadItem implements \JsonSerializable {
     protected $txPct;
     protected $path;
 
+    /** @var MovieTitle */
+    protected $movieTitle;
 
+    /**
+     * DownloadItem constructor.
+     * @param \alphayax\freebox\api\v3\models\Download\Task $downloadTask
+     */
     public function __construct( Task $downloadTask) {
         $this->downloadTask = $downloadTask;
+        $this->movieTitle   = new MovieTitle( $this->downloadTask->getName());
     }
 
+    /**
+     * Initialize misc data from downloadTask
+     */
     public function init() {
-        $this->cleanName    = $this->getCleanName();
+        $this->cleanName    = $this->movieTitle->getCleanName();
         $this->image        = $this->getImage();
         $this->etaHr        = Unit::secondsToHumanReadable( $this->downloadTask->getEta());
         $this->rxPct        = $this->downloadTask->getRxPct() / 100;
         $this->txPct        = $this->downloadTask->getTxPct() / 100;
         $this->path         = base64_decode( $this->downloadTask->getDownloadDir());
-    }
-
-    public function getCleanName() {
-
-        $name = $this->downloadTask->getName();
-
-        $title = new MovieTitle($name);
-        return $title->getCleanName();
     }
 
     /**
@@ -51,7 +52,7 @@ class DownloadItem implements \JsonSerializable {
      */
     public function getImage() {
 
-        $title = $this->getCleanName();
+        $title = $this->movieTitle->getCleanName();
 
         if( file_exists(  __DIR__ . '/../../../www/img/' . $title)){
             return static::IMG_HOST . $title;

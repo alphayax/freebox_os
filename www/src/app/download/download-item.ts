@@ -22,8 +22,16 @@ export class DownloadTask {
 
 }
 
+export class MovieTitle {
+    rawTitle: string;
+    episode: number;
+    season: number;
+    cleanName: string;
+}
+
 export class DownloadItem {
     downloadTask : DownloadTask;
+    movieTitle : MovieTitle;
 
     image : string;
     name : string;
