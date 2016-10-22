@@ -1,6 +1,6 @@
 
 <h1>Scan de flux RSS</h1>
-<p class="lead">Analyses de flux RSS a la recherche d'un élément particluier</p>
+<p class="lead">Analyses de flux RSS a la recherche d'un élément particulier</p>
 
 
 <div *ngFor="let rssSearch of rssSearches" class="panel panel-default">
@@ -9,7 +9,7 @@
         <div class="col-lg-10 col-md-10 col-sm-10">
             - {{ rssSearch.rss }}<br/>
             - {{ rssSearch.pattern }}<br/>
-            - {{ rssSearch.last_date }}<br/>
+            Dernière verification <span class="text-success">{{ rssSearch.last_date * 1000 | date: 'EEEE, dd MMMM y (H:m:s)' }}</span>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2">
             <a (click)="checkRss(rssSearch.id)" class="btn btn-success btn-xs">
@@ -23,5 +23,8 @@
             {{ checkRssResult }}
         </p>
     </div>
-
 </div>
+
+<a class="btn btn-default btn-sm">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&emsp;Ajouter un nouveau flux a scanner
+</a>
