@@ -1,142 +1,145 @@
-<h1>Association</h1>
-<p class="lead">Enregistrement d'une nouvelle freebox</p>
 
-<div class="panel panel-warning">
-    <div class="panel-heading">
-        <h3 class="panel-title">Avertissement</h3>
-    </div>
-    <div class="panel-body">
-        L'association d'une nouvelle freebox est une manipulation particulierement complexe.
-        N'hésitez pas à vous faire aider.
-    </div>
-</div>
+<div *ngIf="af.auth | async">
+    <h1>Association</h1>
+    <p class="lead">Enregistrement d'une nouvelle freebox</p>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">Prérequis</h3>
-    </div>
-    <div class="panel-body">
-        Pour remplir le formulaire ci dessous, vous devez remplir les étapes suivantes
-        <ul>
-            <li>Vous trouver sur le meme réseau que la freebox que vous désirez associer</li>
-            <li>Avoir activé le HTTPS sur votre box et connaitre les parametres d'accès (URL + port)</li>
-            <li>Génerer une demande d'authentification (pour obtenir un "app_token" et un "track_id")</li>
-        </ul>
-    </div>
-</div>
-
-
-<form class="form-horizontal">
-    <fieldset>
-        <legend>Parametres de connexion à la freebox</legend>
-        <div class="form-group">
-            <label for="api_domain" class="col-lg-2 control-label">Nom de domaine</label>
-            <div class="col-lg-10">
-                <input [(ngModel)]="api_domain" type="text" class="form-control" id="api_domain" name="api_domain" placeholder="example.freeboxos.fr">
-            </div>
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h3 class="panel-title">Avertissement</h3>
         </div>
-        <div class="form-group">
-            <label for="https_port" class="col-lg-2 control-label">Port HTTPS</label>
-            <div class="col-lg-10">
-                <input [(ngModel)]="https_port" type="text" class="form-control" id="https_port"  name="https_port" placeholder="17105">
-            </div>
+        <div class="panel-body">
+            L'association d'une nouvelle freebox est une manipulation particulierement complexe.
+            N'hésitez pas à vous faire aider.
         </div>
-        <div class="form-group">
-            <label for="app_token" class="col-lg-2 control-label">app_token</label>
-            <div class="col-lg-10">
-                <input [(ngModel)]="app_token" type="text" class="form-control" id="app_token"  name="app_token" placeholder="cMThEILtcHGCB5A/wxcvbwvxcb5151Ni+c6/wxvb455356Lv+4YuI40/X44256ES">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="track_id" class="col-lg-2 control-label">track_id</label>
-            <div class="col-lg-10">
-                <input [(ngModel)]="track_id" type="text" class="form-control" id="track_id" name="track_id" placeholder="7">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-lg-10 col-lg-offset-2">
-                <button type="reset" class="btn btn-default">Annuler</button>
-                <button (click)="addFreebox()" class="btn btn-primary">Associer</button>
-            </div>
-        </div>
-    </fieldset>
-</form>
-
-
-
-<h2>Explications</h2>
-
-
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">Activer le HTTPS sur votre Freebox</h3>
-    </div>
-    <div class="panel-body">
-        <p>
-            Cette étape permet de crypter le trafic de votre freebox avec notre application. <br />Cela se passe ici :
-            <a target="_blank" href="http://mafreebox.freebox.fr/#Fbx.os.app.settings.domains.Domains">http://mafreebox.freebox.fr/#Fbx.os.app.settings.domains.Domains</a>
-        </p>
-        <p>
-            Si vous n'etes pas familier avec ce procédé, je vous redirige vers les tutoriaux suivants :
-        </p>
-        <ul>
-            <li><a target="_blank" href="https://www.freenews.fr/freenews-edition-nationale-299/freebox-9/lacces-distant-a-freebox-os-sameliore-https">https://www.freenews.fr/freenews-edition-nationale-299/freebox-9/lacces-distant-a-freebox-os-sameliore-https</a></li>
-            <li><a target="_blank" href="http://www.universfreebox.com/article/33426/Tutoriel-Comment-acceder-a-Freebox-OS-depuis-n-importe-ou-de-maniere-securisee">http://www.universfreebox.com/article/33426/Tutoriel-Comment-acceder-a-Freebox-OS-depuis-n-importe-ou-de-maniere-securisee</a></li>
-        </ul>
-        <p>
-            Le port HTTPS est affiché sur cette interface : <a href="http://mafreebox.freebox.fr/#Fbx.os.app.settings.Accounts">http://mafreebox.freebox.fr/#Fbx.os.app.settings.Accounts</a>
-        </p>
-    </div>
-</div>
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">Génerer une demande d'authentification</h3>
     </div>
 
-    <div class="panel-body">
-        <p>
-            Dans un premier temps vous allez devoir envoyer une demande d'association à la freebox. Cela se fait par l'intermediaire
-            du bouton ci dessous.
-        </p>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Prérequis</h3>
+        </div>
+        <div class="panel-body">
+            Pour remplir le formulaire ci dessous, vous devez remplir les étapes suivantes
+            <ul>
+                <li>Vous trouver sur le meme réseau que la freebox que vous désirez associer</li>
+                <li>Avoir activé le HTTPS sur votre box et connaitre les parametres d'accès (URL + port)</li>
+                <li>Génerer une demande d'authentification (pour obtenir un "app_token" et un "track_id")</li>
+            </ul>
+        </div>
+    </div>
 
-        <h3>Requete</h3>
 
-        <iframe style="border: 0" src="assets/askAuthorization.html"></iframe>
+    <form class="form-horizontal">
+        <fieldset>
+            <legend>Parametres de connexion à la freebox</legend>
+            <div class="form-group">
+                <label for="api_domain" class="col-lg-2 control-label">Nom de domaine</label>
+                <div class="col-lg-10">
+                    <input [(ngModel)]="api_domain" type="text" class="form-control" id="api_domain" name="api_domain" placeholder="example.freeboxos.fr">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="https_port" class="col-lg-2 control-label">Port HTTPS</label>
+                <div class="col-lg-10">
+                    <input [(ngModel)]="https_port" type="text" class="form-control" id="https_port"  name="https_port" placeholder="17105">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="app_token" class="col-lg-2 control-label">app_token</label>
+                <div class="col-lg-10">
+                    <input [(ngModel)]="app_token" type="text" class="form-control" id="app_token"  name="app_token" placeholder="cMThEILtcHGCB5A/wxcvbwvxcb5151Ni+c6/wxvb455356Lv+4YuI40/X44256ES">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="track_id" class="col-lg-2 control-label">track_id</label>
+                <div class="col-lg-10">
+                    <input [(ngModel)]="track_id" type="text" class="form-control" id="track_id" name="track_id" placeholder="7">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="reset" class="btn btn-default">Annuler</button>
+                    <button (click)="addFreebox()" class="btn btn-primary">Associer</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
 
-        <h3>Résultat</h3>
-        <pre>
-{{ '{' }}
-  "success": true,
-  "result": {{ '{' }}
-    "app_token": "cMThEILtcHGCB5A/wxcvbwvxcb5151Ni+c6/wxvb455356Lv+4YuI40/X44256ES",
-    "track_id": 7
-  {{ '}' }}
-{{ '}' }}
-        </pre>
 
-        <h3>Et après ?</h3>
-        <p>
-            Félicitations ! Vous venez de faire une demande d'association avec la freebox, et de récuperer deux des quatres informations
-            nécéssaires pour remplir le formulaire de début de page (app_token et track_id)
-        </p>
-        <p class="text-danger">
-            Cependant... Sachez que ce n'est pas completement fini.
-        </p>
-        <p class="text-warning">
-            En effet, votre demande d'association ne sera valide que si, et uniquement si, vous vous levez immédiatement de
-            votre chaise et que vous courrez vers votre Freebox Server pour valider la demande d'association que vous venez
-            de faire.
-        </p>
-        <p>
-            Pour cela, regardez le cadrant LED, il vous demandera si vous autorisez l'application a acceder a la freebox.
-            Appuyez donc sur la fleche lumineuse droite à coté du cadrant LED. Si c'est fait, félicitations, vous avez
-            réalisé votre demande d'association correctemennt.
-        </p>
-        <p class="text-muted">
-            Si vous n'avez pas réagit a temps, ou si vous vous etes planté, ne vous inquietez pas. Vous pouvez relancer
-            une nouvelle requete pour redemander une association.
-        </p>
+
+    <h2>Explications</h2>
+
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Activer le HTTPS sur votre Freebox</h3>
+        </div>
+        <div class="panel-body">
+            <p>
+                Cette étape permet de crypter le trafic de votre freebox avec notre application. <br />Cela se passe ici :
+                <a target="_blank" href="http://mafreebox.freebox.fr/#Fbx.os.app.settings.domains.Domains">http://mafreebox.freebox.fr/#Fbx.os.app.settings.domains.Domains</a>
+            </p>
+            <p>
+                Si vous n'etes pas familier avec ce procédé, je vous redirige vers les tutoriaux suivants :
+            </p>
+            <ul>
+                <li><a target="_blank" href="https://www.freenews.fr/freenews-edition-nationale-299/freebox-9/lacces-distant-a-freebox-os-sameliore-https">https://www.freenews.fr/freenews-edition-nationale-299/freebox-9/lacces-distant-a-freebox-os-sameliore-https</a></li>
+                <li><a target="_blank" href="http://www.universfreebox.com/article/33426/Tutoriel-Comment-acceder-a-Freebox-OS-depuis-n-importe-ou-de-maniere-securisee">http://www.universfreebox.com/article/33426/Tutoriel-Comment-acceder-a-Freebox-OS-depuis-n-importe-ou-de-maniere-securisee</a></li>
+            </ul>
+            <p>
+                Le port HTTPS est affiché sur cette interface : <a href="http://mafreebox.freebox.fr/#Fbx.os.app.settings.Accounts">http://mafreebox.freebox.fr/#Fbx.os.app.settings.Accounts</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Génerer une demande d'authentification</h3>
+        </div>
+
+        <div class="panel-body">
+            <p>
+                Dans un premier temps vous allez devoir envoyer une demande d'association à la freebox. Cela se fait par l'intermediaire
+                du bouton ci dessous.
+            </p>
+
+            <h3>Requete</h3>
+
+            <iframe style="border: 0" src="assets/askAuthorization.html"></iframe>
+
+            <h3>Résultat</h3>
+            <pre>
+    {{ '{' }}
+      "success": true,
+      "result": {{ '{' }}
+        "app_token": "cMThEILtcHGCB5A/wxcvbwvxcb5151Ni+c6/wxvb455356Lv+4YuI40/X44256ES",
+        "track_id": 7
+      {{ '}' }}
+    {{ '}' }}
+            </pre>
+
+            <h3>Et après ?</h3>
+            <p>
+                Félicitations ! Vous venez de faire une demande d'association avec la freebox, et de récuperer deux des quatres informations
+                nécéssaires pour remplir le formulaire de début de page (app_token et track_id)
+            </p>
+            <p class="text-danger">
+                Cependant... Sachez que ce n'est pas completement fini.
+            </p>
+            <p class="text-warning">
+                En effet, votre demande d'association ne sera valide que si, et uniquement si, vous vous levez immédiatement de
+                votre chaise et que vous courrez vers votre Freebox Server pour valider la demande d'association que vous venez
+                de faire.
+            </p>
+            <p>
+                Pour cela, regardez le cadrant LED, il vous demandera si vous autorisez l'application a acceder a la freebox.
+                Appuyez donc sur la fleche lumineuse droite à coté du cadrant LED. Si c'est fait, félicitations, vous avez
+                réalisé votre demande d'association correctemennt.
+            </p>
+            <p class="text-muted">
+                Si vous n'avez pas réagit a temps, ou si vous vous etes planté, ne vous inquietez pas. Vous pouvez relancer
+                une nouvelle requete pour redemander une association.
+            </p>
+        </div>
     </div>
 </div>

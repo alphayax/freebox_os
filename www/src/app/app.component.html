@@ -1,4 +1,8 @@
+
 <div class="container">
+  <a *ngIf="! ( af.auth | async)" (click)="login()" class="btn btn-primary">
+    <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&emsp;Connexion...
+  </a>
   <menu-header *ngIf="af.auth | async"></menu-header>
   <router-outlet></router-outlet>
 </div>

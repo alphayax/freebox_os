@@ -1,14 +1,17 @@
-<h1>Système de fichiers</h1>
-<p class="lead">Liste des fichiers sur les disques connectés a la freebox</p>
 
-<ul *ngIf="directoryInfo" class="breadcrumb">
-    <li *ngFor="let part of directoryInfo.path_part">
-        <a style="cursor: pointer" (click)="navigate( part.path)">{{part.name}}</a>
-    </li>
-</ul>
+<div *ngIf="af.auth | async">
+    <h1>Système de fichiers</h1>
+    <p class="lead">Liste des fichiers sur les disques connectés a la freebox</p>
 
-<div *ngIf="directoryInfo" class="row">
-    <div *ngFor="let fileInfo of directoryInfo.files" class="col-lg-4 col-md-6 col-sm-12">
-        <file-info [fileInfo]="fileInfo"></file-info>
+    <ul *ngIf="directoryInfo" class="breadcrumb">
+        <li *ngFor="let part of directoryInfo.path_part">
+            <a style="cursor: pointer" (click)="navigate( part.path)">{{part.name}}</a>
+        </li>
+    </ul>
+
+    <div *ngIf="directoryInfo" class="row">
+        <div *ngFor="let fileInfo of directoryInfo.files" class="col-lg-4 col-md-6 col-sm-12">
+            <file-info [fileInfo]="fileInfo"></file-info>
+        </div>
     </div>
 </div>

@@ -56,7 +56,7 @@ class ConfigService extends Service {
         $uid        = @$this->apiRequest['uid'];
 
         /// Check parameters
-        if( empty( $app_token) || empty( $track_id) || empty( $api_domain) || empty( $https_port) || empty( $uid)){
+        if( empty( $app_token) || empty( $api_domain) || empty( $https_port) || empty( $uid)){
             $this->apiResponse->setSuccess( false);
             $this->apiResponse->setError( 'Requested parameters are missing');
 
@@ -90,8 +90,9 @@ class ConfigService extends Service {
             return;
         }
 
-        /// Try token
+        /// Try token TODO : L'association doit se faire en local
         try {
+            /*
             $assoc = new Association( $this->application);
             $assoc->setTrackId( $track_id);
 
@@ -102,7 +103,7 @@ class ConfigService extends Service {
                 $this->apiResponse->setError( 'Association status not valid : '. $status);
 
                 return;
-            }
+            }*/
 
             /// Open session
             $this->application->openSession();

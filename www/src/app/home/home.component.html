@@ -1,10 +1,4 @@
 
-<div *ngIf="! ( af.auth | async)">
-    <a (click)="login()" class="btn btn-primary">
-        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&emsp;Connexion
-    </a>
-</div>
-
 <div *ngIf="af.auth | async">
     <h1>Bienvenuuuuue !!!</h1>
     <p class="lead">Liste des freebox connectées au systeme</p>

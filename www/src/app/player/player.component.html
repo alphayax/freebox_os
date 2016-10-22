@@ -1,10 +1,13 @@
-<div class="panel panel-default">
-    <div class="panel-heading" >
-        Player
-    </div>
-    <div class="panel-body">
-        <video controls #mavideo class="col-lg-12 col-md-12 col-sm-12">
-            <source [src]="url" [type]="mimeType">
-        </video>
+
+<div *ngIf="af.auth | async">
+    <div class="panel panel-default">
+        <div class="panel-heading" >
+            Player
+        </div>
+        <div class="panel-body">
+            <video controls #mavideo class="col-lg-12 col-md-12 col-sm-12">
+                <source [src]="url" [type]="mimeType">
+            </video>
+        </div>
     </div>
 </div>

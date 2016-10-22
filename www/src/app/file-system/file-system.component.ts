@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { FreehubApiService } from "../shared/freehub-api.service";
 import {DirectoryInfo} from "./directory-info";
+import {AngularFire} from "angularfire2";
 
 @Component({
     selector: 'file-system',
@@ -19,6 +20,7 @@ export class FileSystemComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private freeHubApiService : FreehubApiService,
+        public  af: AngularFire,
     ){ }
 
     navigate( path){

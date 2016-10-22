@@ -1,65 +1,68 @@
-<h1>Mes téléchargements</h1>
-<p class="lead">
-    <a (click)="getDownloads()" class="btn btn-default btn-sm">
-        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>&emsp;Actualiser
-    </a>
-    <a (click)="cleanDone()" class="btn btn-primary btn-sm">
-        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>&emsp;Retirer les téléchargements terminées
-    </a>
-</p>
 
-<ul class="nav nav-tabs">
-    <li class="active">
-        <a href="#home" data-toggle="tab">
-            Tous&nbsp;
-            <span *ngIf="downloads" class="badge">{{downloads.length}}</span>
+<div *ngIf="af.auth | async">
+    <h1>Mes téléchargements</h1>
+    <p class="lead">
+        <a (click)="getDownloads()" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>&emsp;Actualiser
         </a>
-    </li>
-    <li>
-        <a href="#download" data-toggle="tab">
-            En cours&nbsp;
-            <span *ngIf="downloadsInProgress" class="badge">{{downloadsInProgress.length}}</span>
+        <a (click)="cleanDone()" class="btn btn-primary btn-sm">
+            <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>&emsp;Retirer les téléchargements terminées
         </a>
-    </li>
-    <li>
-        <a href="#seed" data-toggle="tab">
-            En partage&nbsp;
-            <span *ngIf="downloadsSeeding" class="badge">{{downloadsSeeding.length}}</span>
-        </a>
-    </li>
-    <li>
-        <a href="#done" data-toggle="tab">
-            Terminés&nbsp;
-            <span *ngIf="downloadsDone" class="badge">{{downloadsDone.length}}</span>
-        </a>
-    </li>
-</ul>
+    </p>
+
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#home" data-toggle="tab">
+                Tous&nbsp;
+                <span *ngIf="downloads" class="badge">{{downloads.length}}</span>
+            </a>
+        </li>
+        <li>
+            <a href="#download" data-toggle="tab">
+                En cours&nbsp;
+                <span *ngIf="downloadsInProgress" class="badge">{{downloadsInProgress.length}}</span>
+            </a>
+        </li>
+        <li>
+            <a href="#seed" data-toggle="tab">
+                En partage&nbsp;
+                <span *ngIf="downloadsSeeding" class="badge">{{downloadsSeeding.length}}</span>
+            </a>
+        </li>
+        <li>
+            <a href="#done" data-toggle="tab">
+                Terminés&nbsp;
+                <span *ngIf="downloadsDone" class="badge">{{downloadsDone.length}}</span>
+            </a>
+        </li>
+    </ul>
 
 
 
-<div id="myTabContent" class="tab-content">
-    <div class="tab-pane fade active in" id="home">
-        <p>Tous les téléchargements</p>
-        <div *ngFor="let download of downloads">
-            <download-item [downloadItem]="download"></download-item>
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade active in" id="home">
+            <p>Tous les téléchargements</p>
+            <div *ngFor="let download of downloads">
+                <download-item [downloadItem]="download"></download-item>
+            </div>
         </div>
-    </div>
-    <div class="tab-pane fade" id="download">
-        <p>Téléchargements en cours</p>
-        <div *ngFor="let download of downloadsInProgress">
-            <download-item [downloadItem]="download"></download-item>
+        <div class="tab-pane fade" id="download">
+            <p>Téléchargements en cours</p>
+            <div *ngFor="let download of downloadsInProgress">
+                <download-item [downloadItem]="download"></download-item>
+            </div>
         </div>
-    </div>
-    <div class="tab-pane fade" id="seed">
-        <p>Téléchargements terminés en cours de partage</p>
-        <div *ngFor="let download of downloadsSeeding">
-            <download-item [downloadItem]="download"></download-item>
+        <div class="tab-pane fade" id="seed">
+            <p>Téléchargements terminés en cours de partage</p>
+            <div *ngFor="let download of downloadsSeeding">
+                <download-item [downloadItem]="download"></download-item>
+            </div>
         </div>
-    </div>
-    <div class="tab-pane fade" id="done">
-        <p>Téléchargements Terminés</p>
-        <div *ngFor="let download of downloadsDone">
-            <download-item [downloadItem]="download"></download-item>
+        <div class="tab-pane fade" id="done">
+            <p>Téléchargements Terminés</p>
+            <div *ngFor="let download of downloadsDone">
+                <download-item [downloadItem]="download"></download-item>
+            </div>
         </div>
     </div>
 </div>
