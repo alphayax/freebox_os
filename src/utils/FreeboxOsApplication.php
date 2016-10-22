@@ -47,8 +47,16 @@ class FreeboxOsApplication {
         $service    = @$_GET['service'];
         $action     = @$_GET['action'];
 
-        $service = $this->getService( $service);
-        $service->executeAction( $action);
+        try {
+            $service = $this->getService( $service);
+            $service->executeAction( $action);
+        }
+        catch ( freebox\Exception\FreeboxApiException $e){
+            $apiResponse = new ApiResponse();
+            $apiResponse->setSuccess( false);
+            $apiResponse->setError( $e->getApiErrorCode() .' : '. $e->getApiMessage());
+            return $apiResponse;
+        }
 
         return $service->getApiResponse();
     }

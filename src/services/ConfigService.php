@@ -1,7 +1,6 @@
 <?php
 namespace alphayax\freebox\os\services;
 use alphayax\freebox\api\v3\services\ApiVersion;
-use alphayax\freebox\api\v3\services\login\Association;
 use alphayax\freebox\api\v3\symbols as v3_symbols;
 use alphayax\freebox\os\etc\Config;
 use alphayax\freebox\os\utils\Service;

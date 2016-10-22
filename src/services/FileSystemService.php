@@ -2,6 +2,7 @@
 namespace alphayax\freebox\os\services;
 use alphayax\freebox\api\v3\models\AirMedia\AirMediaReceiverRequest;
 use alphayax\freebox\api\v3\services\AirMedia\AirMediaReceiver;
+use alphayax\freebox\api\v3\services\download\Download;
 use alphayax\freebox\api\v3\services\FileSystem\FileSharingLink;
 use alphayax\freebox\api\v3\services\FileSystem\FileSystemListing;
 use alphayax\freebox\api\v3\symbols\AirMedia\Action;
@@ -23,10 +24,11 @@ class FileSystemService extends Service {
     public function executeAction( $action) {
         switch( $action){
 
-            case 'synopsis' : $this->synopsis();        break;
-            case 'play'     : $this->play();            break;
-            case 'share'    : $this->share();           break;
-            case 'explore'  : $this->explore();         break;
+            case 'synopsis'     : $this->synopsis();        break;
+            case 'play'         : $this->play();            break;
+            case 'share'        : $this->share();           break;
+            case 'explore'      : $this->explore();         break;
+            case 'box_download' : $this->boxDownload();     break;
             default : $this->actionNotFound( $action);  break;
         }
     }
@@ -84,7 +86,6 @@ class FileSystemService extends Service {
      *
      */
     protected function share() {
-
         $path = @$this->apiRequest['path'] ?: '/';
         $uid  = @$this->apiRequest['uid'];
 
@@ -106,7 +107,6 @@ class FileSystemService extends Service {
      *
      */
     protected function explore() {
-
         $directory = @$this->apiRequest['path'] ?: '/';
         $uid       = @$this->apiRequest['uid'];
 
@@ -131,6 +131,37 @@ class FileSystemService extends Service {
         }
 
         $this->apiResponse->setData( $return);
+    }
+
+    /**
+     *
+     */
+    private function boxDownload() {
+        $path       = @$this->apiRequest['path'];
+        $uidSource  = @$this->apiRequest['uid_src'];
+        $uidDest    = @$this->apiRequest['uid_dst'];
+
+        // First, we have to share the file over the internet
+        $freeboxMaster = Config::get( 'assoc')[$uidSource];
+        $this->application->setAppToken( $freeboxMaster['token']);
+        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
+        $this->application->openSession();
+
+        $fileShare = new FileSharingLink( $this->application);
+        $share = $fileShare->create( $path);
+
+        // Finally, launch the download on the user box
+        $freeboxMaster = Config::get( 'assoc')[$uidDest];
+        $this->application->setAppToken( $freeboxMaster['token']);
+        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
+        $this->application->openSession();
+
+        $am = new Download( $this->application);
+        $downloadId = $am->addFromUrl( $share->getFullurl());
+
+        $this->apiResponse->setData([
+            'dl_id' => $downloadId,
+        ]);
     }
 
     /**

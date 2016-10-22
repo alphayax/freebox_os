@@ -48,21 +48,36 @@ export class FileInfoComponent implements OnInit {
         );
     }
 
+    isExternalBox(){
+        return this.uid_target !== this.uid;
+    }
+
     isPlayable(){
         return this.fileInfo.fileInfo.mimetype.substr( 0, 5) == 'audio' || this.fileInfo.fileInfo.mimetype.substr( 0, 5) == 'video';
     }
 
     playInBrowser() {
         this.freeHubApiService.send( 'filesystem', 'share', {
-            "path" : this.fileInfo.path
+            "path" : this.fileInfo.path,
+            "uid"  : this.uid_target,
         }).then( shareLink => {
             let link = ['/player', btoa( shareLink.url), btoa( this.fileInfo.fileInfo.mimetype)];
             this.router.navigate(link);
         });
     }
 
-    directDownload( ) {
+    directDownload(){
         console.info('Pas encore implémenté !');
+    }
+
+    boxDownload(){
+        this.freeHubApiService.send( 'filesystem', 'box_download', {
+            "path" : this.fileInfo.path,
+            "uid_src" : this.uid_target,
+            "uid_dst" : this.uid
+        }).then( toto => {
+            console.log( 'Téléchargement Envoyé !!!', toto);
+        });
     }
 
     play(){

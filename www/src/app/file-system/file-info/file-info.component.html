@@ -1,5 +1,5 @@
 <div class="panel panel-primary" style="height: 250px">
-    <div class="panel-heading" style="cursor: pointer;">
+    <div class="panel-heading">
         {{fileInfo.name}}
     </div>
     <div class="panel-body">
@@ -9,16 +9,24 @@
         <div class="col-lg-8 col-md-8 col-sm-8">
             <p class="text-muted">{{fileInfo.fileInfo.name}}</p>
             <p *ngIf="fileInfo.isDir">
-                Repertoire<br />
-                <a (click)="navigate()" class="btn btn-default btn-xs">Parcourir ...</a>
+                <a (click)="navigate()" class="btn btn-default btn-xs">
+                    <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&emsp;Parcourir...
+                </a>
             </p>
-            <p *ngIf="!fileInfo.isDir">
-                <a *ngIf="isStreamable()" class="btn btn-primary btn-xs" (click)="playInBrowser()">Streamer</a>
-                <a *ngIf="isPlayable()"   class="btn btn-primary btn-xs" (click)="play()">Lire sur la box</a>
-                <a class="btn btn-default btn-xs" (click)="directDownload( fileInfo.path)">Télécharger</a>
-                <a class="btn btn-default btn-xs">Télécharger sur ma box</a>
+            <p *ngIf="!fileInfo.isDir" class="btn-group">
+                <a *ngIf="isStreamable()" class="btn btn-default btn-xs" (click)="playInBrowser()">
+                    <span class="glyphicon glyphicon-expand" aria-hidden="true"></span>
+                </a>
+                <a *ngIf="isPlayable()" class="btn btn-default btn-xs" (click)="play()">
+                    <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                </a>
+                <a class="btn btn-default btn-xs disabled" (click)="directDownload()">
+                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                </a>
+                <a *ngIf="isExternalBox()" class="btn btn-default btn-xs" (click)="boxDownload()">
+                    <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                </a>
             </p>
-
         </div>
     </div>
 </div>
