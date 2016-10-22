@@ -28,10 +28,11 @@ class DownloadService extends freebox\os\utils\Service {
      */
     public function clearDone() {
 
-        $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
+        $uid = @$this->apiRequest['uid'];
+
+        $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[$uid];
         $this->application->setAppToken( $freeboxMaster['token']);
         $this->application->setFreeboxApiHost( $freeboxMaster['host']);
-        $this->application->authorize();
         $this->application->openSession();
 
         $cleanedTaskIds = [];
@@ -55,13 +56,14 @@ class DownloadService extends freebox\os\utils\Service {
      * Remove a download with a specific id
      */
     public function clearFromId() {
-        $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
+        $uid        = @$this->apiRequest['uid'];
+        $downloadId = @$this->apiRequest['id'];
+
+        $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[$uid];
         $this->application->setAppToken( $freeboxMaster['token']);
         $this->application->setFreeboxApiHost( $freeboxMaster['host']);
-        $this->application->authorize();
         $this->application->openSession();
 
-        $downloadId = @$this->apiRequest['id'];
 
         $dlService  = new freebox\api\v3\services\download\Download( $this->application);
         $downloadTask = $dlService->getFromId( $downloadId);
@@ -74,15 +76,15 @@ class DownloadService extends freebox\os\utils\Service {
      * Update the status of a download with a specific id
      */
     public function updateFromId() {
-        $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
-        $this->application->setAppToken( $freeboxMaster['token']);
-        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
-        $this->application->authorize();
-        $this->application->openSession();
 
+        $uid        = @$this->apiRequest['uid'];
         $downloadId = @$this->apiRequest['id'];
         $status     = @$this->apiRequest['status'];
 
+        $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[$uid];
+        $this->application->setAppToken( $freeboxMaster['token']);
+        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
+        $this->application->openSession();
 
         $dlService  = new freebox\api\v3\services\download\Download( $this->application);
         $downloadTask = $dlService->getFromId( $downloadId);
@@ -103,10 +105,11 @@ class DownloadService extends freebox\os\utils\Service {
      */
     public function explore() {
 
-        $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[0];
+        $uid = @$this->apiRequest['uid'];
+
+        $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[$uid];
         $this->application->setAppToken( $freeboxMaster['token']);
         $this->application->setFreeboxApiHost( $freeboxMaster['host']);
-        $this->application->authorize();
         $this->application->openSession();
 
         $dlService    = new freebox\api\v3\services\download\Download( $this->application);

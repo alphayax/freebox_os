@@ -51,7 +51,6 @@ class FileSystemService extends Service {
         $freeboxMaster = Config::get( 'assoc')[0];
         $this->application->setAppToken( $freeboxMaster['token']);
         $this->application->setFreeboxApiHost( $freeboxMaster['host']);
-        $this->application->authorize();
         $this->application->openSession();
 
         // First, we have to share the file over the internet (It's stupid, but it's working only like that...)
@@ -84,7 +83,6 @@ class FileSystemService extends Service {
         $freeboxMaster = Config::get( 'assoc')[$uid];
         $this->application->setAppToken( $freeboxMaster['token']);
         $this->application->setFreeboxApiHost( $freeboxMaster['host']);
-        $this->application->authorize();
         $this->application->openSession();
 
         $fileShare = new FileSharingLink( $this->application);
@@ -107,7 +105,6 @@ class FileSystemService extends Service {
         $freeboxMaster = Config::get( 'assoc')[$uid];
         $this->application->setAppToken( $freeboxMaster['token']);
         $this->application->setFreeboxApiHost( $freeboxMaster['host']);
-        $this->application->authorize();
         $this->application->openSession();
 
         $fileSystemListing    = new FileSystemListing( $this->application);

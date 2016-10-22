@@ -18,10 +18,10 @@
                 </div>
                 <div class="bs-component" style="margin-top: 10px;">
                     <div class="progress">
-                        <div class="progress-bar progress-bar-info" [style.width]="getRxPct() + '%'">{{getRxPct()}} %</div>
+                        <div class="progress-bar progress-bar-info" [style.width]="downloadItem.downloadTask.rx_pct / 100 + '%'">{{downloadItem.downloadTask.rx_pct / 100}} %</div>
                     </div>
                     <div class="progress">
-                        <div class="progress-bar progress-bar-success" [style.width]="getTxPct() + '%'">{{getTxPct()}} %</div>
+                        <div class="progress-bar progress-bar-success" [style.width]="downloadItem.downloadTask.tx_pct / 100 + '%'">{{downloadItem.downloadTask.tx_pct / 100}} %</div>
                     </div>
                 </div>
             </div>

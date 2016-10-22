@@ -48,8 +48,5 @@ export class HomeComponent {
         });
     }
 
-    logout(){
-        this.af.auth.logout();
-    }
 }
 

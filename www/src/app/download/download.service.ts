@@ -10,15 +10,15 @@ export class DownloadService {
         private freeHubApiService : FreehubApiService,
     ) { }
 
-    getDownloads() : Promise<DownloadItem[]> {
-
+    getDownloads( uid : string) : Promise<DownloadItem[]> {
         return this.freeHubApiService.send( 'download', 'explore', {
+            "uid" : uid
         }).then( response => response as DownloadItem[]);
     }
 
-    cleanDone() : Promise<number[]> {
-
+    cleanDone( uid : string) : Promise<number[]> {
         return this.freeHubApiService.send( 'download', 'clear_done', {
+            "uid" : uid
         }).then( response => response as number[]);
     }
 

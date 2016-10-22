@@ -1,70 +1,72 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {DownloadItem} from "../download-item";
-import {DownloadItemService} from "./download-item.service";
 import {Router} from "@angular/router";
+import {AngularFire} from "angularfire2";
+import {FreehubApiService} from "../../shared/freehub-api.service";
 
 @Component({
     selector: 'download-item',
     templateUrl: 'download-item.component.html',
-    providers: [DownloadItemService]
 })
 
-export class DownloadItemComponent {
+export class DownloadItemComponent implements OnInit {
 
-    error: any;
+    uid: string;
 
     @Input()
     downloadItem: DownloadItem;
 
     constructor(
-        private downloadItemService: DownloadItemService,
-        private router: Router
-    ) { }
+        private freeHubApiService : FreehubApiService,
+        private router: Router,
+        public  af: AngularFire,
+    ){ }
+
+    ngOnInit() {
+        this.af.auth.subscribe( auth => {
+            this.uid = auth ? auth.uid : null;
+        });
+    }
 
     clearDownload() {
-        this.downloadItemService.cleanFromId( this.downloadItem.downloadTask.id);
+        this.freeHubApiService.send( 'download', 'clear_id', {
+            "id" : this.downloadItem.downloadTask.id,
+            "uid": this.uid
+        });
     }
 
     pauseDownload() {
-        this.downloadItemService.updateFromId( this.downloadItem.downloadTask.id, 'pause')
-            .then(download => {
-                this.downloadItem = download;
-            });
+        this.freeHubApiService.send( 'download', 'update_id', {
+            "uid"    : this.uid,
+            "id"     : this.downloadItem.downloadTask.id,
+            "status" : 'pause'
+        }).then( download => {
+            this.downloadItem = download;
+        });
     }
 
     resumeDownload() {
-        this.downloadItemService.updateFromId( this.downloadItem.downloadTask.id, 'download')
-            .then(download => {
-                this.downloadItem = download;
-            });
+        this.freeHubApiService.send( 'download', 'update_id', {
+            "uid"    : this.uid,
+            "id"     : this.downloadItem.downloadTask.id,
+            "status" : 'download'
+        }).then( download => {
+            this.downloadItem = download;
+        });
     }
 
     retryDownload() {
-        this.downloadItemService.updateFromId( this.downloadItem.downloadTask.id, 'retry')
-            .then(download => {
-                this.downloadItem = download;
-            });
+        this.freeHubApiService.send( 'download', 'update_id', {
+            "uid"    : this.uid,
+            "id"     : this.downloadItem.downloadTask.id,
+            "status" : 'retry'
+        }).then( download => {
+            this.downloadItem = download;
+        });
     }
-
-    public getRxPct(): number {
-        return this.downloadItem.downloadTask.rx_pct / 100;
-    }
-
-    public getTxPct(): number {
-        return this.downloadItem.downloadTask.tx_pct / 100;
-    }
-
-    public getCleanName(): string {
-        return this.downloadItem.name;
-    }
-
-    public getImage() {
-        return this.downloadItem.image;
-    }
-
 
     navigate() {
-        this.router.navigate(['/file-system', btoa(this.downloadItem.path)]);
+        this.router.navigate(['/file-system', this.uid, btoa( this.downloadItem.path)]);
     }
 
     isStoppable() {
@@ -78,5 +80,6 @@ export class DownloadItemComponent {
     isRetryable() {
         return this.downloadItem.downloadTask.status === 'error';
     }
+
 }
 
