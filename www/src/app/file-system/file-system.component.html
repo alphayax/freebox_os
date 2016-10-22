@@ -13,5 +13,10 @@
         <div *ngFor="let fileInfo of directoryInfo.files" class="col-lg-4 col-md-6 col-sm-12">
             <file-info [fileInfo]="fileInfo"></file-info>
         </div>
+        <div *ngIf="directoryInfo.files.length == 0" class="col-lg-12 col-md-12 col-sm-12">
+            <div class="well well-lg">
+                Pas grand chose ici...
+            </div>
+        </div>
     </div>
 </div>

@@ -42,7 +42,7 @@ export class FileSystemComponent implements OnInit {
         this.route.params.forEach((params: Params) => {
             this.uid_target = params['uid'];
             this.path       = params['path'] ? atob( params['path']) : '/';
-            this.getDirectoryInfo( this.path);
+            this.getDirectoryInfo();
         });
     }
 }
