@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import { FileInfo } from "../file-info";
 import { Router, Params, ActivatedRoute } from "@angular/router";
 import { FreehubApiService} from "../../shared/freehub-api.service";
+import {AngularFire} from "angularfire2";
 
 
 @Component({
@@ -13,6 +14,7 @@ export class FileInfoComponent implements OnInit {
 
     @Input()
     fileInfo: FileInfo;
+    uid_target: string;
     uid: string;
     url: string;
 
@@ -20,16 +22,22 @@ export class FileInfoComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private freeHubApiService : FreehubApiService,
+        public  af: AngularFire,
     ){ }
 
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
-            this.uid = params['uid'];
+            this.uid_target = params['uid'];
+        });
+        this.af.auth.subscribe(auth => {
+            if( auth) {
+                this.uid = auth.uid;
+            }
         });
     }
 
     navigate(){
-        this.router.navigate(['/file-system', this.uid, btoa( this.fileInfo.path)]);
+        this.router.navigate(['/file-system', this.uid_target, btoa( this.fileInfo.path)]);
     }
 
     isStreamable(){
@@ -59,7 +67,9 @@ export class FileInfoComponent implements OnInit {
 
     play(){
         this.freeHubApiService.send( 'filesystem', 'play', {
-            "path" : this.fileInfo.path
+            "path" : this.fileInfo.path,
+            "uid_src" : this.uid_target,
+            "uid_dst" : this.uid
         })
     }
 

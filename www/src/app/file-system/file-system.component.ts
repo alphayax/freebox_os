@@ -15,6 +15,8 @@ export class FileSystemComponent implements OnInit {
 
     directoryInfo: DirectoryInfo;
     uid: string;
+    uid_target: string;
+    path: string;
 
     constructor(
         private route: ActivatedRoute,
@@ -24,13 +26,13 @@ export class FileSystemComponent implements OnInit {
     ){ }
 
     navigate( path){
-        this.router.navigate(['/file-system', this.uid, btoa( path)]);
+        this.router.navigate(['/file-system', this.uid_target, btoa( path)]);
     }
 
-    getDirectoryInfo( uid, path){
+    getDirectoryInfo(){
         this.freeHubApiService.send( 'filesystem', 'explore', {
-            "path" : path,
-            "uid"  : uid
+            "path" : this.path,
+            "uid"  : this.uid_target
         }).then( directoryInfo => {
             this.directoryInfo = directoryInfo;
         });
@@ -38,14 +40,9 @@ export class FileSystemComponent implements OnInit {
 
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
-            let path = params['path'];
-            this.uid = params['uid'];
-            if( path){
-                path = atob( path);
-            } else {
-                path = '/'
-            }
-            this.getDirectoryInfo( this.uid, path);
+            this.uid_target = params['uid'];
+            this.path       = params['path'] ? atob( params['path']) : '/';
+            this.getDirectoryInfo( this.path);
         });
     }
 }

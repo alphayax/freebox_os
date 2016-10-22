@@ -46,22 +46,30 @@ class FileSystemService extends Service {
      */
     protected function play() {
 
-        $path = @$this->apiRequest['path'];
+        $path       = @$this->apiRequest['path'];
+        $uidSource  = @$this->apiRequest['uid_src'];
+        $uidDest    = @$this->apiRequest['uid_dst'];
 
-        $freeboxMaster = Config::get( 'assoc')[0];
+        // First, we have to share the file over the internet (It's stupid, but it's working only like that...)
+        $freeboxMaster = Config::get( 'assoc')[$uidSource];
         $this->application->setAppToken( $freeboxMaster['token']);
         $this->application->setFreeboxApiHost( $freeboxMaster['host']);
         $this->application->openSession();
 
-        // First, we have to share the file over the internet (It's stupid, but it's working only like that...)
         $fileShare = new FileSharingLink( $this->application);
         $share = $fileShare->create( $path);
 
-        // Then, we launch the AirMedia Request
+        // Then, create an AirMedia Request
         $request = new AirMediaReceiverRequest();
         $request->setAction( Action::START);
         $request->setMediaType( MediaType::VIDEO);
         $request->setMedia( $share->getFullurl());
+
+        // Finally, we launch the AirMedia Request
+        $freeboxMaster = Config::get( 'assoc')[$uidDest];
+        $this->application->setAppToken( $freeboxMaster['token']);
+        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
+        $this->application->openSession();
 
         $am = new AirMediaReceiver( $this->application);
         $sent = $am->sendRequest( 'Freebox Player', $request);
@@ -78,7 +86,7 @@ class FileSystemService extends Service {
     protected function share() {
 
         $path = @$this->apiRequest['path'] ?: '/';
-        $uid  = @$this->apiRequest['uid']  ?: 0;
+        $uid  = @$this->apiRequest['uid'];
 
         $freeboxMaster = Config::get( 'assoc')[$uid];
         $this->application->setAppToken( $freeboxMaster['token']);
@@ -100,7 +108,7 @@ class FileSystemService extends Service {
     protected function explore() {
 
         $directory = @$this->apiRequest['path'] ?: '/';
-        $uid       = @$this->apiRequest['uid']  ?: 0;
+        $uid       = @$this->apiRequest['uid'];
 
         $freeboxMaster = Config::get( 'assoc')[$uid];
         $this->application->setAppToken( $freeboxMaster['token']);
