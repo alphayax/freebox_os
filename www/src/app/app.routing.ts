@@ -7,6 +7,7 @@ import { HomeComponent } from "./home/home.component";
 import { AssociationComponent } from "./association/association.component";
 import { DlRssComponent } from "./dl-rss/dl-rss.component";
 import {PlayerComponent} from "./player/player.component";
+import {UploadComponent} from "./upload/upload.component";
 
 const appRoutes: Routes = [
   {
@@ -32,6 +33,10 @@ const appRoutes: Routes = [
   {
     path: 'player/:url/:mime',
     component: PlayerComponent
+  },
+  {
+    path: 'upload',
+    component: UploadComponent
   },
   {
     path: '',

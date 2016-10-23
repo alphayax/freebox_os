@@ -1,0 +1,31 @@
+
+<div *ngIf="af.auth | async">
+    <h1>Mes partages</h1>
+    <p class="lead">
+        <a (click)="revokeAllShareLinks()" class="btn btn-danger btn-sm disabled">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&emsp;Révoquer tous les partages
+        </a>
+    </p>
+
+    <table class="table table-striped table-hover ">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Expiration</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let shareLink of shareLinks">
+            <td>{{ shareLink.name }}</td>
+            <td>{{ shareLink.expire * 1000 | date: 'EEEE, dd MMMM y (H:m:s)' }}</td>
+            <td>
+                <a class="btn btn-danger btn-xs" (click)="revokeShareLinksFromToken( shareLink.token)">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>

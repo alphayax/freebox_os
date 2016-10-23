@@ -37,6 +37,7 @@ class FreeboxOsApplication {
             case 'download_dlrss' : return new freebox\os\services\DlRssService( $this->application);
             case 'filesystem'     : return new freebox\os\services\FileSystemService( $this->application);
             case 'poster'         : return new freebox\os\services\PosterService( $this->application);
+            case 'upload'         : return new freebox\os\services\UploadService( $this->application);
             default : throw new \Exception( 'Unknown service : '. $service);
         }
     }
@@ -56,6 +57,12 @@ class FreeboxOsApplication {
             $apiResponse = new ApiResponse();
             $apiResponse->setSuccess( false);
             $apiResponse->setError( $e->getApiErrorCode() .' : '. $e->getApiMessage());
+            return $apiResponse;
+        }
+        catch( \Exception $e){
+            $apiResponse = new ApiResponse();
+            $apiResponse->setSuccess( false);
+            $apiResponse->setError( $e->getCode() .' : '. $e->getMessage());
             return $apiResponse;
         }
 
