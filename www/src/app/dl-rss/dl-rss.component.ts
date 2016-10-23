@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DlRssService } from "./dl-rss.service";
 import {RssSearch} from "./rss-search";
 import {AngularFire} from "angularfire2";
 import {FreehubApiService} from "../shared/freehub-api.service";

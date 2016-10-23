@@ -3,11 +3,15 @@ import { FileInfo } from "../file-info";
 import { Router, Params, ActivatedRoute } from "@angular/router";
 import { FreehubApiService} from "../../shared/freehub-api.service";
 import {AngularFire} from "angularfire2";
+import {PosterService} from "../../shared/poster.service";
 
 
 @Component({
     selector: 'file-info',
     templateUrl: 'file-info.component.html',
+    providers : [
+        PosterService,
+    ],
 })
 
 export class FileInfoComponent implements OnInit {
@@ -22,6 +26,7 @@ export class FileInfoComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private freeHubApiService : FreehubApiService,
+        private posterService : PosterService,
         public  af: AngularFire,
     ){ }
 
@@ -32,8 +37,19 @@ export class FileInfoComponent implements OnInit {
         this.af.auth.subscribe(auth => {
             if( auth) {
                 this.uid = auth.uid;
+                this.getPoster();
             }
         });
+    }
+
+    getPoster() {
+        if( this.fileInfo.image){
+            return;
+        }
+        this.posterService.getImage( this.fileInfo.name)
+            .then( poster => {
+                this.fileInfo.image = poster;
+            });
     }
 
     navigate(){

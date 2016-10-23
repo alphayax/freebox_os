@@ -35,13 +35,7 @@ export class DownloadItem {
 
     image : string;
     name : string;
-    sizeHr : string;
-    rxTotalHr : string;
-    txTotalHr : string;
     etaHr : string;
-    cleanName : string;
-    rxPct: number;
-    txPct: number;
     path: string;
 }
 

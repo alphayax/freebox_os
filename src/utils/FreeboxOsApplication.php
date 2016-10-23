@@ -36,6 +36,7 @@ class FreeboxOsApplication {
             case 'download'       : return new freebox\os\services\DownloadService( $this->application);
             case 'download_dlrss' : return new freebox\os\services\DlRssService( $this->application);
             case 'filesystem'     : return new freebox\os\services\FileSystemService( $this->application);
+            case 'poster'         : return new freebox\os\services\PosterService( $this->application);
             default : throw new \Exception( 'Unknown service : '. $service);
         }
     }

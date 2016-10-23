@@ -128,9 +128,7 @@ class DownloadService extends freebox\os\utils\Service {
      * @return \alphayax\freebox\os\models\Download\DownloadItem
      */
     protected function taskToDownloadItem( freebox\api\v3\models\Download\Task $task) {
-        $dl = new freebox\os\models\Download\DownloadItem( $task);
-        $dl->init();
-        return $dl;
+        return new freebox\os\models\Download\DownloadItem( $task);
     }
 
 }

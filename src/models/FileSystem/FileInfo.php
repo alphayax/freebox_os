@@ -46,7 +46,6 @@ class FileInfo implements \JsonSerializable {
         if( $this->isVideo()){
             $this->movieTitle = new MovieTitle( $this->fileInfo->getName());
             $this->name  = $this->movieTitle->getCleanName();
-            $this->image = $this->getImage();
         }
     }
 
@@ -58,38 +57,6 @@ class FileInfo implements \JsonSerializable {
         $mimeType = $this->fileInfo->getMimetype();
         $type = explode( '/', $mimeType);
         return $type[0] == 'video';
-    }
-
-    /**
-     * @todo : Meilleur systeme de cache (BDD)
-     * @return string
-     */
-    public function getImage() {
-
-        if( $this->isDir()){
-            return static::IMG_HOST.'folder.png';
-        }
-
-        $title = $this->movieTitle->getCleanName();
-
-        if( file_exists(  __DIR__ . '/../../../www/img/' . $title)){
-            return static::IMG_HOST. $title;
-        }
-
-
-        $poster = Poster::getFromTitle( $title);
-        if( empty( $poster) || $poster == 'N/A'){
-            return '';
-        }
-
-        $img = file_get_contents( $poster);
-        if( empty( $img)){
-            return '';
-        }
-
-        // TODO : Attention. Le nom de fichier peut contenir les caracteres speciaux . .. / \
-        file_put_contents( __DIR__ . '/../../../www/img/' . $title, $img);    // TODO : Mettre un meilleur nom pour l'image (genre imdb id)
-        return static::IMG_HOST. $title;
     }
 
     /**

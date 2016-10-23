@@ -2,24 +2,16 @@
 namespace alphayax\freebox\os\models\Download;
 use alphayax\freebox\api\v3\models\Download\Task;
 use alphayax\freebox\os\utils\MovieTitle;
-use alphayax\freebox\os\utils\Poster;
 use alphayax\freebox\os\utils\Unit;
 
 
 class DownloadItem implements \JsonSerializable {
 
-    // Q&D fix
-    const IMG_HOST = 'http://api.freehub.ondina.alphayax.com:14789/img/';
-
     /** @var \alphayax\freebox\api\v3\models\Download\Task */
     protected $downloadTask;
 
-    protected $image;
-    protected $name;
+    protected $image = '';
     protected $etaHr;
-    protected $cleanName;
-    protected $rxPct;
-    protected $txPct;
     protected $path;
 
     /** @var MovieTitle */
@@ -32,46 +24,8 @@ class DownloadItem implements \JsonSerializable {
     public function __construct( Task $downloadTask) {
         $this->downloadTask = $downloadTask;
         $this->movieTitle   = new MovieTitle( $this->downloadTask->getName());
-    }
-
-    /**
-     * Initialize misc data from downloadTask
-     */
-    public function init() {
-        $this->cleanName    = $this->movieTitle->getCleanName();
-        $this->image        = $this->getImage();
-        $this->etaHr        = Unit::secondsToHumanReadable( $this->downloadTask->getEta());
-        $this->rxPct        = $this->downloadTask->getRxPct() / 100;
-        $this->txPct        = $this->downloadTask->getTxPct() / 100;
         $this->path         = base64_decode( $this->downloadTask->getDownloadDir());
-    }
-
-    /**
-     * @todo : Meilleur systeme de cache
-     * @return string
-     */
-    public function getImage() {
-
-        $title = $this->movieTitle->getCleanName();
-
-        if( file_exists(  __DIR__ . '/../../../www/img/' . $title)){
-            return static::IMG_HOST . $title;
-        }
-
-        $poster = Poster::getFromTitle( $title);
-        if( empty( $poster) || $poster == 'N/A'){
-            return '';
-        }
-
-        /// Download poster
-        $img = file_get_contents( $poster);
-        if( empty( $img)){
-            trigger_error( "Poster cannot be downloaded : $poster");
-            return '';
-        }
-
-        file_put_contents( __DIR__ . '/../../../www/img/' . $title, $img);    // TODO : Mettre un meilleur nom pour l'image
-        return static::IMG_HOST . $title;
+        $this->etaHr        = Unit::secondsToHumanReadable( $this->downloadTask->getEta());
     }
 
     /**
