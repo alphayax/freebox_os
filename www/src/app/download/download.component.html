@@ -2,11 +2,14 @@
 <div *ngIf="af.auth | async">
     <h1>Mes téléchargements</h1>
     <p class="lead">
-        <a (click)="getDownloads()" class="btn btn-default btn-sm">
+        <a (click)="getDownloads()" class="btn btn-primary btn-sm">
             <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>&emsp;Actualiser
         </a>
-        <a (click)="cleanDone()" class="btn btn-primary btn-sm">
+        <a (click)="cleanDone()" class="btn btn-default btn-sm">
             <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>&emsp;Retirer les téléchargements terminées
+        </a>
+        <a (click)="addDownload()" class="btn btn-default btn-sm disabled">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&emsp;Ajouter un téléchargement...
         </a>
     </p>
 
