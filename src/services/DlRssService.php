@@ -48,14 +48,16 @@ class DlRssService extends Service {
 
         $return = [];
         $config = [];
-        $json = json_decode( file_get_contents('php://input'), true);
-        $id = $json['id'];
+
+        $rss_id  = @$this->apiRequest['rss_id'];
+        $uid     = @$this->apiRequest['uid'];
+
 
         /// Scan files for configs
         $config_rfi_s = glob( __DIR__ . '/../etc/download/dl_rss/*.json');
         foreach( $config_rfi_s as $config_rfi){
             $rssSearchId = basename( $config_rfi);
-            if( $rssSearchId != $id ){
+            if( $rssSearchId != $rss_id ){
                 continue;
             }
             $config = json_decode( file_get_contents( $config_rfi), true);
@@ -65,14 +67,13 @@ class DlRssService extends Service {
 
         if( empty( $config)){
             $this->apiResponse->setSuccess( false);
-            $this->apiResponse->setError( 'Configuration non trouvee ' . var_export($id, true));
+            $this->apiResponse->setError( 'Configuration non trouvee ' . var_export($rss_id, true));
             return;
         }
 
-        $freeboxMaster = Config::get( 'assoc')[0];
+        $freeboxMaster = Config::get( 'assoc')[$uid];
         $this->application->setAppToken( $freeboxMaster['token']);
         $this->application->setFreeboxApiHost( $freeboxMaster['host']);
-        $this->application->authorize();
         $this->application->openSession();
         $downloadService = new Download( $this->application);
 

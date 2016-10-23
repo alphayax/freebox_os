@@ -1,27 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { DlRssService } from "./dl-rss.service";
 import {RssSearch} from "./rss-search";
+import {AngularFire} from "angularfire2";
+import {FreehubApiService} from "../shared/freehub-api.service";
 
 @Component({
     selector: 'dl-rss',
     templateUrl: 'dl-rss.component.html',
-    providers: [DlRssService]
 })
 
 export class DlRssComponent implements OnInit {
+
+    uid: string;
 
     checkRssResults: string[];
 
     rssSearches: RssSearch[];
 
     constructor(
-        private dlRssService: DlRssService
+        private freeHubApiService : FreehubApiService,
+        public  af: AngularFire,
     ){ }
 
 
     checkRss( id){
-        this.dlRssService.checkRss( id)
-            .then(result => this.checkRssResults = result);
+        this.freeHubApiService.send( 'download_dlrss', 'check_from_id', {
+            "uid"    : this.uid,
+            "rss_id" : id
+        }).then( result => this.checkRssResults = result);
     }
 
     cleanResults() {
@@ -29,15 +35,17 @@ export class DlRssComponent implements OnInit {
     }
 
     getPatterns(){
-        this.dlRssService.getPatterns()
-            .then(rssSearches => {
-                this.rssSearches = rssSearches;
-            });
+        this.freeHubApiService.send( 'download_dlrss', 'get_list', {
+        }).then( rssSearches => {
+            this.rssSearches = rssSearches;
+        });
     }
 
     ngOnInit() {
-        this.getPatterns();
+        this.af.auth.subscribe( auth => {
+            this.uid = auth ? auth.uid : null;
+            this.getPatterns();
+        });
     }
 
 }
-
