@@ -1,5 +1,6 @@
 import {Component, ViewChild, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from "@angular/router";
+import {AngularFire} from "angularfire2";
 
 @Component({
     selector: 'player',
@@ -15,7 +16,8 @@ export class PlayerComponent implements OnInit {
     mimeType: string;
 
     constructor(
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public  af: AngularFire,
     ) {}
 
     ngOnInit(): void {
