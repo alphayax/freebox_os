@@ -9,8 +9,8 @@ export class NavElem {
 
 const NAV_ELEMS: NavElem[] = [
     { service: 'home', name: 'Accueil', icon: 'home' },
-    { service: 'download', name: 'Mes téléchargements', icon: 'cloud-download' },
-    { service: 'upload', name: 'Mes partages', icon: 'cloud-upload' },
+    { service: 'download', name: 'Mes téléchargements', icon: 'save' },
+    { service: 'upload', name: 'Mes partages', icon: 'open' },
 ];
 
 @Component({

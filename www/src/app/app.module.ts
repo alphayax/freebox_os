@@ -13,7 +13,7 @@ import { DownloadItemComponent } from "./download/download-item/download-item.co
 import { FileInfoComponent }     from "./file-system/file-info/file-info.component";
 import { FileSystemComponent }   from "./file-system/file-system.component";
 import { HomeComponent }         from "./home/home.component";
-import { MenuHeaderComponent }   from "./menu-header.component";
+import { MenuHeaderComponent }   from "./menu-header/menu-header.component";
 import { PlayerComponent }       from "./player/player.component";
 
 import { FreehubApiService }     from "./shared/freehub-api.service";
