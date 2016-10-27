@@ -24,7 +24,7 @@
                             <div class="progress">
                                 <div class="progress-bar progress-bar-info" [style.width]="downloadItem.downloadTask.rx_pct / 100 + '%'">{{downloadItem.downloadTask.rx_pct / 100}} %</div>
                             </div>
-                            <div class="progress">
+                            <div class="progress" *ngIf="downloadItem.downloadTask.type === 'bt'">
                                 <div class="progress-bar progress-bar-success" [style.width]="downloadItem.downloadTask.tx_pct / 100 + '%'">{{downloadItem.downloadTask.tx_pct / 100}} %</div>
                             </div>
                         </div>
@@ -51,8 +51,18 @@
                     </div>
                     <div class="col-lg-5 col-md-5 col-sm-5">
                         Taille : {{downloadItem.downloadTask.size | o2hr}}<br/>
-                        <span class="glyphicon glyphicon-download" aria-hidden="true"></span>&nbsp;{{downloadItem.downloadTask.rx_bytes | o2hr }} ({{downloadItem.downloadTask.rx_rate | o2hr }}/s)<br />
-                        <span class="glyphicon glyphicon-upload"   aria-hidden="true"></span>&nbsp;{{downloadItem.downloadTask.tx_bytes | o2hr }} ({{downloadItem.downloadTask.tx_rate | o2hr }}/s)<br />
+                        <span>
+                            <span class="glyphicon glyphicon-download" aria-hidden="true"></span>&nbsp;{{downloadItem.downloadTask.rx_bytes | o2hr }}
+                            <span *ngIf="downloadItem.downloadTask.rx_rate">
+                                ({{downloadItem.downloadTask.rx_rate | o2hr }}/s)
+                            </span>
+                        </span><br />
+                        <span *ngIf="downloadItem.downloadTask.type === 'bt'">
+                            <span class="glyphicon glyphicon-upload"   aria-hidden="true"></span>&nbsp;{{downloadItem.downloadTask.tx_bytes | o2hr }}
+                            <span *ngIf="downloadItem.downloadTask.tx_rate">
+                                ({{downloadItem.downloadTask.tx_rate | o2hr }}/s)
+                            </span>
+                        </span><br />
                     </div>
                 </div>
 

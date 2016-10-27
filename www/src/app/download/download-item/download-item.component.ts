@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
 import {DownloadItem} from "../download-item";
 import {Router} from "@angular/router";
 import {AngularFire} from "angularfire2";
@@ -19,6 +19,9 @@ export class DownloadItemComponent implements OnInit {
 
     @Input()
     downloadItem: DownloadItem;
+
+    @Output()
+    onRemove = new EventEmitter<DownloadItem>();
 
     constructor(
         private freeHubApiService : FreehubApiService,
@@ -48,6 +51,8 @@ export class DownloadItemComponent implements OnInit {
         this.freeHubApiService.send( 'download', 'clear_id', {
             "id" : this.downloadItem.downloadTask.id,
             "uid": this.uid
+        }).then( downloadItem => {
+            this.onRemove.emit( downloadItem);
         });
     }
 

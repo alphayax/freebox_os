@@ -50,5 +50,11 @@ export class DownloadComponent implements OnInit {
             })
     }
 
+    onRemove( downloadItem: DownloadItem){
+        this.downloads           = this.downloads.filter(        download => downloadItem.downloadTask.id !== download.downloadTask.id);
+        this.downloadsDone       = this.downloadsDone.filter(    download => downloadItem.downloadTask.id !== download.downloadTask.id);
+        this.downloadsSeeding    = this.downloadsSeeding.filter( download => downloadItem.downloadTask.id !== download.downloadTask.id);
+        this.downloadsInProgress = this.downloadsSeeding.filter( download => downloadItem.downloadTask.id !== download.downloadTask.id);
+    }
 }
 
