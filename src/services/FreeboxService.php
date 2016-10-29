@@ -44,13 +44,13 @@ class FreeboxService extends Service {
      *
      */
     protected function getFreeboxFromUid() {
-        $_SESSION['uid']  = @$this->apiRequest['uid'];
+        $uid = @$this->apiRequest['uid'];
 
         $assocConf = Config::get( 'assoc');
 
         $this->apiResponse->setData([
-            'uid'   => @$this->apiRequest['uid'],
-            'host'  => @$assocConf['uid']['host'],
+            'uid'   => $uid,
+            'host'  => @$assocConf[$uid]['host'],
         ]);
     }
 
