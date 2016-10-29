@@ -8,6 +8,7 @@ import { AssociationComponent } from "./association/association.component";
 import { DlRssComponent } from "./dl-rss/dl-rss.component";
 import {PlayerComponent} from "./player/player.component";
 import {UploadComponent} from "./upload/upload.component";
+import {SettingsComponent} from "./settings/settings.component";
 
 const appRoutes: Routes = [
   {
@@ -37,6 +38,10 @@ const appRoutes: Routes = [
   {
     path: 'upload',
     component: UploadComponent
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent
   },
   {
     path: '',

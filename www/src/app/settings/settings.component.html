@@ -1,0 +1,119 @@
+
+<h1>Paramètres</h1>
+<p class="lead">Gestion des parametres</p>
+
+
+<ul class="nav nav-tabs">
+    <li class="disabled">
+        <a href="#profile" data-toggle="tab">
+            Mon profil&nbsp;
+        </a>
+    </li>
+    <li class="active">
+        <a href="#freebox" data-toggle="tab">
+            Ma freebox&nbsp;
+        </a>
+    </li>
+</ul>
+
+
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade" id="profile">
+        Encore rien ici...
+    </div>
+
+    <div class="tab-pane fade active in" id="freebox">
+        <form class="form-horizontal">
+
+            <fieldset>
+                <legend>Personalisation de la freebox</legend>
+                <div class="form-group">
+                    <label for="freebox_host" class="col-lg-2 control-label">Hote</label>
+                    <div class="col-lg-10">
+                        <output *ngIf="freeboxInfos" class="form-control" id="freebox_host" name="freebox_host">{{freeboxInfos.host}}</output>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="freebox_name" class="col-lg-2 control-label">Petit nom</label>
+                    <div class="col-lg-10">
+                        <input [(ngModel)]="freebox_name" type="text" class="form-control" id="freebox_name" name="freebox_name" placeholder="Yggdrasil">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2">
+                        <button type="reset" class="btn btn-default">Annuler</button>
+                        <button class="btn btn-primary disabled">Enregistrer</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        <h3>Informations</h3>
+
+
+        <div class="col-sm-6 col-lg-6 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Débits
+                </div>
+
+                <div class="panel-body">
+                    <table *ngIf="freeboxStatus" class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Current</th>
+                            <th>Max</th>
+                            <th>Dispo</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Download</td>
+                            <td>{{freeboxStatus.rate_down / 8 | o2hr }}/s</td>
+                            <td>{{freeboxStatus.bandwidth_down / 8 | o2hr}}/s</td>
+                            <td>{{100 - (freeboxStatus.rate_down / freeboxStatus.bandwidth_down) * 100 | number }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Upload</td>
+                            <td>{{freeboxStatus.rate_up / 8 | o2hr }}/s</td>
+                            <td>{{freeboxStatus.bandwidth_up / 8 | o2hr }}/s</td>
+                            <td>{{100 - (freeboxStatus.rate_up / freeboxStatus.bandwidth_up) * 100 | number }}%</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-6 col-lg-6 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Connectivité
+                </div>
+
+                <div class="panel-body">
+                    <table *ngIf="freeboxStatus" class="table table-striped table-hover ">
+                        <tbody>
+                        <tr>
+                            <th>Connexion</th>
+                            <td>{{freeboxStatus.media }}</td>
+                        </tr>
+                        <tr>
+                            <th>IPv4</th>
+                            <td>{{freeboxStatus.ipv4 }}</td>
+                        </tr>
+                        <tr>
+                            <th>IPv6</th>
+                            <td>{{freeboxStatus.ipv6 }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
