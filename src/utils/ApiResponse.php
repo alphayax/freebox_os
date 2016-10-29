@@ -24,7 +24,7 @@ class ApiResponse implements \JsonSerializable {
     }
 
     /**
-     * @param array $data
+     * @param array|\JsonSerializable $data
      */
     public function setData( $data) {
         $this->data = $data;
