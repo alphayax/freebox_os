@@ -1,42 +1,34 @@
 <?php
 namespace alphayax\freebox\os\utils;
 
+use alphayax\freebox\os\etc\Config;
 use alphayax\freebox\os\utils\Omdb\Omdb;
 
+/**
+ * Class Poster
+ * @package alphayax\freebox\os\utils
+ */
 class Poster {
 
-    protected static $conf = [];
-
+    /**
+     * @param string $title
+     * @return string
+     */
     public static function getFromTitle( $title) {
 
-        if( empty( static::$conf)){
-            static::loadConfig();
-        }
+        $conf = Config::get( 'poster');
 
         /// Trivial case : result is cached
-        if( array_key_exists( $title, static::$conf)){
-            return static::$conf[$title]['Poster'];
+        if( array_key_exists( $title, $conf)){
+            return $conf[$title]['Poster'];
         }
 
         $movie = Omdb::search( $title);
 
-        static::$conf[$title] = $movie->toArray();
-        static::saveConfig();
+        $conf[$title] = $movie->toArray();
+        Config::set( 'poster', $conf);
 
-        return static::$conf[$title]['Poster'];
+        return $conf[$title]['Poster'];
     }
 
-    protected static function loadConfig() {
-        $posterConfFile = __DIR__ . '/../etc/poster.json';
-        if( ! is_file( $posterConfFile)) {
-            return;
-        }
-        $confJson = file_get_contents( $posterConfFile);
-        static::$conf = json_decode( $confJson, true);
-    }
-
-    protected static function saveConfig() {
-        $posterConfFile = __DIR__ . '/../etc/poster.json';
-        file_put_contents( $posterConfFile, json_encode( static::$conf, JSON_PRETTY_PRINT));
-    }
 }
