@@ -59,7 +59,7 @@ class Config {
     protected static function write( $confName) {
         $configFile = static::getConfigFileFromConfigName( $confName);
 
-        $configContent = json_encode( static::$configsCache[$confName]);
+        $configContent = json_encode( static::$configsCache[$confName], JSON_PRETTY_PRINT);
         return false !== file_put_contents( $configFile, $configContent);
     }
 
