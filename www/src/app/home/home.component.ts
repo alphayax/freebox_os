@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import { AngularFire } from 'angularfire2';
-import {Router} from "@angular/router";
 import {FreehubApiService} from "../shared/freehub-api.service";
 
 @Component({
@@ -16,7 +15,6 @@ export class HomeComponent {
 
     constructor(
         private freeHubApiService : FreehubApiService,
-        private router: Router,
         public  af: AngularFire,
     ) { }
 
@@ -30,16 +28,11 @@ export class HomeComponent {
     }
 
     getFreeboxInfo() {
-        this.freeHubApiService.send( 'config', 'get_freebox', {
+        this.freeHubApiService.send( 'freebox', 'get_all', {
             "uid" : this.uid
         }).then( freeboxInfos => {
             this.freeboxInfos = freeboxInfos;
         });
     }
-
-    navigate( uid, path){
-        this.router.navigate(['/file-system', uid, btoa( path)]);
-    }
-
 }
 

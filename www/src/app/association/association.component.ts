@@ -1,62 +1,61 @@
-import {Component} from '@angular/core';
-import {AssociationService} from "./association.service";
-import {AngularFire, FirebaseAuthState} from "angularfire2";
+import {Component, OnInit} from '@angular/core';
+import {AngularFire} from "angularfire2";
+import {FreeboxAssociation} from "../shared/freebox-association";
+import {FreehubApiService} from "../shared/freehub-api.service";
 
 @Component({
     selector: 'association',
     templateUrl: 'association.component.html',
-    providers: [AssociationService]
 })
 
 export class AssociationComponent {
 
-    user: FirebaseAuthState;
-    app_token: string;
-    track_id: number;
-    api_domain: string;
-    https_port: number;
+    uid: string;
 
-    error: any;
+    step: number;
+
+    freeboxAssociation : FreeboxAssociation;
+    permissions : any;
 
     constructor(
-        private associationService : AssociationService,
         public  af: AngularFire,
+        private freeHubApiService : FreehubApiService,
     ){
         this.af.auth.subscribe(user => {
-            if( user) {
-                this.user = user;
-            } else {
-                this.user = null;
-            }
+            this.uid = user ? user.uid : null;
+            this.checkFreebox();
         });
+        this.freeboxAssociation = new FreeboxAssociation;
+        this.step = 0;
     }
 
-    addFreebox(){
-
-        /// Check parameters
-        if( ! this.user || ! this.user.uid){
-            console.error( 'User is not logged in');
-        }
-        if( ! this.app_token || ! this.track_id || ! this.api_domain || ! this.https_port){
-            console.error( 'Erreur : Tous les champs ne sont pas renseignes.');
-            return;
-        }
-
-        /// Create association object
-        let association = {
-            "uid"        : this.user.uid,
-            "app_token"  : this.app_token,
-            "track_id"   : this.track_id,
-            "api_domain" : this.api_domain,
-            "https_port" : this.https_port,
-        };
-
-        this.associationService.addFreebox( association)
-            .then(freebox => {
-                console.log( freebox);
-                console.log( "Association réussie")
-            })
-            .catch(error => console.error(error));
+    checkFreebox() {
+        this.freeHubApiService.send( 'freebox', 'get_permissions', {
+            "uid"   : this.uid,
+        })
+        .then( result => {
+            console.log( result);
+            this.permissions = result;
+        })
+        .catch( result => {
+            this.step = 1;
+        })
     }
+
+    onStep1Validation( freeboxAssociation: FreeboxAssociation){
+        this.freeboxAssociation = freeboxAssociation;
+        this.step = 2;
+    }
+
+    onStep2Validation( freeboxAssociation: FreeboxAssociation){
+        this.freeboxAssociation = freeboxAssociation;
+        this.step = 3;
+    }
+
+    onStep3Validation( freeboxAssociation: FreeboxAssociation){
+        this.freeboxAssociation = freeboxAssociation;
+        this.step = 0;
+    }
+
 }
 

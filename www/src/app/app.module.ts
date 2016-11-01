@@ -7,18 +7,24 @@ import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 import { routing }               from "./app.routing";
 import { AppComponent  }         from './app.component';
 import { AssociationComponent }  from "./association/association.component";
+import { AssociationStep1Component } from "./association/association-step1/association-step1.component";
+import { AssociationStep2Component } from "./association/association-step2/association-step2.component";
+import { AssociationStep3Component } from "./association/association-step3/association-step3.component";
 import { DlRssComponent }        from "./dl-rss/dl-rss.component";
 import { DownloadComponent }     from "./download/download.component";
 import { DownloadItemComponent } from "./download/download-item/download-item.component";
 import { FileInfoComponent }     from "./file-system/file-info/file-info.component";
 import { FileSystemComponent }   from "./file-system/file-system.component";
+import { FreeboxInfoComponent }  from "./home/freebox-info/freebox-info.component";
 import { HomeComponent }         from "./home/home.component";
 import { MenuHeaderComponent }   from "./menu-header/menu-header.component";
 import { PlayerComponent }       from "./player/player.component";
+import { UploadComponent } from "./upload/upload.component";
+import { SettingsComponent } from "./settings/settings.component";
 
 import { FreehubApiService }     from "./shared/freehub-api.service";
-import {OctetToHumanReadablePipe} from "./shared/octet-human-readable.pipe";
-import {UploadComponent} from "./upload/upload.component";
+
+import { OctetToHumanReadablePipe } from "./shared/octet-human-readable.pipe";
 
 export const config = {
   apiKey: "AIzaSyBzQwe1bXEUpOUD_Q3Gm8JzdZn0FtRMtWs",
@@ -43,15 +49,20 @@ const myFirebaseAuthConfig = {
     declarations: [
         AppComponent,
         AssociationComponent,
+        AssociationStep1Component,
+        AssociationStep2Component,
+        AssociationStep3Component,
         DlRssComponent,
         DownloadComponent,
         DownloadItemComponent,
         FileInfoComponent,
         FileSystemComponent,
+        FreeboxInfoComponent,
         HomeComponent,
         MenuHeaderComponent,
         PlayerComponent,
         UploadComponent,
+        SettingsComponent,
         // Pipes
         OctetToHumanReadablePipe,
     ],

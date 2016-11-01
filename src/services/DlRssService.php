@@ -1,7 +1,7 @@
 <?php
 namespace alphayax\freebox\os\services;
 use alphayax\freebox\api\v3\services\download\Download;
-use alphayax\freebox\os\etc\Config;
+use alphayax\freebox\os\models\FreeboxAssoc;
 use alphayax\freebox\os\utils\Service;
 
 /**
@@ -71,9 +71,9 @@ class DlRssService extends Service {
             return;
         }
 
-        $freeboxMaster = Config::get( 'assoc')[$uid];
-        $this->application->setAppToken( $freeboxMaster['token']);
-        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
+        $userAssoc = FreeboxAssoc::getFromUid( $uid);
+        $this->application->setAppToken( $userAssoc->getAppToken());
+        $this->application->setFreeboxApiHost( $userAssoc->getHost());
         $this->application->openSession();
         $downloadService = new Download( $this->application);
 

@@ -29,6 +29,11 @@
 
       <ul class="nav navbar-nav navbar-right">
         <li>
+          <a [routerLink]="['settings']">
+            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+          </a>
+        </li>
+        <li>
           <a (click)="logout()">
             <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
           </a>

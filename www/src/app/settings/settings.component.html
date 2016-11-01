@@ -28,21 +28,27 @@
             <fieldset>
                 <legend>Personalisation de la freebox</legend>
                 <div class="form-group">
-                    <label for="freebox_host" class="col-lg-2 control-label">Hote</label>
+                    <label for="freebox_host" class="col-lg-2 control-label">Nom de domaine</label>
                     <div class="col-lg-10">
-                        <output *ngIf="freeboxInfos" class="form-control" id="freebox_host" name="freebox_host">{{freeboxInfos.host}}</output>
+                        <output *ngIf="freeboxInfos" class="form-control" id="freebox_host" name="freebox_host">{{freeboxInfos.api_domain}}</output>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="https_port" class="col-lg-2 control-label">Port HTTPS</label>
+                    <div class="col-lg-10">
+                        <output *ngIf="freeboxInfos" class="form-control" id="https_port" name="https_port">{{freeboxInfos.https_port}}</output>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="freebox_name" class="col-lg-2 control-label">Petit nom</label>
                     <div class="col-lg-10">
-                        <input [(ngModel)]="freebox_name" type="text" class="form-control" id="freebox_name" name="freebox_name" placeholder="Yggdrasil">
+                        <input *ngIf="freeboxInfos" [(ngModel)]="freeboxInfos.name" type="text" class="form-control" id="freebox_name" name="freebox_name" placeholder="Yggdrasil">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2">
                         <button type="reset" class="btn btn-default">Annuler</button>
-                        <button class="btn btn-primary disabled">Enregistrer</button>
+                        <button (click)="saveFreeboxName()" class="btn btn-primary">Enregistrer</button>
                     </div>
                 </div>
             </fieldset>

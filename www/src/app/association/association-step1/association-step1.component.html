@@ -1,0 +1,59 @@
+
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <h3 class="panel-title">Prérequis</h3>
+    </div>
+    <div class="panel-body">
+        <p>
+            Pour remplir cette étape, vous devez avoir activé le HTTPS sur votre freebox pour crypter le trafic qui
+            transite entre votre box de notre système. Si vous n'etes pas familier avec ce procédé, je vous redirige
+            vers les tutoriaux suivants :
+        </p>
+        <ul>
+            <li><a target="_blank" href="https://www.freenews.fr/freenews-edition-nationale-299/freebox-9/lacces-distant-a-freebox-os-sameliore-https">https://www.freenews.fr/freenews-edition-nationale-299/freebox-9/lacces-distant-a-freebox-os-sameliore-https</a></li>
+            <li><a target="_blank" href="http://www.universfreebox.com/article/33426/Tutoriel-Comment-acceder-a-Freebox-OS-depuis-n-importe-ou-de-maniere-securisee">http://www.universfreebox.com/article/33426/Tutoriel-Comment-acceder-a-Freebox-OS-depuis-n-importe-ou-de-maniere-securisee</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Identification de la Freebox</h3>
+    </div>
+    <div class="panel-body">
+        <ul>
+            <li>Le <span class="text-info">nom de domaine</span> est affiché sur cette interface : <a href="http://mafreebox.freebox.fr/#Fbx.os.app.settings.domains.Domains">http://mafreebox.freebox.fr/#Fbx.os.app.settings.domains.Domains</a></li>
+            <li>Le <span class="text-info">port HTTPS</span>     est affiché sur cette interface : <a href="http://mafreebox.freebox.fr/#Fbx.os.app.settings.Accounts">http://mafreebox.freebox.fr/#Fbx.os.app.settings.Accounts</a></li>
+        </ul>
+    </div>
+</div>
+
+<form class="form-horizontal">
+    <fieldset>
+        <legend>Parametres de connexion à la freebox</legend>
+        <div class="form-group">
+            <label for="api_domain" class="col-lg-2 control-label">Nom de domaine</label>
+            <div class="col-lg-10">
+                <input [(ngModel)]="freeboxAssociation.api_domain" type="text" class="form-control" id="api_domain" name="api_domain" placeholder="example.freeboxos.fr">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="https_port" class="col-lg-2 control-label">Port HTTPS</label>
+            <div class="col-lg-10">
+                <input [(ngModel)]="freeboxAssociation.https_port" type="text" class="form-control" id="https_port"  name="https_port" placeholder="17105">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="freebox_name" class="col-lg-2 control-label">Petit nom de la freebox</label>
+            <div class="col-lg-10">
+                <input [(ngModel)]="freeboxAssociation.name" type="text" class="form-control" id="freebox_name"  name="freebox_name" placeholder="Alpha Free-boite">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+                <button type="reset" class="btn btn-default">Annuler</button>
+                <button (click)="saveAssociation()" class="btn btn-primary">Valider</button>
+            </div>
+        </div>
+    </fieldset>
+</form>

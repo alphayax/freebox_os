@@ -1,6 +1,5 @@
 <?php
 namespace alphayax\freebox\os\services;
-use alphayax\freebox\api\v3\symbols\Download\Task\Status;
 use alphayax\freebox;
 
 /**
@@ -25,12 +24,11 @@ class UploadService extends freebox\os\utils\Service {
      *
      */
     public function getAll() {
-
         $uid = @$this->apiRequest['uid'];
 
-        $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[$uid];
-        $this->application->setAppToken( $freeboxMaster['token']);
-        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
+        $userAssoc = freebox\os\models\FreeboxAssoc::getFromUid( $uid);
+        $this->application->setAppToken( $userAssoc->getAppToken());
+        $this->application->setFreeboxApiHost( $userAssoc->getHost());
         $this->application->openSession();
 
         $dlService    = new freebox\api\v3\services\FileSystem\FileSharingLink( $this->application);
@@ -46,9 +44,9 @@ class UploadService extends freebox\os\utils\Service {
         $uid    = @$this->apiRequest['uid'];
         $token  = @$this->apiRequest['token'];
 
-        $freeboxMaster = freebox\os\etc\Config::get( 'assoc')[$uid];
-        $this->application->setAppToken( $freeboxMaster['token']);
-        $this->application->setFreeboxApiHost( $freeboxMaster['host']);
+        $userAssoc = freebox\os\models\FreeboxAssoc::getFromUid( $uid);
+        $this->application->setAppToken( $userAssoc->getAppToken());
+        $this->application->setFreeboxApiHost( $userAssoc->getHost());
         $this->application->openSession();
 
         $dlService    = new freebox\api\v3\services\FileSystem\FileSharingLink( $this->application);

@@ -1,0 +1,42 @@
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        {{name}}&emsp;
+        <span *ngIf="freeboxStatus" class="label label-success">{{freeboxStatus.media}}</span>
+    </div>
+
+    <div class="panel-body">
+        <div *ngIf="freeboxStatus">
+            <table class="table table-striped table-hover ">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Current</th>
+                    <th>Max</th>
+                    <th>Dispo</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Download</td>
+                    <td>{{freeboxStatus.rate_down / 8 | o2hr }}/s</td>
+                    <td>{{freeboxStatus.bandwidth_down / 8 | o2hr}}/s</td>
+                    <td>{{100 - (freeboxStatus.rate_down / freeboxStatus.bandwidth_down) * 100 | number }}%</td>
+                </tr>
+                <tr>
+                    <td>Upload</td>
+                    <td>{{freeboxStatus.rate_up / 8 | o2hr }}/s</td>
+                    <td>{{freeboxStatus.bandwidth_up / 8 | o2hr }}/s</td>
+                    <td>{{100 - (freeboxStatus.rate_up / freeboxStatus.bandwidth_up) * 100 | number }}%</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel-footer">
+        <a (click)="navigate( uid, '/')" class="btn btn-primary btn-xs">
+            <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>&emsp;Explorer
+        </a>
+    </div>
+</div>

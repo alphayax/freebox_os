@@ -1,0 +1,31 @@
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Validation de la demande</h3>
+    </div>
+    <div class="panel-body">
+        <p>
+            On y est presque... A present vous allez devoir "valider" votre demande. Pour cela... Cliquez tout simplement sur le bouton ci dessous
+        </p>
+
+        <a href="http://mafreebox.freebox.fr/api/v3/login/authorize/{{freeboxAssociation.track_id}}" target="_blank" class="btn btn-primary btn-sm">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&emsp;Valider la demande
+        </a>
+
+    </div>
+</div>
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h3 class="panel-title">Finalisation</h3>
+    </div>
+    <div class="panel-body">
+        <p>
+            Une fois que vous avez lancé la validation, vous pouvez tester la bonne association via le bouton ci dessous
+        </p>
+        <a (click)="validate()" class="btn btn-success btn-sm">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&emsp;Finaliser et tester l'association
+        </a>
+    </div>
+</div>

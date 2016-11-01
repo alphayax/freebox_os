@@ -3,31 +3,11 @@
     <h1>Bienvenuuuuue !!!</h1>
     <p class="lead">Liste des freebox connectées au systeme</p>
 
-    <table class="table table-striped table-hover ">
-        <thead>
-        <tr>
-            <th>&nbsp;</th>
-            <th>Freebox</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let freeboxInfo of freeboxInfos">
-            <td>
-                <span *ngIf="freeboxInfo.uid == uid" class="label label-primary">Principale</span>
-                <span *ngIf="freeboxInfo.uid != uid" class="label label-default">Secondaire</span>
-            </td>
-            <td>
-                {{freeboxInfo.host}}
-            </td>
-            <td>
-                <a (click)="navigate( freeboxInfo.uid, '/')" class="btn btn-default btn-xs">
-                    <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>&emsp;Explorer
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <div *ngFor="let freeboxInfo of freeboxInfos" class="col-sm-6 col-lg-6 col-xs-6">
+            <freebox-info [uid]="freeboxInfo.uid" [name]="freeboxInfo.name"></freebox-info>
+        </div>
+    </div>
 
     <a [routerLink]="['/association']" class="btn btn-primary btn-sm">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&emsp;Associer une freebox locale

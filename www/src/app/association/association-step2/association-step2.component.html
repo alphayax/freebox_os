@@ -1,0 +1,72 @@
+
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <h3 class="panel-title">Prérequis</h3>
+    </div>
+    <div class="panel-body">
+        <p>
+            Pour réaliser cette étape vous devez <strong>impérativement</strong> vous trouver connecté sur le même réseau de la freebox à associer.
+        </p>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Association de la Freebox</h3>
+    </div>
+    <div class="panel-body">
+        <h3>Generation de la demande</h3>
+        <p>
+            Dans un premier temps vous allez devoir envoyer une demande d'association à la freebox. Cela se fait par l'intermediaire
+            du bouton ci dessous.
+        </p>
+
+        <iframe style="border: 0" src="assets/askAuthorization.html"></iframe>
+
+        <h3>Autorisation de la demande</h3>
+        <p>
+            Félicitations ! Vous venez de faire une demande d'association avec la freebox. Le bouton a du etre remplacé par
+            des données au format JSON. Ces données contiennent l'app token et le track id, indispensables pour la suitre des
+            evènements.
+        </p>
+        <p class="text-warning">
+            Car, en effet sachez que ce n'est pas fini, votre demande d'association ne sera valide que si, et uniquement si,
+            vous vous levez immédiatement de votre chaise et que vous courrez vers votre Freebox Server pour valider la
+            demande d'association que vous venez de faire.
+        </p>
+        <p>
+            Pour cela, regardez le cadrant LED, il vous demandera si vous autorisez l'application a acceder a la freebox.
+            Appuyez donc sur la fleche lumineuse droite à coté du cadrant LED. Si c'est fait, félicitations, vous avez
+            réalisé votre demande d'association correctement.
+        </p>
+        <p class="text-muted">
+            Si vous n'avez pas réagit a temps, ou si vous vous etes planté, ne vous inquietez pas. Vous pouvez relancer
+            une nouvelle requete pour redemander une association.
+        </p>
+    </div>
+</div>
+
+
+<form class="form-horizontal">
+    <fieldset>
+        <legend>Parametres d'association de la freebox</legend>
+        <div class="form-group">
+            <label for="app_token" class="col-lg-2 control-label">app_token</label>
+            <div class="col-lg-10">
+                <input [(ngModel)]="freeboxAssociation.app_token" type="text" class="form-control" id="app_token"  name="app_token" placeholder="cMThEILtcHGCB5A/wxcvbwvxcb5151Ni+c6/wxvb455356Lv+4YuI40/X44256ES">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="track_id" class="col-lg-2 control-label">track_id</label>
+            <div class="col-lg-10">
+                <input [(ngModel)]="freeboxAssociation.track_id" type="text" class="form-control" id="track_id" name="track_id" placeholder="7">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+                <button type="reset" class="btn btn-default">Annuler</button>
+                <button (click)="saveToken()" class="btn btn-primary">Associer</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
