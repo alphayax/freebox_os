@@ -29,37 +29,14 @@ class PosterService extends Service {
      *
      */
     private function getImage() {
-
         $file_name = @$this->apiRequest['file_name'];
 
         $movieTitle = new MovieTitle( $file_name);
         $title = $movieTitle->getCleanName();
 
-        if( file_exists(  __DIR__ . '/../../../www/img/' . $title)){
-            $this->apiResponse->setData( static::IMG_HOST . $title);
-            return;
-        }
+        $poster_url = Poster::getFromTitle( $title);
 
-        $poster = Poster::getFromTitle( $title);
-        if( empty( $poster) || $poster == 'N/A'){
-            $this->apiResponse->setData( '');
-            return;
-        }
-
-        /// Download poster
-        $img = file_get_contents( $poster);
-        if( empty( $img)){
-            trigger_error( "Poster cannot be downloaded : $poster");
-
-            $this->apiResponse->setSuccess( false);
-            $this->apiResponse->setError( 'Poster cannot be downloaded : '. $poster);
-
-            return;
-        }
-
-        file_put_contents( __DIR__ . '/../../../www/img/' . $title, $img);    // TODO : Mettre un meilleur nom pour l'image
-
-        $this->apiResponse->setData( static::IMG_HOST . $title);
+        $this->apiResponse->setData( $poster_url);
     }
 
 }

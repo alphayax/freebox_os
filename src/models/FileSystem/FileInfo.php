@@ -2,7 +2,6 @@
 namespace alphayax\freebox\os\models\FileSystem;
 use alphayax\freebox\api\v3\symbols\FileSystem\FileInfoType;
 use alphayax\freebox\os\utils\MovieTitle;
-use alphayax\freebox\os\utils\Poster;
 
 /**
  * Class FileInfo

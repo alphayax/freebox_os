@@ -35,7 +35,16 @@ class MovieTitle implements \JsonSerializable {
         }
 
         // Try to find Season and Episode info
-        $pattern = '/(.*)[ -][Ss]([0-9]+)[Ee]([0-9]+)/';
+        $pattern = '/(.*)[ -][Ss]([0-9]+)-?[Ee]([0-9]+)/';
+        if( preg_match( $pattern, $name, $rez)){
+            $this->cleanName = trim( $rez[1]);
+            $this->season    = intval( $rez[2]);
+            $this->episode   = intval( $rez[3]);
+            return;
+        }
+
+        // Try to find Season and Episode info
+        $pattern = '/(.*)[ -]([0-9]+)[Xx]([0-9]+)/';
         if( preg_match( $pattern, $name, $rez)){
             $this->cleanName = trim( $rez[1]);
             $this->season    = intval( $rez[2]);
@@ -66,13 +75,15 @@ class MovieTitle implements \JsonSerializable {
             return;
         }
 
+        /*
         // Try to clean number prefixes
+        // Not working for "12 Monkeys"
         $pattern = '/^[0-9]+(.*)/';
         if( preg_match( $pattern, $name, $rez)){
             $this->cleanName = trim( $rez[1]);
             return;
         }
-
+        */
         $this->cleanName = trim( $name);
     }
 
