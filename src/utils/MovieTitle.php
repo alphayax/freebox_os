@@ -27,6 +27,9 @@ class MovieTitle implements \JsonSerializable {
         // Remove tags
         $name = preg_replace(['/(\[[a-zA-Z0-9_ -]+\])/', '/(\([a-zA-Z0-9_ -]+\))/'], '', $name);
 
+        // Remove resolutions and codecs
+        $name = preg_replace(['/(720p)/', '/(1080p)/', '/(x264)/', '/(HDTV)/'], '', $name);
+
         // Extract year
         $pattern = '/.*[^0-9]([0-9]{4})[^0-9].*/';
         if( preg_match( $pattern, $name, $rez)){
@@ -53,7 +56,7 @@ class MovieTitle implements \JsonSerializable {
         }
 
         // Try to find Season info
-        $pattern = '/(.*)[ -]{Ss]([0-9]+)/';
+        $pattern = '/(.*)[ -][Ss]([0-9]+)/';
         if( preg_match( $pattern, $name, $rez)){
             $this->cleanName = trim( $rez[1]);
             $this->season    = intval( $rez[2]);
